@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel — Production Attribution &amp; Contract Tightening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #06080a;
+  --bg-panel: #0b0e12;
+  --bg-raised: #111519;
+  --border: #1a2030;
+  --border-bright: #243048;
+  --text-primary: #c8cdd5;
+  --text-muted: #5a6577;
+  --text-dim: #384052;
+  --accent: #00e09e;
+  --accent-dim: #00e09e22;
+  --accent-glow: #00e09e44;
+  --warn: #ff6b4a;
+  --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  --serif: 'Instrument Serif', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--mono);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── CRT scan-line overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* ── Noise texture ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+a:hover { opacity: 0.8; }
+
+/* ── Layout ── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section {
+  padding: 100px 0;
+  position: relative;
+}
+
+/* ── Section headers ── */
+.section-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: 48px;
+  line-height: 1.2;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.1s forwards;
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 120px 0 80px;
+}
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.15;
+}
+
+.hero-grid-bg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 6px 14px;
+  border-radius: 2px;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.2s forwards;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+.hero h1 {
+  font-family: var(--mono);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 0.95;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.3s forwards;
+}
+
+.hero h1 span {
+  color: var(--accent);
+}
+
+.hero-tagline {
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 580px;
+  line-height: 1.5;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.45s forwards;
+}
+
+.hero-install {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  max-width: 420px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.6s forwards;
+  position: relative;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.hero-install:hover {
+  border-color: var(--accent-dim);
+}
+
+.hero-install .prompt {
+  color: var(--text-dim);
+  user-select: none;
+}
+
+.hero-install code {
+  color: var(--accent);
+  font-family: var(--mono);
+}
+
+.hero-install .copy-hint {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: auto;
+  transition: color 0.2s;
+}
+
+.hero-install:hover .copy-hint { color: var(--text-muted); }
+
+.hero-install.copied .copy-hint { color: var(--accent); }
+
+/* Signal trace animation */
+.signal-trace {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 340px;
+  height: 200px;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.8s forwards;
+}
+
+.signal-trace svg {
+  width: 100%;
+  height: 100%;
+}
+
+.trace-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: traceDraw 3s ease infinite;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.trace-dot {
+  fill: var(--accent);
+  opacity: 0;
+  animation: tracePulse 3s ease infinite;
+}
+
+/* ═══════════════════════════════════════════
+   HOW IT WORKS — pipeline
+   ═══════════════════════════════════════════ */
+.pipeline {
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.pipeline-flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+}
+
+.pipeline-step {
+  background: var(--bg-deep);
+  padding: 32px 20px;
+  text-align: center;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.pipeline-step:hover {
+  background: var(--bg-raised);
+}
+
+.pipeline-step::after {
+  content: '>';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 14px;
+  z-index: 1;
+}
+
+.pipeline-step:last-child::after { display: none; }
+
+.step-num {
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.step-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--text-dim);
+  font-style: normal;
+}
+
+.step-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.step-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   FEATURES
+   ═══════════════════════════════════════════ */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.feature-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  position: relative;
+  transition: border-color 0.3s, transform 0.2s;
+}
+
+.feature-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-2px);
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.feature-card:hover::before { opacity: 1; }
+
+.feature-tag {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+.feature-name {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.feature-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════════
+   QUICK START
+   ═══════════════════════════════════════════ */
+.quickstart {
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.code-panel {
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.code-panel-header {
+  padding: 12px 20px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-panel-header .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.code-panel pre {
+  padding: 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-x: auto;
+  color: var(--text-muted);
+}
+
+.code-panel pre .cmd { color: var(--text-primary); }
+.code-panel pre .comment { color: var(--text-dim); font-style: italic; }
+.code-panel pre .key { color: var(--accent); }
+.code-panel pre .str { color: #e0a060; }
+.code-panel pre .prompt { color: var(--text-dim); user-select: none; }
+
+/* ═══════════════════════════════════════════
+   API TABLE
+   ═══════════════════════════════════════════ */
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.api-table th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.api-table td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.api-table .method {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.api-table .endpoint {
+  color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+footer {
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.footer-inner a {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.footer-inner a:hover { color: var(--accent); }
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes traceDraw {
+  0% { stroke-dashoffset: 400; opacity: 0.3; }
+  50% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -400; opacity: 0.3; }
+}
+
+@keyframes tracePulse {
+  0%, 100% { opacity: 0; r: 2; }
+  40%, 60% { opacity: 1; r: 4; }
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .pipeline-flow { grid-template-columns: 1fr; }
+  .pipeline-step::after { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .code-panels { grid-template-columns: 1fr; }
+  .signal-trace { display: none; }
+  .hero h1 { letter-spacing: -1px; }
+  .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+@media (max-width: 1100px) {
+  .signal-trace { width: 240px; opacity: 0.5; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-grid-bg">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a2030" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
+  </div>
+
+  <div class="container" style="position:relative">
+    <div class="hero-badge">System Online</div>
+
+    <h1>Senti<span>n</span>el</h1>
+
+    <p class="hero-tagline">
+      Watches production. Attributes errors. Spawns fixers. Tightens contracts. Closes the loop between runtime and specification.
+    </p>
+
+    <div class="hero-install" onclick="copyInstall(this)">
+      <span class="prompt">$</span>
+      <code>pip install sentinel-monitor</code>
+      <span class="copy-hint">click to copy</span>
+    </div>
+
+    <div class="signal-trace">
+      <svg viewBox="0 0 340 200">
+        <line x1="0" y1="100" x2="340" y2="100" stroke="#1a2030" stroke-width="0.5"/>
+        <line x1="0" y1="50" x2="340" y2="50" stroke="#1a2030" stroke-width="0.3"/>
+        <line x1="0" y1="150" x2="340" y2="150" stroke="#1a2030" stroke-width="0.3"/>
+        <path class="trace-line" d="M0,100 L30,100 L40,100 L50,98 L60,100 L80,100 L90,60 L95,140 L100,80 L105,120 L110,95 L120,100 L160,100 L170,100 L180,96 L190,100 L200,100 L210,40 L215,160 L220,70 L225,130 L230,90 L240,100 L280,100 L290,100 L300,97 L310,100 L340,100"/>
+        <circle class="trace-dot" cx="210" cy="40" r="3"/>
+        <circle class="trace-dot" cx="90" cy="60" r="3" style="animation-delay:0.2s"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="pipeline">
+  <div class="container">
+    <span class="section-label">How It Works</span>
+    <h2 class="section-title">Error to fix in five steps</h2>
+  </div>
+  <div class="container">
+    <div class="pipeline-flow reveal">
+      <div class="pipeline-step">
+        <div class="step-num">01</div>
+        <em class="step-icon">&#x25C9;</em>
+        <div class="step-name">Detect</div>
+        <div class="step-desc">Tail logs, watch processes, receive webhooks for error signals</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">02</div>
+        <em class="step-icon">&#x2394;</em>
+        <div class="step-name">Attribute</div>
+        <div class="step-desc">Extract PACT keys, look up component in manifest, compute severity</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">03</div>
+        <em class="step-icon">&#x2699;</em>
+        <div class="step-name">Fix</div>
+        <div class="step-desc">LLM generates reproducer test + source fix, validates in temp dir</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">04</div>
+        <em class="step-icon">&#x21BB;</em>
+        <div class="step-name">Tighten</div>
+        <div class="step-desc">Push updated contract to Pact so this class of error cannot recur</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">05</div>
+        <em class="step-icon">&#x2713;</em>
+        <div class="step-name">Report</div>
+        <div class="step-desc">Trust events to Arbiter, signals to Stigmergy, webhook notifications</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section>
+  <div class="container">
+    <span class="section-label">Capabilities</span>
+    <h2 class="section-title">Built for production feedback loops</h2>
+
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-tag">Attribution</div>
+        <div class="feature-name">PACT Key Extraction</div>
+        <div class="feature-desc">Parses <code>PACT:component:method</code> from log lines. Registered keys route to the manifest. Unregistered keys are logged, never dropped.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-tag">Remediation</div>
+        <div class="feature-name">LLM Fixer Agents</div>
+        <div class="feature-desc">Per-error fixer reads contract, tests, and source. Produces a reproducer test that proves the bug, then fixes the source. Validates in a temp directory before applying.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-tag">Contracts</div>
+        <div class="feature-name">Contract Tightening</div>
+        <div class="feature-desc">When a fixer proposes a contract change, Sentinel pushes it to Pact via CLI. The contract gets tighter with every production error.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-tag">Severity</div>
+        <div class="feature-name">Ledger Integration</div>
+        <div class="feature-desc">Loads field-level severity mappings at startup. Errors on <code>gdpr_erasable</code> fields auto-escalate to HIGH. Audit field deletions go to COMPLIANCE.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-tag">Trust</div>
+        <div class="feature-name">Arbiter Events</div>
+        <div class="feature-desc">Reports trust events after every fix outcome. Successful fixes boost trust. Failed fixes and production errors reduce it.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-tag">Safety</div>
+        <div class="feature-name">Git-Aware Fixes</div>
+        <div class="feature-desc">Pre-fix snapshot commit before touching files. Post-fix commit on success. Automatic revert on failure. Silent no-op outside git repos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUICK START ═══ -->
+<section class="quickstart">
+  <div class="container">
+    <span class="section-label">Quick Start</span>
+    <h2 class="section-title">Running in four commands</h2>
+  </div>
+  <div class="container">
+    <div class="code-panels reveal">
+      <div class="code-panel">
+        <div class="code-panel-header"><span class="dot"></span>CLI</div>
+<pre><span class="comment"># Initialize Sentinel</span>
+<span class="prompt">$ </span><span class="cmd">sentinel init</span>
+
+<span class="comment"># Register a Pact project</span>
+<span class="prompt">$ </span><span class="cmd">sentinel register ~/Code/my-project</span>
+  Registered: auth_module
+  Registered: payment_processor
+  Registered: user_service
+
+<span class="comment"># Start watching</span>
+<span class="prompt">$ </span><span class="cmd">sentinel watch</span>
+
+<span class="comment"># Or trigger a fix manually</span>
+<span class="prompt">$ </span><span class="cmd">sentinel fix "PACT:auth:validate" \
+  "Token signature invalid"</span></pre>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header"><span class="dot"></span>sentinel.yaml</div>
+<pre><span class="key">version</span>: <span class="str">"1.0"</span>
+
+<span class="key">sources</span>:
+  - <span class="key">type</span>: <span class="str">file</span>
+    <span class="key">path</span>: <span class="str">"/var/log/app/*.log"</span>
+
+<span class="key">auto_remediate</span>: <span class="str">true</span>
+
+<span class="key">llm</span>:
+  <span class="key">model</span>: <span class="str">claude-sonnet-4-20250514</span>
+  <span class="key">budget_per_fix</span>: <span class="str">2.00</span>
+
+<span class="key">pact</span>:
+  <span class="key">project_dir</span>: <span class="str">~/Code/my-project</span>
+
+<span class="key">arbiter</span>:
+  <span class="key">api_endpoint</span>: <span class="str">http://localhost:7700</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ API ═══ -->
+<section>
+  <div class="container">
+    <span class="section-label">HTTP API</span>
+    <h2 class="section-title">Programmatic access</h2>
+
+    <div class="reveal">
+      <table class="api-table">
+        <thead>
+          <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="method">GET</td><td class="endpoint">/status</td><td>Health and integration connectivity</td></tr>
+          <tr><td class="method">GET</td><td class="endpoint">/manifest</td><td>All registered components</td></tr>
+          <tr><td class="method">GET</td><td class="endpoint">/fixes</td><td>Recent fix history</td></tr>
+          <tr><td class="method">GET</td><td class="endpoint">/fixes/:id</td><td>Single fix detail</td></tr>
+          <tr><td class="method">POST</td><td class="endpoint">/fix</td><td>Manually trigger a fix</td></tr>
+          <tr><td class="method">POST</td><td class="endpoint">/register</td><td>Register a component</td></tr>
+          <tr><td class="method">GET</td><td class="endpoint">/metrics</td><td>Operational metrics</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span>MIT License &copy; 2026 Jeremy McEntire</span>
+      <div class="footer-links">
+        <a href="https://github.com/jmcentire/sentinel">GitHub</a>
+        <a href="https://github.com/jmcentire/pact">Pact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Copy install command
+function copyInstall(el) {
+  navigator.clipboard.writeText('pip install sentinel-monitor');
+  el.classList.add('copied');
+  el.querySelector('.copy-hint').textContent = 'copied';
+  setTimeout(() => {
+    el.classList.remove('copied');
+    el.querySelector('.copy-hint').textContent = 'click to copy';
+  }, 2000);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Trigger section-label and section-title animations on scroll
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const labels = entry.target.querySelectorAll('.section-label, .section-title');
+      labels.forEach(l => l.style.animationPlayState = 'running');
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('section').forEach(s => sectionObserver.observe(s));
+</script>
+</body>
+</html>
