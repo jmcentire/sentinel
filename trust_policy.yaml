@@ -1,0 +1,37 @@
+version: "1"
+project: sentinel
+classification_tiers:
+  - name: PUBLIC
+    soak_duration_hours: 0
+    human_gate: false
+  - name: FINANCIAL
+    soak_duration_hours: 24
+    human_gate: true
+  - name: COMPLIANCE
+    soak_duration_hours: 48
+    human_gate: true
+
+authority_map:
+  watcher:
+    domain: signal_ingestion
+    trust_score: 0.9
+  attribution:
+    domain: pact_key_extraction
+    trust_score: 0.85
+  fixer:
+    domain: auto_remediation
+    trust_score: 0.6
+  contracts:
+    domain: contract_tightening
+    trust_score: 0.7
+  arbiter_client:
+    domain: trust_events
+    trust_score: 0.7
+  stigmergy_client:
+    domain: signal_emission
+    trust_score: 0.7
+  ledger_client:
+    domain: severity_mappings
+    trust_score: 0.7
+
+canary_eligible: [fixer]

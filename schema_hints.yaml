@@ -1,0 +1,17 @@
+version: "1"
+project: sentinel
+storage_backends:
+  - type: filesystem
+    purpose: state_persistence
+    path: .sentinel/
+    format: json
+    fields:
+      - name: manifest
+        file: manifest.json
+        classification: PUBLIC
+      - name: monitoring
+        path: monitoring/
+        classification: PUBLIC
+      - name: proposed_contracts
+        path: proposed_contracts/
+        classification: PUBLIC

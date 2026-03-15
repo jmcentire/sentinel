@@ -1,0 +1,45 @@
+name: sentinel
+audience: public
+description: >
+  Production attribution and contract tightening. Watches logs for errors,
+  attributes them via PACT keys, computes severity, and spawns LLM fixer
+  agents. Pushes tightened contracts back to Pact.
+
+domains:
+  - production-monitoring
+  - error-attribution
+  - auto-remediation
+  - contract-tightening
+  - incident-management
+
+voice:
+  tone: precise, operational, fail-safe
+  principles:
+    - Attribution must be traceable to a PACT key
+    - Auto-remediation is budget-bounded and auditable
+    - Integration failures must never crash Sentinel
+    - Severity is computed, not guessed
+  anti-patterns:
+    - Fixing without reproducing first
+    - Spending without budget tracking
+    - Blocking on unavailable integrations
+    - Trusting exit codes without checking artifacts
+
+standards:
+  code_review:
+    - All async operations use aiohttp
+    - Fire-and-forget for Arbiter/Stigmergy (never block)
+    - Budget enforcement at incident and time-window levels
+    - Fixer spawns require dedup check (no concurrent duplicates)
+  documentation:
+    - FA numbers reference functional assertions in task.md
+    - Integration degradation modes documented
+  communication:
+    - Lead with incident status and cost
+
+connects_to:
+  - pact
+  - arbiter
+  - stigmergy
+  - ledger
+  - kindex
