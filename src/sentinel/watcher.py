@@ -41,35 +41,65 @@ def fingerprint_signal(signal: Signal) -> str:
 
 
 class LogTailer:
-    """Async generator that tails log files using tail -F."""
+    """Async generator that tails log files using tail -F.
+
+    FA-S-024: Handles log source unavailability with retry and exponential backoff.
+    """
+
+    MAX_BACKOFF = 60  # seconds
 
     def __init__(self, path: str, error_patterns: list[str] | None = None) -> None:
         self.path = path
         self._patterns = [re.compile(p) for p in (error_patterns or ["ERROR", "CRITICAL", "Traceback"])]
         self._process: asyncio.subprocess.Process | None = None
+        self._stopped = False
 
     async def start(self) -> None:
-        self._process = await asyncio.create_subprocess_exec(
-            "tail", "-F", self.path,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.DEVNULL,
-        )
+        """Start the tail -F subprocess. Retries on failure."""
+        await self._start_process()
+
+    async def _start_process(self) -> None:
+        """Launch tail -F. Handles missing files gracefully."""
+        try:
+            self._process = await asyncio.create_subprocess_exec(
+                "tail", "-F", self.path,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.DEVNULL,
+            )
+        except Exception as e:
+            logger.warning("Failed to start tail for %s: %s", self.path, e)
+            self._process = None
 
     async def lines(self):
-        if not self._process or not self._process.stdout:
-            return
-        while True:
+        """Yield matching log lines with automatic reconnection on failure."""
+        backoff = 1
+        while not self._stopped:
+            if not self._process or not self._process.stdout:
+                # FA-S-024: Retry with exponential backoff
+                logger.debug("Log source %s unavailable, retrying in %ds", self.path, backoff)
+                await asyncio.sleep(backoff)
+                backoff = min(backoff * 2, self.MAX_BACKOFF)
+                await self._start_process()
+                continue
+
             try:
                 line_bytes = await self._process.stdout.readline()
                 if not line_bytes:
-                    break
+                    # Process died — restart with backoff
+                    self._process = None
+                    continue
+                backoff = 1  # Reset backoff on successful read
                 line = line_bytes.decode("utf-8", errors="replace").rstrip()
                 if any(p.search(line) for p in self._patterns):
                     yield line
             except asyncio.CancelledError:
                 break
+            except Exception as e:
+                logger.debug("LogTailer read error for %s: %s", self.path, e)
+                self._process = None
 
     def stop(self) -> None:
+        self._stopped = True
         if self._process:
             self._process.terminate()
 

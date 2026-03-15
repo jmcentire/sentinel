@@ -10,7 +10,8 @@ from __future__ import annotations
 import asyncio
 import logging
 import uuid
-from datetime import datetime
+from collections import defaultdict
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from sentinel.arbiter import ArbiterClient
@@ -72,6 +73,14 @@ class Sentinel:
 
         # Fix history
         self._fixes: list[FixResult] = []
+
+        # FA-S-007: Error threshold tracking — count errors per component in window
+        self._error_counts: dict[str, list[datetime]] = defaultdict(list)
+        self._threshold_count = config.error_threshold.count
+        self._threshold_window = config.error_threshold.window_seconds
+
+        # FA-S-026: Track active fixers to prevent concurrent duplicate spawns
+        self._active_fixers: set[str] = set()
 
     @property
     def manifest(self) -> ManifestManager:
@@ -184,6 +193,17 @@ class Sentinel:
 
         # Step 8: Auto-remediate if enabled and component known
         if self._config.auto_remediate and attribution.component_id and attribution.manifest_entry:
+            # FA-S-007: Check error threshold before spawning fixer
+            if not self._threshold_reached(attribution.component_id):
+                return
+
+            # FA-S-026: Skip if fixer already active for this component
+            if attribution.component_id in self._active_fixers:
+                logger.debug(
+                    "Fixer already active for %s, skipping", attribution.component_id,
+                )
+                return
+
             if self._incident_mgr.check_budget(incident.id):
                 fix_result = await self._spawn_fixer(incident, attribution)
                 if fix_result.status == "success":
@@ -201,8 +221,31 @@ class Sentinel:
         elif not self._config.auto_remediate:
             await self._escalate(incident)
 
+    def _threshold_reached(self, component_id: str) -> bool:
+        """FA-S-007: Check if error count for this component has reached the threshold.
+
+        Tracks timestamps of errors per component within the configured window.
+        Returns True when the count reaches error_threshold.count.
+        """
+        now = datetime.now()
+        cutoff = now - timedelta(seconds=self._threshold_window)
+
+        # Prune old entries
+        self._error_counts[component_id] = [
+            t for t in self._error_counts[component_id] if t > cutoff
+        ]
+
+        # Record this error
+        self._error_counts[component_id].append(now)
+
+        return len(self._error_counts[component_id]) >= self._threshold_count
+
     async def handle_manual_fix(self, pact_key: str, error_text: str) -> FixResult:
-        """Manually trigger a fix for a PACT key + error (FA-S-023)."""
+        """Manually trigger a fix for a PACT key + error (FA-S-023).
+
+        Invokes the same integration flow as automatic triggers:
+        Arbiter production_error, Stigmergy signal, then fixer.
+        """
         signal = Signal(
             source="manual",
             raw_text=error_text,
@@ -228,16 +271,43 @@ class Sentinel:
         )
         incident.pact_key = attribution.pact_key
 
-        return await self._spawn_fixer(incident, attribution)
+        # FA-S-023: Same integration flow as automatic (Arbiter + Stigmergy)
+        await self._arbiter.report_production_error(
+            attribution.component_id, run_id=incident.id,
+        )
+        await self._stigmergy.emit_production_error(
+            attribution.component_id,
+            attribution.pact_key,
+            error_text[:200],
+        )
+
+        fix_result = await self._spawn_fixer(incident, attribution)
+
+        # Post-fix integrations same as automatic
+        if fix_result.status == "success":
+            self._incident_mgr.close_incident(
+                incident.id, "auto_fixed",
+                f"Manual fix by Sentinel at {datetime.now().isoformat()}",
+            )
+            await self._post_fix_success(incident, fix_result, attribution)
+        else:
+            await self._post_fix_failure(incident, fix_result, attribution)
+
+        return fix_result
 
     async def _spawn_fixer(
         self, incident: Incident, attribution: Attribution,
     ) -> FixResult:
         """Spawn a fixer agent for an incident (FA-S-007)."""
+        component_id = attribution.component_id
+
+        # FA-S-026: Mark component as having an active fixer
+        self._active_fixers.add(component_id)
+
         self._incident_mgr.update_status(incident.id, "remediating")
         await self._event_bus.emit(SentinelEvent(
             kind="fix_started",
-            component_id=attribution.component_id,
+            component_id=component_id,
             detail=f"Fixing {incident.id}",
         ))
 
@@ -255,13 +325,15 @@ class Sentinel:
             return FixResult(
                 id=uuid.uuid4().hex[:12],
                 incident_id=incident.id,
-                component_id=attribution.component_id,
+                component_id=component_id,
                 status="failure",
                 error=str(e),
                 completed_at=datetime.now().isoformat(),
             )
         finally:
             await llm.close()
+            # FA-S-026: Release the active fixer lock
+            self._active_fixers.discard(component_id)
 
     async def _post_fix_success(
         self, incident: Incident, fix_result: FixResult, attribution: Attribution,

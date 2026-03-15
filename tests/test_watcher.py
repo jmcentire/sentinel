@@ -1,10 +1,10 @@
-"""Tests for signal ingestion, fingerprinting, and deduplication."""
+"""Tests for signal ingestion, fingerprinting, deduplication, and retry."""
 
 from __future__ import annotations
 
 from sentinel.config import SourceConfig
 from sentinel.schemas import Signal
-from sentinel.watcher import SignalIngester, fingerprint_signal, _extract_key_str
+from sentinel.watcher import LogTailer, SignalIngester, fingerprint_signal, _extract_key_str
 
 
 class TestFingerprintSignal:
@@ -67,3 +67,24 @@ class TestSignalIngesterDedup:
         s2 = Signal(source="log_file", raw_text="ERROR: second completely different", timestamp="t2")
         assert ingester._deduplicate(s1) is True
         assert ingester._deduplicate(s2) is True
+
+
+class TestLogTailerRetry:
+    """FA-S-024: Log source unavailability handled with retry and backoff."""
+
+    def test_tailer_has_max_backoff(self):
+        tailer = LogTailer("/nonexistent/log")
+        assert tailer.MAX_BACKOFF == 60
+
+    def test_tailer_stop_sets_flag(self):
+        tailer = LogTailer("/nonexistent/log")
+        assert tailer._stopped is False
+        tailer.stop()
+        assert tailer._stopped is True
+
+    def test_tailer_handles_missing_file_gracefully(self):
+        """LogTailer should not crash on init with a nonexistent file."""
+        tailer = LogTailer("/nonexistent/path/to/log.log")
+        assert tailer.path == "/nonexistent/path/to/log.log"
+        # stop should not raise even without starting
+        tailer.stop()
