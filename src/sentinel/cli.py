@@ -157,6 +157,83 @@ def manifest_add(
 
 
 @main.command()
+@click.argument("error_text")
+@click.option("--manifest", "manifest_path", type=click.Path(exists=False), default=None, help="Override manifest directory")
+@click.pass_context
+def triage(ctx: click.Context, error_text: str, manifest_path: str | None) -> None:
+    """Manually triage an error to find the responsible component (FA-S-025)."""
+    import re
+    from datetime import datetime
+
+    from sentinel.manifest import ManifestManager
+    from sentinel.schemas import Signal
+
+    config = ctx.obj["config"]
+    state_dir = Path(manifest_path) if manifest_path else Path(config.state_dir)
+
+    manifest = ManifestManager(state_dir)
+
+    if not manifest.all_entries():
+        click.echo("No components registered. Use 'sentinel register <dir>' first.", err=True)
+        sys.exit(1)
+
+    # Build signal from error text
+    signal = Signal(
+        source="manual",
+        raw_text=error_text,
+        timestamp=datetime.now().isoformat(),
+    )
+
+    # Try PACT key extraction first (no LLM needed)
+    key_pattern = re.compile(config.pact_key_pattern)
+    m = key_pattern.search(error_text)
+    if m:
+        pact_key = m.group(0)
+        entry = manifest.lookup_by_key(pact_key)
+        if entry:
+            click.echo(f"component_id: {entry.component_id}")
+            click.echo(f"confidence:   1.0")
+            click.echo(f"reasoning:    PACT key '{pact_key}' found in error text, matched to registered component")
+            return
+        else:
+            click.echo(f"component_id: unknown")
+            click.echo(f"confidence:   0.5")
+            click.echo(f"reasoning:    PACT key '{pact_key}' found but component not registered in manifest")
+            return
+
+    # Fall back to LLM triage
+    try:
+        from sentinel.llm import LLMClient
+        from sentinel.triage import triage_signal, TriageResult
+
+        llm = LLMClient(config.llm)
+
+        async def _run_triage():
+            try:
+                result = await triage_signal(llm, signal, manifest)
+                return result
+            finally:
+                await llm.close()
+
+        component_id = asyncio.run(_run_triage())
+
+        if component_id:
+            click.echo(f"component_id: {component_id}")
+            click.echo(f"confidence:   0.8")
+            click.echo(f"reasoning:    LLM triage matched error to component based on manifest analysis")
+        else:
+            click.echo(f"component_id: unknown")
+            click.echo(f"confidence:   0.0")
+            click.echo(f"reasoning:    LLM triage could not determine responsible component")
+
+    except (ImportError, RuntimeError) as e:
+        # LLM unavailable — report what we can
+        click.echo(f"component_id: unknown")
+        click.echo(f"confidence:   0.0")
+        click.echo(f"reasoning:    No PACT key found in error text and LLM unavailable ({e})")
+
+
+@main.command()
 @click.argument("pact_key")
 @click.argument("error")
 @click.pass_context

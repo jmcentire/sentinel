@@ -205,6 +205,104 @@ class WebhookReceiver:
             self._server.close()
 
 
+class CloudWatchSource:
+    """Polls AWS CloudWatch Logs for error events.
+
+    Requires boto3 (optional dependency: pip install sentinel-monitor[cloudwatch]).
+    Uses filter_log_events with a start-time cursor to avoid re-processing.
+    """
+
+    def __init__(
+        self,
+        log_group: str,
+        filter_pattern: str = "",
+        region: str = "",
+        poll_interval: int = 30,
+        error_patterns: list[str] | None = None,
+    ) -> None:
+        self.log_group = log_group
+        self.filter_pattern = filter_pattern
+        self.region = region
+        self.poll_interval = poll_interval
+        self._patterns = [re.compile(p) for p in (error_patterns or ["ERROR", "CRITICAL", "Traceback"])]
+        self._last_timestamp: int = 0  # millis since epoch
+        self._stopped = False
+        self._client = None
+
+    def _get_client(self):
+        """Lazy-init the boto3 CloudWatch Logs client."""
+        if self._client is None:
+            try:
+                import boto3
+            except ImportError:
+                raise RuntimeError(
+                    "boto3 package required for CloudWatch source. "
+                    "Install with: pip install sentinel-monitor[cloudwatch]"
+                )
+            kwargs: dict = {"service_name": "logs"}
+            if self.region:
+                kwargs["region_name"] = self.region
+            self._client = boto3.client(**kwargs)
+        return self._client
+
+    async def signals(self):
+        """Async generator yielding Signal objects from CloudWatch Logs."""
+        import time
+
+        if self._last_timestamp == 0:
+            # Start from 5 minutes ago to avoid huge initial fetch
+            self._last_timestamp = int((time.time() - 300) * 1000)
+
+        while not self._stopped:
+            try:
+                client = self._get_client()
+                kwargs: dict = {
+                    "logGroupName": self.log_group,
+                    "startTime": self._last_timestamp + 1,
+                    "interleaved": True,
+                }
+                if self.filter_pattern:
+                    kwargs["filterPattern"] = self.filter_pattern
+
+                # Run the blocking boto3 call in a thread executor
+                loop = asyncio.get_event_loop()
+                response = await loop.run_in_executor(
+                    None, lambda: client.filter_log_events(**kwargs)
+                )
+
+                events = response.get("events", [])
+                for event in events:
+                    message = event.get("message", "").rstrip()
+                    ts = event.get("timestamp", 0)
+
+                    if ts > self._last_timestamp:
+                        self._last_timestamp = ts
+
+                    # Apply error patterns if no CloudWatch filter_pattern
+                    if not self.filter_pattern:
+                        if not any(p.search(message) for p in self._patterns):
+                            continue
+
+                    yield Signal(
+                        source="log_file",
+                        raw_text=message,
+                        timestamp=datetime.fromtimestamp(ts / 1000).isoformat() if ts else datetime.now().isoformat(),
+                        file_path=self.log_group,
+                        log_key=_extract_key_str(message),
+                    )
+
+            except RuntimeError:
+                # boto3 not installed — re-raise immediately
+                raise
+            except Exception as e:
+                logger.warning("CloudWatch poll error for %s: %s", self.log_group, e)
+
+            await asyncio.sleep(self.poll_interval)
+
+    def stop(self) -> None:
+        self._stopped = True
+
+
 class StdoutWatcher:
     """Watches stdout of a subprocess for error patterns."""
 
@@ -248,6 +346,7 @@ class SignalIngester:
         self._signal_queue: asyncio.Queue[Signal] = asyncio.Queue()
         self._tailers: list[LogTailer] = []
         self._webhooks: list[WebhookReceiver] = []
+        self._cloudwatch_sources: list[CloudWatchSource] = []
         self._tasks: list[asyncio.Task] = []
 
     async def start(self) -> None:
@@ -260,6 +359,25 @@ class SignalIngester:
                 self._tasks.append(
                     asyncio.create_task(self._consume_tailer(tailer))
                 )
+            elif source.type == "cloudwatch" and source.log_group:
+                cw = CloudWatchSource(
+                    log_group=source.log_group,
+                    filter_pattern=source.filter_pattern,
+                    region=source.region,
+                    poll_interval=source.poll_interval,
+                    error_patterns=source.error_patterns,
+                )
+                self._cloudwatch_sources.append(cw)
+                self._tasks.append(
+                    asyncio.create_task(self._consume_cloudwatch(cw))
+                )
+            elif source.type == "webhook" and source.port:
+                wh = WebhookReceiver(source.port)
+                self._webhooks.append(wh)
+                await wh.start()
+                self._tasks.append(
+                    asyncio.create_task(self._consume_webhook(wh))
+                )
 
     async def _consume_tailer(self, tailer: LogTailer) -> None:
         try:
@@ -271,6 +389,22 @@ class SignalIngester:
                     file_path=tailer.path,
                     log_key=_extract_key_str(line),
                 )
+                if self._deduplicate(signal):
+                    await self._signal_queue.put(signal)
+        except asyncio.CancelledError:
+            pass
+
+    async def _consume_cloudwatch(self, cw: CloudWatchSource) -> None:
+        try:
+            async for signal in cw.signals():
+                if self._deduplicate(signal):
+                    await self._signal_queue.put(signal)
+        except asyncio.CancelledError:
+            pass
+
+    async def _consume_webhook(self, wh: WebhookReceiver) -> None:
+        try:
+            async for signal in wh.signals():
                 if self._deduplicate(signal):
                     await self._signal_queue.put(signal)
         except asyncio.CancelledError:
@@ -311,6 +445,8 @@ class SignalIngester:
             tailer.stop()
         for webhook in self._webhooks:
             webhook.stop()
+        for cw in self._cloudwatch_sources:
+            cw.stop()
 
 
 # Default pattern for extracting PACT key strings from lines

@@ -749,8 +749,36 @@ footer {
   </div>
 </section>
 
-<!-- ═══ API ═══ -->
+<!-- ═══ CLI ═══ -->
 <section>
+  <div class="container">
+    <span class="section-label">CLI Commands</span>
+    <h2 class="section-title">Full command reference</h2>
+
+    <div class="reveal">
+      <table class="api-table">
+        <thead>
+          <tr><th>Command</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="endpoint">sentinel init</td><td>Initialize <code>.sentinel/</code> directory and <code>sentinel.yaml</code></td></tr>
+          <tr><td class="endpoint">sentinel watch</td><td>Start watching configured log sources (long-running)</td></tr>
+          <tr><td class="endpoint">sentinel register &lt;dir&gt;</td><td>Register all components from a Pact project directory</td></tr>
+          <tr><td class="endpoint">sentinel manifest show</td><td>Show all registered components</td></tr>
+          <tr><td class="endpoint">sentinel manifest add &lt;id&gt;</td><td>Manually add a component to the manifest</td></tr>
+          <tr><td class="endpoint">sentinel triage &lt;error&gt;</td><td>Triage an error to find the responsible component</td></tr>
+          <tr><td class="endpoint">sentinel fix &lt;key&gt; &lt;error&gt;</td><td>Manually trigger a fix for a PACT key + error text</td></tr>
+          <tr><td class="endpoint">sentinel report</td><td>Show recent incidents and fix history</td></tr>
+          <tr><td class="endpoint">sentinel status</td><td>Show configuration and integration connectivity</td></tr>
+          <tr><td class="endpoint">sentinel serve</td><td>Start the HTTP API server (default port 8484)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ API ═══ -->
+<section class="pipeline">
   <div class="container">
     <span class="section-label">HTTP API</span>
     <h2 class="section-title">Programmatic access</h2>
@@ -765,11 +793,84 @@ footer {
           <tr><td class="method">GET</td><td class="endpoint">/manifest</td><td>All registered components</td></tr>
           <tr><td class="method">GET</td><td class="endpoint">/fixes</td><td>Recent fix history</td></tr>
           <tr><td class="method">GET</td><td class="endpoint">/fixes/:id</td><td>Single fix detail</td></tr>
-          <tr><td class="method">POST</td><td class="endpoint">/fix</td><td>Manually trigger a fix</td></tr>
-          <tr><td class="method">POST</td><td class="endpoint">/register</td><td>Register a component</td></tr>
-          <tr><td class="method">GET</td><td class="endpoint">/metrics</td><td>Operational metrics</td></tr>
+          <tr><td class="method">POST</td><td class="endpoint">/fix</td><td>Manually trigger a fix (<code>pact_key</code> + <code>error</code>)</td></tr>
+          <tr><td class="method">POST</td><td class="endpoint">/register</td><td>Register a component via JSON body</td></tr>
+          <tr><td class="method">GET</td><td class="endpoint">/metrics</td><td>Operational metrics (incidents, fixes, spend)</td></tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PACT KEY STANDARD ═══ -->
+<section>
+  <div class="container">
+    <span class="section-label">Attribution</span>
+    <h2 class="section-title">The PACT key standard</h2>
+
+    <div class="code-panels reveal">
+      <div class="code-panel">
+        <div class="code-panel-header"><span class="dot"></span>Format</div>
+<pre><span class="key">PACT</span>:<span class="str">&lt;component_id&gt;</span>:<span class="str">&lt;method_name&gt;</span>
+
+<span class="comment"># Examples</span>
+<span class="cmd">PACT:auth_module:validate_token</span>
+<span class="cmd">PACT:payment_processor:charge_card</span>
+<span class="cmd">PACT:user_service:create_user</span>
+
+<span class="comment"># Rules</span>
+<span class="key">component_id</span>: alphanumeric + underscore
+<span class="key">method_name</span>:  alphanumeric + underscore
+<span class="key">prefix</span>:       "PACT:" (uppercase, literal)
+<span class="key">regex</span>:        PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+</pre>
+      </div>
+      <div class="code-panel">
+        <div class="code-panel-header"><span class="dot"></span>How It Works</div>
+<pre><span class="comment"># Pact embeds keys during code generation</span>
+<span class="cmd">logger.error(</span>
+  <span class="str">"[PACT:auth:validate] Token invalid"</span>
+<span class="cmd">)</span>
+
+<span class="comment"># Sentinel extracts at error time</span>
+<span class="prompt">$ </span><span class="cmd">sentinel triage</span> <span class="str">"[PACT:auth:validate] Token invalid"</span>
+<span class="key">component_id</span>: auth
+<span class="key">confidence</span>:   1.0
+<span class="key">reasoning</span>:    PACT key found, matched to
+              registered component</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTEGRATION DIAGRAM ═══ -->
+<section class="pipeline">
+  <div class="container">
+    <span class="section-label">Integration</span>
+    <h2 class="section-title">Pact &rarr; Sentinel &rarr; Arbiter</h2>
+
+    <div class="reveal">
+      <div class="code-panel" style="background: var(--bg-deep); border: 1px solid var(--border); border-radius: 4px;">
+        <div class="code-panel-header"><span class="dot"></span>Data Flow</div>
+<pre>
+  <span class="key">Pact</span>                    <span class="key">Sentinel</span>                    <span class="key">Arbiter</span>
+  ┌──────────┐            ┌──────────────────┐          ┌──────────┐
+  │ Generate │            │ <span class="str">Detect</span>           │          │  Trust   │
+  │ code w/  │───embed───>│   Log tailing    │          │  Ledger  │
+  │ PACT keys│            │   CloudWatch     │          │          │
+  └──────────┘            │   Webhooks       │          └──────────┘
+                          │                  │               ^
+  ┌──────────┐            │ <span class="str">Attribute</span>        │               │
+  │ Contracts│<──push────│   PACT key parse │      trust events
+  │ (tighten)│            │   Manifest lookup│               │
+  └──────────┘            │   LLM triage     │               │
+                          │                  │          ┌──────────┐
+  ┌──────────┐            │ <span class="str">Remediate</span>        │          │Stigmergy │
+  │ Tests +  │<──read────│   LLM fixer      │──signal─>│ (signals)│
+  │ Source   │            │   Git snapshot   │          └──────────┘
+  └──────────┘            │   Test + verify  │
+                          └──────────────────┘
+</pre>
+      </div>
     </div>
   </div>
 </section>

@@ -47,6 +47,9 @@ sentinel manifest show
 # Start watching (requires sources in sentinel.yaml)
 sentinel watch
 
+# Triage an error to find the responsible component
+sentinel triage "Token signature invalid: expected ES256, got RS256"
+
 # Manually trigger a fix
 sentinel fix "PACT:auth_module:validate_token" "Token signature invalid: expected ES256, got RS256"
 
@@ -62,10 +65,21 @@ Sentinel is configured via `sentinel.yaml`:
 version: "1.0"
 
 sources:
+  # Tail local log files
   - type: file
     path: "/var/log/app/*.log"
     format: jsonl
-  - type: stdout
+
+  # Receive errors via HTTP POST
+  - type: webhook
+    port: 9090
+
+  # Poll AWS CloudWatch Logs (requires: pip install sentinel-monitor[cloudwatch])
+  - type: cloudwatch
+    log_group: "/aws/lambda/my-function"
+    filter_pattern: "ERROR"        # CloudWatch filter pattern
+    region: "us-east-1"            # optional, defaults to AWS_DEFAULT_REGION
+    poll_interval: 30              # seconds between polls
 
 pact_key_pattern: "PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+"
 
@@ -143,6 +157,7 @@ src/sentinel/
 | `sentinel register <dir>` | Register components from a Pact project |
 | `sentinel manifest show` | Show registered components |
 | `sentinel manifest add <id>` | Manually register a component |
+| `sentinel triage <error>` | Triage an error to find the responsible component |
 | `sentinel fix <key> <error>` | Manually trigger a fix |
 | `sentinel report` | Show recent incidents |
 | `sentinel status` | Show config and integration connectivity |
@@ -169,6 +184,8 @@ src/sentinel/
 
 ## PACT Key Standard
 
+PACT keys are string literals embedded in Pact-generated source code that enable production error attribution. When an error containing a PACT key appears in logs, Sentinel extracts it, looks up the component in its manifest, and can automatically triage and fix the issue.
+
 ```
 Format:  PACT:<component_id>:<method_name>
 Example: PACT:auth_module:validate_token
@@ -177,10 +194,13 @@ Example: PACT:auth_module:validate_token
 Rules:
   - component_id: alphanumeric + underscore
   - method_name: alphanumeric + underscore
-  - prefix: "PACT:" (uppercase)
+  - prefix: "PACT:" (uppercase, literal)
+  - Regex: PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+
 ```
 
-Pact embeds these in generated code at implementation time. Sentinel extracts them at error time.
+Pact embeds these keys during the Implement phase. Sentinel extracts them at error time. The `sentinel triage` command uses PACT key extraction as its first strategy; if no key is found, it falls back to LLM-based triage against the component manifest.
+
+Canonical specification: [PACT_KEY_STANDARD.md](https://github.com/jmcentire/pact/blob/main/PACT_KEY_STANDARD.md) in the Pact repository.
 
 ## License
 

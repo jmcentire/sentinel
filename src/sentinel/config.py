@@ -14,11 +14,14 @@ logger = logging.getLogger(__name__)
 
 class SourceConfig(BaseModel):
     """A log source to watch."""
-    type: Literal["file", "cloudwatch", "stdout"] = "file"
+    type: Literal["file", "cloudwatch", "webhook", "stdout"] = "file"
     path: str = ""
     format: str = "text"
     log_group: str = ""
+    filter_pattern: str = ""
     region: str = ""
+    poll_interval: int = 30
+    port: int = 0
     error_patterns: list[str] = Field(
         default_factory=lambda: ["ERROR", "CRITICAL", "Traceback"],
     )
