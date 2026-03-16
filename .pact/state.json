@@ -1,0 +1,135 @@
+{
+  "id": "8b6d8d39b88c",
+  "project_dir": "/Users/jmcentire/Code/sentinel",
+  "status": "paused",
+  "phase": "interview",
+  "component_tasks": [
+    {
+      "component_id": "src_sentinel_api",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_arbiter",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_attribution",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_cli",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_config",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_contracts",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_events",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_fixer",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_git_ops",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_incidents",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_ledger",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_llm",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_manifest",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_notify",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_sentinel",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_severity",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_stigmergy",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_triage",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    },
+    {
+      "component_id": "src_sentinel_watcher",
+      "status": "pending",
+      "attempts": 0,
+      "last_error": ""
+    }
+  ],
+  "interview_result": null,
+  "total_cost_usd": 0.0,
+  "total_tokens": 0,
+  "last_check_in": "",
+  "created_at": "2026-03-15T18:36:56.679847",
+  "completed_at": "",
+  "pause_reason": "Dry run — adoption not finalized",
+  "phase_cycles": 0,
+  "health_snapshot": {},
+  "processing_register": "",
+  "audit_commit": "",
+  "arbiter_response": {},
+  "constrain_context": {}
+}
