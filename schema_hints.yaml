@@ -1,17 +1,95 @@
-version: "1"
-project: sentinel
-storage_backends:
-  - type: filesystem
-    purpose: state_persistence
-    path: .sentinel/
-    format: json
-    fields:
-      - name: manifest
-        file: manifest.json
-        classification: PUBLIC
-      - name: monitoring
-        path: monitoring/
-        classification: PUBLIC
-      - name: proposed_contracts
-        path: proposed_contracts/
-        classification: PUBLIC
+ChroniclerConfig:
+  type: "pydantic_model"
+  fields:
+    enabled:
+      type: "bool"
+      default: false
+      description: "Enable Chronicler event emission"
+    endpoint:
+      type: "str"
+      validation: "url"
+      description: "Chronicler service endpoint URL"
+    timeout:
+      type: "float"
+      default: 5.0
+      minimum: 0.1
+      maximum: 30.0
+      description: "HTTP timeout in seconds"
+
+ChroniclerEvent:
+  type: "pydantic_model"
+  fields:
+    incident_id:
+      type: "str"
+      validation: "uuid4"
+      description: "Unique incident identifier"
+    timestamp:
+      type: "datetime"
+      format: "iso8601"
+      description: "Event occurrence time"
+    state:
+      type: "enum"
+      values: ["detected", "triaging", "remediating", "resolved", "escalated"]
+      description: "Incident lifecycle state"
+    component:
+      type: "str"
+      description: "Attributed component name"
+    pact_key:
+      type: "str"
+      description: "PACT error identifier"
+    error_signature:
+      type: "str"
+      description: "Error pattern signature"
+    metadata:
+      type: "dict"
+      optional: true
+      description: "Additional context data"
+
+ChroniclerEmitter:
+  type: "class"
+  methods:
+    emit_lifecycle_event:
+      parameters:
+        - "incident: Incident"
+        - "state: LifecycleState"
+      returns: "None"
+      description: "Emit incident state transition event"
+    _build_event:
+      parameters:
+        - "incident: Incident" 
+        - "state: LifecycleState"
+      returns: "ChroniclerEvent"
+      description: "Build event payload from incident data"
+    _post_event:
+      parameters:
+        - "event: ChroniclerEvent"
+      returns: "bool"
+      description: "HTTP POST event to Chronicler endpoint"
+
+configuration_integration:
+  sentinel_yaml:
+    chronicler:
+      type: "object"
+      properties:
+        enabled: "boolean"
+        endpoint: "string(uri)"
+        timeout: "number(float)"
+      additionalProperties: false
+      
+lifecycle_mapping:
+  incident_states:
+    - name: "detected"
+      trigger: "incident creation"
+      data_required: ["pact_key", "error_signature", "component"]
+    - name: "triaging"
+      trigger: "analysis start"
+      data_required: ["incident_id", "component"]
+    - name: "remediating" 
+      trigger: "fix attempt"
+      data_required: ["incident_id", "fixer_agent"]
+    - name: "resolved"
+      trigger: "successful resolution"
+      data_required: ["incident_id", "resolution_method"]
+    - name: "escalated"
+      trigger: "manual escalation"
+      data_required: ["incident_id", "escalation_reason"]

@@ -58,6 +58,12 @@ class StigmergyConfig(BaseModel):
     endpoint: str | None = None
 
 
+class ChroniclerConfig(BaseModel):
+    """Chronicler incident lifecycle webhook."""
+    chronicler_enabled: bool = False
+    chronicler_endpoint: str = "http://localhost:8485"
+
+
 class NotifyConfig(BaseModel):
     """Webhook notifications."""
     webhook_url: str | None = None
@@ -90,6 +96,7 @@ class SentinelConfig(BaseModel):
     pact: PactIntegrationConfig = Field(default_factory=PactIntegrationConfig)
     arbiter: ArbiterConfig = Field(default_factory=ArbiterConfig)
     stigmergy: StigmergyConfig = Field(default_factory=StigmergyConfig)
+    chronicler: ChroniclerConfig = Field(default_factory=ChroniclerConfig)
     notify: NotifyConfig = Field(default_factory=NotifyConfig)
     ledger: LedgerConfig = Field(default_factory=LedgerConfig)
     budget: BudgetConfig = Field(default_factory=BudgetConfig)

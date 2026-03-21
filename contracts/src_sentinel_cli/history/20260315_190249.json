@@ -1,0 +1,723 @@
+{
+  "component_id": "src_sentinel_cli",
+  "name": "Sentinel CLI",
+  "description": "Command-line interface for Sentinel production attribution and contract tightening system. Provides commands for initialization, component registration, log watching, error triage, manual fixes, status reporting, and API server management.",
+  "version": 1,
+  "types": [],
+  "functions": [
+    {
+      "name": "main",
+      "description": "Root CLI command group that loads configuration and sets up context for all subcommands.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context object for passing state to subcommands",
+          "validators": []
+        },
+        {
+          "name": "config_path",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "",
+          "description": "Optional path to sentinel.yaml configuration file",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "ctx.obj is a dict",
+        "ctx.obj['config'] contains loaded SentinelConfig",
+        "ctx.obj['config_path'] contains Path or None"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Loads configuration from file or defaults",
+        "Mutates click Context object"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "sentinel.yaml if config_path provided",
+          "description": ""
+        },
+        {
+          "kind": "mutates_state",
+          "target": "ctx.obj dict",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "init",
+      "description": "Initialize .sentinel/ directory structure and sentinel.yaml configuration file in current directory (FA-S-001).",
+      "inputs": [],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        ".sentinel/ directory exists",
+        ".sentinel/manifest.json exists with empty components dict",
+        ".sentinel/proposed_contracts/ directory exists",
+        "sentinel.yaml exists if it didn't before"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Creates .sentinel/ directory",
+        "Writes .sentinel/manifest.json",
+        "Creates .sentinel/proposed_contracts/ directory",
+        "Creates sentinel.yaml if not exists",
+        "Prints status messages to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "writes_file",
+          "target": ".sentinel/manifest.json",
+          "description": "Empty manifest"
+        },
+        {
+          "kind": "writes_file",
+          "target": "sentinel.yaml",
+          "description": "Default configuration"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Initialization messages"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "watch",
+      "description": "Start watching configured log sources in long-running mode (FA-S-003). Exits with code 1 if no sources configured.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing loaded config",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [
+        {
+          "name": "no_sources_configured",
+          "condition": "config.sources is empty",
+          "error_type": "sys.exit",
+          "error_data": {
+            "exit_code": "1"
+          }
+        },
+        {
+          "name": "keyboard_interrupt",
+          "condition": "User presses Ctrl+C",
+          "error_type": "KeyboardInterrupt",
+          "error_data": {
+            "handling": "Graceful shutdown with sentinel.stop()"
+          }
+        }
+      ],
+      "preconditions": [
+        "ctx.obj['config'] is loaded",
+        "config.sources must be non-empty (enforced with sys.exit(1))"
+      ],
+      "postconditions": [
+        "Sentinel watcher runs until interrupted or error"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Imports sentinel.sentinel.Sentinel",
+        "Runs async event loop",
+        "Monitors log sources continuously",
+        "Prints messages to stdout/stderr"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "Configured log sources",
+          "description": "Watches log streams"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout/stderr",
+          "description": "Status and error messages"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "register",
+      "description": "Register all components from a Pact project directory (FA-S-002). Scans directory for components and adds them to manifest.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        },
+        {
+          "name": "directory",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Path to Pact project directory (must exist)",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [
+        "directory path exists (enforced by click.Path(exists=True))"
+      ],
+      "postconditions": [
+        "All discovered components are registered in manifest",
+        "Success message printed with count"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Imports sentinel.manifest.ManifestManager",
+        "Scans directory for component files",
+        "Writes to manifest file",
+        "Prints registration status to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "directory contents",
+          "description": "Scans for Pact components"
+        },
+        {
+          "kind": "writes_file",
+          "target": "manifest.json",
+          "description": "Registers components"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Registration progress"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "manifest",
+      "description": "CLI command group for managing the component manifest. No operation itself, just a grouping command.",
+      "inputs": [],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [],
+      "idempotent": true,
+      "side_effects": [],
+      "structured_side_effects": [],
+      "performance_budget": null
+    },
+    {
+      "name": "manifest_show",
+      "description": "Show all registered components from the manifest with their metadata.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "All manifest entries printed to stdout or 'no components' message shown"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Imports sentinel.manifest.ManifestManager",
+        "Reads manifest file",
+        "Prints component details to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "manifest.json",
+          "description": "Loads component registry"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Component listings"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "manifest_add",
+      "description": "Manually add a single component to the manifest with specified metadata.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        },
+        {
+          "name": "component_id",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Unique component identifier",
+          "validators": []
+        },
+        {
+          "name": "contract",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "Path to contract file",
+          "validators": []
+        },
+        {
+          "name": "tests",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "Path to test file/directory",
+          "validators": []
+        },
+        {
+          "name": "source",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "Path to source file/directory",
+          "validators": []
+        },
+        {
+          "name": "language",
+          "type_ref": "str",
+          "required": false,
+          "default": "python",
+          "description": "Programming language (python/typescript)",
+          "validators": []
+        },
+        {
+          "name": "project",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "Pact project directory",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Component registered in manifest",
+        "Success message printed"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Imports sentinel.manifest.ManifestManager and sentinel.schemas.ManifestEntry",
+        "Writes to manifest file",
+        "Prints confirmation to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "writes_file",
+          "target": "manifest.json",
+          "description": "Adds component entry"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Registration confirmation"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "triage",
+      "description": "Manually triage an error to find the responsible component (FA-S-025). Uses PACT key pattern matching first, falls back to LLM if needed.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        },
+        {
+          "name": "error_text",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Error message text to analyze",
+          "validators": []
+        },
+        {
+          "name": "manifest_path",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "",
+          "description": "Override manifest directory path",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [
+        {
+          "name": "no_components_registered",
+          "condition": "manifest.all_entries() is empty",
+          "error_type": "sys.exit",
+          "error_data": {
+            "exit_code": "1"
+          }
+        },
+        {
+          "name": "llm_unavailable",
+          "condition": "ImportError or RuntimeError when using LLM",
+          "error_type": "handled",
+          "error_data": {
+            "handling": "Reports unknown component with confidence 0.0"
+          }
+        }
+      ],
+      "preconditions": [
+        "At least one component must be registered (exits with code 1 otherwise)"
+      ],
+      "postconditions": [
+        "Prints component_id, confidence, and reasoning to stdout"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Imports re, datetime, ManifestManager, Signal, possibly LLMClient and triage_signal",
+        "Reads manifest",
+        "May call LLM API",
+        "Prints triage results to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "manifest.json",
+          "description": "Loads component registry"
+        },
+        {
+          "kind": "network_call",
+          "target": "LLM API",
+          "description": "Falls back to LLM if no PACT key match"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Triage results"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "fix",
+      "description": "Manually trigger a fix for a PACT key and error text (FA-S-023). Invokes Sentinel's handle_manual_fix workflow.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        },
+        {
+          "name": "pact_key",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "PACT key identifying the component",
+          "validators": []
+        },
+        {
+          "name": "error",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Error message to fix",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Fix result printed as JSON to stdout"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Imports sentinel.sentinel.Sentinel",
+        "Runs async event loop",
+        "Calls Sentinel startup and handle_manual_fix",
+        "May call LLM, modify files, run tests",
+        "Prints JSON result to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "LLM and integration APIs",
+          "description": "Fix workflow"
+        },
+        {
+          "kind": "writes_file",
+          "target": "Source/contract files",
+          "description": "May apply fixes"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "JSON fix result"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "report",
+      "description": "Show recent incidents and fix history from the incident manager.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Recent incidents printed to stdout or 'no incidents' message"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Imports sentinel.incidents.IncidentManager and sentinel.schemas.MonitoringBudget",
+        "Reads incident storage",
+        "Prints incident summaries to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "incident storage",
+          "description": "Loads recent incidents"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Incident report"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "status",
+      "description": "Show Sentinel configuration, integration connectivity, and component count.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Configuration and status summary printed to stdout"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Imports sentinel.manifest.ManifestManager",
+        "Reads manifest to count components",
+        "Prints configuration summary to stdout"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "manifest.json",
+          "description": "Counts registered components"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Status report"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "serve",
+      "description": "Start the HTTP API server on specified host and port. Runs until interrupted.",
+      "inputs": [
+        {
+          "name": "ctx",
+          "type_ref": "click.Context",
+          "required": true,
+          "default": "",
+          "description": "Click context containing config",
+          "validators": []
+        },
+        {
+          "name": "host",
+          "type_ref": "str",
+          "required": false,
+          "default": "0.0.0.0",
+          "description": "Host to bind API server",
+          "validators": []
+        },
+        {
+          "name": "port",
+          "type_ref": "int",
+          "required": false,
+          "default": "8484",
+          "description": "Port to bind API server",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [
+        {
+          "name": "keyboard_interrupt",
+          "condition": "User presses Ctrl+C",
+          "error_type": "KeyboardInterrupt",
+          "error_data": {
+            "handling": "Graceful shutdown"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "API server runs until interrupted"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Imports sentinel.api.SentinelAPI and sentinel.sentinel.Sentinel",
+        "Starts HTTP server",
+        "Runs async event loop",
+        "Listens on network socket"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "HTTP server on host:port",
+          "description": "API endpoint"
+        },
+        {
+          "kind": "logging",
+          "target": "stdout",
+          "description": "Server status messages"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "asyncio",
+    "json",
+    "sys",
+    "pathlib",
+    "click",
+    "yaml",
+    "sentinel.config",
+    "sentinel.sentinel",
+    "sentinel.manifest",
+    "sentinel.schemas",
+    "sentinel.llm",
+    "sentinel.triage",
+    "sentinel.incidents",
+    "sentinel.api",
+    "re",
+    "datetime"
+  ],
+  "dependency_contracts": {},
+  "invariants": [
+    "Click context object (ctx.obj) is always a dict after main() executes",
+    "ctx.obj['config'] always contains a SentinelConfig instance",
+    "All file paths use pathlib.Path for cross-platform compatibility",
+    ".sentinel/ directory structure: manifest.json and proposed_contracts/ subdirectory"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "sentinel.yaml configuration file",
+      "manifest.json component registry",
+      "incident storage files",
+      "Pact project directory contents"
+    ],
+    "writes": [
+      ".sentinel/manifest.json",
+      ".sentinel/proposed_contracts/ directory",
+      "sentinel.yaml configuration file",
+      "source and contract files (during fix operation)"
+    ],
+    "rationale": "CLI module performs various file I/O operations for configuration, manifest management, and incident tracking.",
+    "side_effects": [
+      {
+        "type": "file_system",
+        "classification": "persistent_state",
+        "fields": [
+          "manifest.json",
+          "sentinel.yaml"
+        ],
+        "rationale": "Manages persistent configuration and component registry"
+      },
+      {
+        "type": "network",
+        "classification": "external_api",
+        "fields": [
+          "LLM API",
+          "HTTP server",
+          "log sources"
+        ],
+        "rationale": "Communicates with external services for triage, fixes, and log monitoring"
+      },
+      {
+        "type": "console_output",
+        "classification": "user_feedback",
+        "fields": [
+          "stdout",
+          "stderr"
+        ],
+        "rationale": "Provides user feedback and status messages"
+      },
+      {
+        "type": "process_control",
+        "classification": "lifecycle",
+        "fields": [
+          "sys.exit",
+          "asyncio.run"
+        ],
+        "rationale": "Controls process lifecycle and async execution"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

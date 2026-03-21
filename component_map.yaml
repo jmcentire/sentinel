@@ -1,119 +1,38 @@
-version: "1"
-project: sentinel
-components:
-  - id: cli
-    role: ingress
-    protocol: cli
-    authority: user_commands
-    data_access:
-      PUBLIC: read_write
-
-  - id: watcher
-    role: library
-    authority: signal_ingestion
-    data_access:
-      PUBLIC: read
-
-  - id: attribution
-    role: library
-    authority: pact_key_extraction
-    data_access:
-      PUBLIC: read
-
-  - id: severity
-    role: library
-    authority: severity_computation
-    data_access:
-      PUBLIC: read
-
-  - id: incidents
-    role: library
-    authority: incident_lifecycle
-    data_access:
-      PUBLIC: read_write
-      FINANCIAL: read
-
-  - id: fixer
-    role: library
-    authority: auto_remediation
-    data_access:
-      PUBLIC: read_write
-
-  - id: contracts
-    role: library
-    authority: contract_tightening
-    data_access:
-      PUBLIC: read_write
-
-  - id: triage
-    role: library
-    authority: error_classification
-    data_access:
-      PUBLIC: read
-
-  - id: manifest
-    role: library
-    authority: component_registry
-    data_access:
-      PUBLIC: read_write
-
-  - id: api
-    role: service
-    protocol: http
-    port: 8484
-    authority: operational_api
-    data_access:
-      PUBLIC: read_write
-
-  - id: arbiter_client
-    role: library
-    authority: trust_events
-    data_access:
-      PUBLIC: write
-
-  - id: stigmergy_client
-    role: library
-    authority: signal_emission
-    data_access:
-      PUBLIC: write
-
-  - id: ledger_client
-    role: library
-    authority: severity_mappings
-    data_access:
-      PUBLIC: read
-
-edges:
-  - from: cli
-    to: watcher
-    tier: internal
-  - from: watcher
-    to: attribution
-    tier: internal
-  - from: attribution
-    to: manifest
-    tier: internal
-  - from: attribution
-    to: severity
-    tier: internal
-  - from: severity
-    to: ledger_client
-    tier: cross_boundary
-  - from: severity
-    to: incidents
-    tier: internal
-  - from: incidents
-    to: fixer
-    tier: internal
-  - from: fixer
-    to: contracts
-    tier: internal
-  - from: contracts
-    to: arbiter_client
-    tier: cross_boundary
-  - from: contracts
-    to: stigmergy_client
-    tier: cross_boundary
-  - from: triage
-    to: attribution
-    tier: internal
+chronicler_emitter:
+  file: "src/sentinel/chronicler.py"
+  class: "ChroniclerEmitter"
+  pattern: "external_integration"
+  
+configuration:
+  file: "sentinel.yaml"
+  section: "chronicler"
+  schema: "ChroniclerConfig"
+  
+orchestrator_integration:
+  file: "src/sentinel/orchestrator.py"
+  methods:
+    - "_resolve_incident"
+    - "_escalate_incident"
+  hook_points: "post_resolution"
+  
+lifecycle_states:
+  detected: "incident_created"
+  triaging: "analysis_started"
+  remediating: "fix_attempted"
+  resolved: "incident_resolved"
+  escalated: "manual_intervention"
+  
+event_schema:
+  incident_id: "string"
+  timestamp: "iso8601"
+  state: "enum[detected|triaging|remediating|resolved|escalated]"
+  component: "string"
+  pact_key: "string"
+  error_signature: "string"
+  
+integration_dependencies:
+  existing_patterns:
+    - "arbiter.py"
+    - "stigmergy.py"
+  config_loader: "src/sentinel/config.py"
+  logging: "src/sentinel/logger.py"

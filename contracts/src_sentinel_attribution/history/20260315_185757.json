@@ -1,0 +1,277 @@
+{
+  "component_id": "src_sentinel_attribution",
+  "name": "Attribution Engine",
+  "description": "Extracts PACT keys from log lines and attributes errors to registered components by looking up component IDs in the manifest. Supports both canonical PACT:component:method and alternative PACT:hash:component formats.",
+  "version": 1,
+  "types": [
+    {
+      "name": "AttributionEngine",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "_manifest",
+          "type_ref": "ManifestManager",
+          "required": true,
+          "default": "",
+          "description": "Reference to manifest manager for component lookups",
+          "validators": []
+        },
+        {
+          "name": "_pattern",
+          "type_ref": "re.Pattern",
+          "required": true,
+          "default": "",
+          "description": "Compiled regex pattern for PACT key extraction with at least 2 capture groups",
+          "validators": []
+        },
+        {
+          "name": "_DEFAULT_PATTERN",
+          "type_ref": "re.Pattern",
+          "required": true,
+          "default": "",
+          "description": "Default pattern: PACT:([a-zA-Z0-9_]+):([a-zA-Z0-9_]+)",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Extracts PACT keys and attributes errors to registered components using regex pattern matching and manifest lookups."
+    }
+  ],
+  "functions": [
+    {
+      "name": "__init__",
+      "description": "Initialize AttributionEngine with a manifest manager and optional custom key pattern. If the provided pattern has fewer than 2 capture groups, falls back to the default pattern for extraction.",
+      "inputs": [
+        {
+          "name": "manifest",
+          "type_ref": "ManifestManager",
+          "required": true,
+          "default": "",
+          "description": "Manifest manager instance for component lookups",
+          "validators": []
+        },
+        {
+          "name": "key_pattern",
+          "type_ref": "str",
+          "required": false,
+          "default": "r\"PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\"",
+          "description": "Regex pattern for PACT key matching",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [
+        {
+          "name": "InvalidRegexPattern",
+          "condition": "key_pattern is not a valid regex",
+          "error_type": "re.error",
+          "error_data": {}
+        }
+      ],
+      "preconditions": [
+        "manifest must be a valid ManifestManager instance",
+        "key_pattern must be a valid regex string"
+      ],
+      "postconditions": [
+        "_manifest is set to the provided manifest",
+        "_pattern is set to compiled key_pattern if it has >= 2 capture groups, otherwise _DEFAULT_PATTERN",
+        "Instance is ready to extract and attribute PACT keys"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Compiles regex pattern"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "self._manifest",
+          "description": "Stores reference to manifest manager"
+        },
+        {
+          "kind": "mutates_state",
+          "target": "self._pattern",
+          "description": "Compiles and stores regex pattern"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "extract_key",
+      "description": "Extract a PACT key from a log line using the configured regex pattern. Returns None if no match is found. Extracts component_id from first capture group and method_name from second capture group.",
+      "inputs": [
+        {
+          "name": "line",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Log line to search for PACT key",
+          "validators": []
+        }
+      ],
+      "output_type": "LogKey | None",
+      "error_cases": [],
+      "preconditions": [
+        "self._pattern is a compiled regex with at least 2 capture groups"
+      ],
+      "postconditions": [
+        "Returns LogKey with component_id, method_name, and raw fields if pattern matches",
+        "Returns None if no PACT key found in line",
+        "method_name is empty string if pattern has fewer than 2 groups or lastindex < 2"
+      ],
+      "idempotent": true,
+      "side_effects": [],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": ""
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "attribute",
+      "description": "Attribute a log line to a component by extracting PACT key and looking up in manifest. Returns Attribution with status 'registered' if component found in manifest, 'unregistered' if PACT key found but component not in manifest, or 'unattributed' if no PACT key found. Tries two lookup strategies: canonical (first segment is component_id) and secondary (second segment is component_id).",
+      "inputs": [
+        {
+          "name": "line",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Log line to attribute",
+          "validators": []
+        }
+      ],
+      "output_type": "Attribution",
+      "error_cases": [],
+      "preconditions": [
+        "self._manifest is initialized",
+        "self._pattern is configured"
+      ],
+      "postconditions": [
+        "Always returns an Attribution object",
+        "status is one of: 'registered', 'unregistered', 'unattributed'",
+        "error_context is set to the input line",
+        "If status is 'unattributed', pact_key is empty string",
+        "If status is 'registered', manifest_entry is populated",
+        "If status is 'unregistered', manifest_entry is None"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Logs debug messages for unattributed and unregistered cases"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "Logs when PACT key is not found or not registered in manifest"
+        },
+        {
+          "kind": "reads_file",
+          "target": "self._manifest",
+          "description": "Calls lookup on manifest manager"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "attribute_signal",
+      "description": "Attribute a Signal object by first checking the log_key field if present, then falling back to raw_text. If log_key attribution is successful (not unattributed), updates error_context to signal.raw_text before returning.",
+      "inputs": [
+        {
+          "name": "signal",
+          "type_ref": "Signal",
+          "required": true,
+          "default": "",
+          "description": "Signal object to attribute",
+          "validators": []
+        }
+      ],
+      "output_type": "Attribution",
+      "error_cases": [],
+      "preconditions": [
+        "signal is a valid Signal object with log_key and raw_text attributes"
+      ],
+      "postconditions": [
+        "Always returns an Attribution object",
+        "If signal.log_key exists and attribution succeeds, error_context is set to signal.raw_text",
+        "If signal.log_key is empty or attribution is 'unattributed', falls back to attributing signal.raw_text"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "May log debug messages via attribute() calls",
+        "Mutates returned Attribution object's error_context"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "Indirectly logs via attribute() method"
+        },
+        {
+          "kind": "reads_file",
+          "target": "self._manifest",
+          "description": "Indirectly calls manifest lookup via attribute() method"
+        },
+        {
+          "kind": "mutates_state",
+          "target": "attr.error_context",
+          "description": "Updates error_context field of Attribution object before returning"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "logging",
+    "re",
+    "sentinel.manifest",
+    "sentinel.schemas"
+  ],
+  "dependency_contracts": {
+    "sentinel.manifest": [
+      "ManifestManager",
+      "lookup"
+    ],
+    "sentinel.schemas": [
+      "Attribution",
+      "LogKey",
+      "Signal"
+    ]
+  },
+  "invariants": [
+    "_DEFAULT_PATTERN always has exactly 2 capture groups",
+    "_pattern always has at least 2 capture groups after initialization",
+    "All PACT keys follow format with at least 2 colon-separated segments",
+    "Attribution status is always one of: 'registered', 'unregistered', 'unattributed'"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "manifest data via ManifestManager.lookup"
+    ],
+    "writes": [],
+    "rationale": "Reads component registration data from manifest to determine attribution status. Does not modify any persistent state.",
+    "side_effects": [
+      {
+        "type": "logging",
+        "classification": "debug",
+        "fields": [
+          "line content (truncated to 100 chars)",
+          "PACT key"
+        ],
+        "rationale": "Logs unattributed and unregistered cases for debugging purposes"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [
+      "attribution",
+      "pact_key_extraction"
+    ],
+    "rationale": "Owns the logic for extracting PACT keys from log lines and attributing them to components via manifest lookups"
+  }
+}

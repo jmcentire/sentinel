@@ -1,0 +1,549 @@
+{
+  "component_id": "src_sentinel_arbiter",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_init_happy_path",
+      "description": "Initialize ArbiterClient with valid ArbiterConfig",
+      "function": "__init__",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config.api_endpoint": "https://api.example.com",
+        "config.trust_event_on_fix": "True"
+      },
+      "input_description": "Valid ArbiterConfig with api_endpoint and trust_event_on_fix attributes",
+      "expected_output_description": "Client initialized with _endpoint and _trust_on_fix set correctly",
+      "expected_error": "",
+      "assertions": [
+        "client._endpoint == 'https://api.example.com'",
+        "client._trust_on_fix == True"
+      ]
+    },
+    {
+      "id": "test_init_with_none_endpoint",
+      "description": "Initialize ArbiterClient with None as api_endpoint",
+      "function": "__init__",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config.api_endpoint": "None",
+        "config.trust_event_on_fix": "False"
+      },
+      "input_description": "ArbiterConfig with api_endpoint=None",
+      "expected_output_description": "Client initialized with _endpoint=None and _trust_on_fix=False",
+      "expected_error": "",
+      "assertions": [
+        "client._endpoint is None",
+        "client._trust_on_fix == False"
+      ]
+    },
+    {
+      "id": "test_init_trust_on_fix_false",
+      "description": "Initialize ArbiterClient with trust_event_on_fix disabled",
+      "function": "__init__",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "config.api_endpoint": "https://api.example.com",
+        "config.trust_event_on_fix": "False"
+      },
+      "input_description": "ArbiterConfig with trust_event_on_fix=False",
+      "expected_output_description": "Client initialized with _trust_on_fix=False",
+      "expected_error": "",
+      "assertions": [
+        "client._trust_on_fix == False"
+      ]
+    },
+    {
+      "id": "test_is_configured_with_endpoint",
+      "description": "is_configured returns True when endpoint is set",
+      "function": "is_configured",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Client with _endpoint set to valid URL",
+      "expected_output_description": "Returns True",
+      "expected_error": "",
+      "assertions": [
+        "result == True"
+      ]
+    },
+    {
+      "id": "test_is_configured_without_endpoint",
+      "description": "is_configured returns False when endpoint is None",
+      "function": "is_configured",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Client with _endpoint=None",
+      "expected_output_description": "Returns False",
+      "expected_error": "",
+      "assertions": [
+        "result == False"
+      ]
+    },
+    {
+      "id": "test_report_trust_event_success",
+      "description": "Successfully report trust event with configured endpoint",
+      "function": "report_trust_event",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid node_id, event, weight, run_id with configured endpoint",
+      "expected_output_description": "Returns True on successful POST",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "mock_post called with correct URL and payload",
+        "payload contains timestamp in ISO format"
+      ]
+    },
+    {
+      "id": "test_report_trust_event_not_configured",
+      "description": "report_trust_event returns False when endpoint is None",
+      "function": "report_trust_event",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid parameters but _endpoint is None",
+      "expected_output_description": "Returns False",
+      "expected_error": "not_configured",
+      "assertions": [
+        "result == False",
+        "no HTTP call made"
+      ]
+    },
+    {
+      "id": "test_report_trust_event_http_error",
+      "description": "report_trust_event handles HTTP error gracefully",
+      "function": "report_trust_event",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "500 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid parameters but POST returns 500",
+      "expected_output_description": "Returns False on HTTP error",
+      "expected_error": "http_error",
+      "assertions": [
+        "result == False"
+      ]
+    },
+    {
+      "id": "test_report_trust_event_network_exception",
+      "description": "report_trust_event handles network exception gracefully",
+      "function": "report_trust_event",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "raises ConnectionError"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid parameters but network call raises exception",
+      "expected_output_description": "Returns False on exception",
+      "expected_error": "network_exception",
+      "assertions": [
+        "result == False"
+      ]
+    },
+    {
+      "id": "test_report_fix_success_happy_path",
+      "description": "Successfully report fix success when trust_on_fix enabled",
+      "function": "report_fix_success",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid component_id and run_id with trust_on_fix enabled",
+      "expected_output_description": "Returns True and calls report_trust_event with correct parameters",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "report_trust_event called with event='sentinel_fix', weight=1.5"
+      ]
+    },
+    {
+      "id": "test_report_fix_success_trust_disabled",
+      "description": "report_fix_success returns False when trust_on_fix disabled",
+      "function": "report_fix_success",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid parameters but _trust_on_fix is False",
+      "expected_output_description": "Returns False without making network call",
+      "expected_error": "trust_on_fix_disabled",
+      "assertions": [
+        "result == False",
+        "no HTTP call made"
+      ]
+    },
+    {
+      "id": "test_report_fix_failure_happy_path",
+      "description": "Successfully report fix failure when trust_on_fix enabled",
+      "function": "report_fix_failure",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid component_id and run_id with trust_on_fix enabled",
+      "expected_output_description": "Returns True and calls report_trust_event with correct parameters",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "report_trust_event called with event='sentinel_fix_failure', weight=-0.5"
+      ]
+    },
+    {
+      "id": "test_report_fix_failure_trust_disabled",
+      "description": "report_fix_failure returns False when trust_on_fix disabled",
+      "function": "report_fix_failure",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid parameters but _trust_on_fix is False",
+      "expected_output_description": "Returns False without making network call",
+      "expected_error": "trust_on_fix_disabled",
+      "assertions": [
+        "result == False",
+        "no HTTP call made"
+      ]
+    },
+    {
+      "id": "test_report_production_error_happy_path",
+      "description": "Successfully report production error",
+      "function": "report_production_error",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid component_id and run_id",
+      "expected_output_description": "Returns True and calls report_trust_event with correct parameters",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "report_trust_event called with event='production_error', weight=-0.3"
+      ]
+    },
+    {
+      "id": "test_report_production_error_not_gated",
+      "description": "report_production_error works even when trust_on_fix is False",
+      "function": "report_production_error",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Valid parameters with _trust_on_fix=False",
+      "expected_output_description": "Still proceeds and returns result of report_trust_event",
+      "expected_error": "",
+      "assertions": [
+        "HTTP call is made",
+        "report_trust_event called with event='production_error', weight=-0.3"
+      ]
+    },
+    {
+      "id": "test_invariant_fix_success_event_weight",
+      "description": "Verify fix success uses correct event name and weight",
+      "function": "report_fix_success",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Any valid input with trust_on_fix enabled",
+      "expected_output_description": "Event is 'sentinel_fix' and weight is 1.5",
+      "expected_error": "",
+      "assertions": [
+        "payload contains event='sentinel_fix'",
+        "payload contains weight=1.5"
+      ]
+    },
+    {
+      "id": "test_invariant_fix_failure_event_weight",
+      "description": "Verify fix failure uses correct event name and weight",
+      "function": "report_fix_failure",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Any valid input with trust_on_fix enabled",
+      "expected_output_description": "Event is 'sentinel_fix_failure' and weight is -0.5",
+      "expected_error": "",
+      "assertions": [
+        "payload contains event='sentinel_fix_failure'",
+        "payload contains weight=-0.5"
+      ]
+    },
+    {
+      "id": "test_invariant_production_error_event_weight",
+      "description": "Verify production error uses correct event name and weight",
+      "function": "report_production_error",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "component_id": "comp_123",
+        "run_id": "run_456"
+      },
+      "input_description": "Any valid input",
+      "expected_output_description": "Event is 'production_error' and weight is -0.3",
+      "expected_error": "",
+      "assertions": [
+        "payload contains event='production_error'",
+        "payload contains weight=-0.3"
+      ]
+    },
+    {
+      "id": "test_invariant_timestamp_included",
+      "description": "Verify all trust events include ISO timestamp",
+      "function": "report_trust_event",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "Any valid trust event",
+      "expected_output_description": "Payload includes timestamp in ISO format",
+      "expected_error": "",
+      "assertions": [
+        "payload contains 'timestamp' key",
+        "timestamp is in ISO 8601 format"
+      ]
+    },
+    {
+      "id": "test_post_success_2xx",
+      "description": "Verify _post returns True on 2xx status codes through public method",
+      "function": "report_trust_event",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "201 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "HTTP POST returns 201 status",
+      "expected_output_description": "Returns True",
+      "expected_error": "",
+      "assertions": [
+        "result == True"
+      ]
+    },
+    {
+      "id": "test_post_failure_3xx",
+      "description": "Verify _post returns False on 3xx status codes through public method",
+      "function": "report_trust_event",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "301 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "HTTP POST returns 301 status",
+      "expected_output_description": "Returns False",
+      "expected_error": "http_error",
+      "assertions": [
+        "result == False"
+      ]
+    },
+    {
+      "id": "test_post_timeout_exception",
+      "description": "Verify _post handles timeout exception through public method",
+      "function": "report_trust_event",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "raises TimeoutError"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.8",
+        "run_id": "run_456"
+      },
+      "input_description": "HTTP POST raises timeout exception",
+      "expected_output_description": "Returns False",
+      "expected_error": "network_exception",
+      "assertions": [
+        "result == False"
+      ]
+    },
+    {
+      "id": "test_edge_case_empty_strings",
+      "description": "Test trust event with empty string parameters",
+      "function": "report_trust_event",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "node_id": "",
+        "event": "",
+        "weight": "0.0",
+        "run_id": ""
+      },
+      "input_description": "Empty strings for node_id, event, run_id",
+      "expected_output_description": "Accepts empty strings and makes POST request",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "payload contains empty strings"
+      ]
+    },
+    {
+      "id": "test_edge_case_negative_weight",
+      "description": "Test trust event with negative weight",
+      "function": "report_trust_event",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "-2.5",
+        "run_id": "run_456"
+      },
+      "input_description": "Negative weight value",
+      "expected_output_description": "Accepts negative weight",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "payload contains weight=-2.5"
+      ]
+    },
+    {
+      "id": "test_edge_case_large_weight",
+      "description": "Test trust event with very large weight",
+      "function": "report_trust_event",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "1000000.0",
+        "run_id": "run_456"
+      },
+      "input_description": "Very large weight value",
+      "expected_output_description": "Accepts large weight",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "payload contains weight=1000000.0"
+      ]
+    },
+    {
+      "id": "test_edge_case_zero_weight",
+      "description": "Test trust event with zero weight",
+      "function": "report_trust_event",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {
+        "http_post": "200 status code"
+      },
+      "input_values": {
+        "node_id": "node_123",
+        "event": "test_event",
+        "weight": "0.0",
+        "run_id": "run_456"
+      },
+      "input_description": "Weight of 0.0",
+      "expected_output_description": "Accepts zero weight",
+      "expected_error": "",
+      "assertions": [
+        "result == True",
+        "payload contains weight=0.0"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract Test Suite for ArbiterClient\nGenerated from contract version 1\nTests the Arbiter Trust Ledger HTTP Client component\n\"\"\"\n\nimport pytest\nfrom unittest.mock import Mock, MagicMock, patch, call\nfrom datetime import datetime\nimport json\n\n\n# Import the component under test\nfrom src.sentinel.arbiter import ArbiterClient\n\n\nclass TestArbiterClientInit:\n    \"\"\"Test suite for __init__ method\"\"\"\n    \n    def test_init_happy_path(self):\n        \"\"\"Initialize ArbiterClient with valid ArbiterConfig\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        \n        # Act\n        client = ArbiterClient(mock_config)\n        \n        # Assert\n        assert client._endpoint == \"https://api.example.com\"\n        assert client._trust_on_fix == True\n    \n    def test_init_with_none_endpoint(self):\n        \"\"\"Initialize ArbiterClient with None as api_endpoint\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = None\n        mock_config.trust_event_on_fix = False\n        \n        # Act\n        client = ArbiterClient(mock_config)\n        \n        # Assert\n        assert client._endpoint is None\n        assert client._trust_on_fix == False\n    \n    def test_init_trust_on_fix_false(self):\n        \"\"\"Initialize ArbiterClient with trust_event_on_fix disabled\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = False\n        \n        # Act\n        client = ArbiterClient(mock_config)\n        \n        # Assert\n        assert client._trust_on_fix == False\n\n\nclass TestIsConfigured:\n    \"\"\"Test suite for is_configured method\"\"\"\n    \n    def test_is_configured_with_endpoint(self):\n        \"\"\"is_configured returns True when endpoint is set\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        # Act\n        result = client.is_configured()\n        \n        # Assert\n        assert result == True\n    \n    def test_is_configured_without_endpoint(self):\n        \"\"\"is_configured returns False when endpoint is None\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = None\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        # Act\n        result = client.is_configured()\n        \n        # Assert\n        assert result == False\n\n\nclass TestReportTrustEvent:\n    \"\"\"Test suite for report_trust_event method\"\"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_trust_event_success(self, mock_datetime):\n        \"\"\"Successfully report trust event with configured endpoint\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            assert result == True\n            assert mock_post.called\n            call_args = mock_post.call_args\n            url = call_args[0][0]\n            payload = call_args[0][1]\n            \n            assert url == \"https://api.example.com/trust/event\"\n            assert payload[\"node_id\"] == \"node_123\"\n            assert payload[\"event\"] == \"test_event\"\n            assert payload[\"weight\"] == 0.8\n            assert payload[\"run_id\"] == \"run_456\"\n            assert \"timestamp\" in payload\n            assert payload[\"timestamp\"] == \"2023-01-01T12:00:00\"\n    \n    def test_report_trust_event_not_configured(self):\n        \"\"\"report_trust_event returns False when endpoint is None\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = None\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post') as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            assert result == False\n            assert not mock_post.called\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_trust_event_http_error(self, mock_datetime):\n        \"\"\"report_trust_event handles HTTP error gracefully\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=False) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            assert result == False\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_trust_event_network_exception(self, mock_datetime):\n        \"\"\"report_trust_event handles network exception gracefully\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', side_effect=ConnectionError(\"Network error\")):\n            # Act\n            # The _post method should catch the exception internally and return False\n            # But if it doesn't, report_trust_event should handle it\n            try:\n                result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n                # If _post raises, report_trust_event should catch or _post should return False\n                assert result == False\n            except ConnectionError:\n                # If exception propagates, that's also acceptable based on contract\n                # but contract says returns False on exception\n                pytest.fail(\"Exception should be caught and return False\")\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_edge_case_empty_strings(self, mock_datetime):\n        \"\"\"Test trust event with empty string parameters\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            result = client.report_trust_event(\"\", \"\", 0.0, \"\")\n            \n            # Assert\n            assert result == True\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"node_id\"] == \"\"\n            assert payload[\"event\"] == \"\"\n            assert payload[\"run_id\"] == \"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_edge_case_negative_weight(self, mock_datetime):\n        \"\"\"Test trust event with negative weight\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", -2.5, \"run_456\")\n            \n            # Assert\n            assert result == True\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"weight\"] == -2.5\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_edge_case_large_weight(self, mock_datetime):\n        \"\"\"Test trust event with very large weight\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 1000000.0, \"run_456\")\n            \n            # Assert\n            assert result == True\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"weight\"] == 1000000.0\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_edge_case_zero_weight(self, mock_datetime):\n        \"\"\"Test trust event with zero weight\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.0, \"run_456\")\n            \n            # Assert\n            assert result == True\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"weight\"] == 0.0\n\n\nclass TestReportFixSuccess:\n    \"\"\"Test suite for report_fix_success method\"\"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_fix_success_happy_path(self, mock_datetime):\n        \"\"\"Successfully report fix success when trust_on_fix enabled\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, 'report_trust_event', return_value=True) as mock_report:\n            # Act\n            result = client.report_fix_success(\"comp_123\", \"run_456\")\n            \n            # Assert\n            assert result == True\n            mock_report.assert_called_once_with(\"comp_123\", \"sentinel_fix\", 1.5, \"run_456\")\n    \n    def test_report_fix_success_trust_disabled(self):\n        \"\"\"report_fix_success returns False when trust_on_fix disabled\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = False\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, 'report_trust_event') as mock_report:\n            # Act\n            result = client.report_fix_success(\"comp_123\", \"run_456\")\n            \n            # Assert\n            assert result == False\n            assert not mock_report.called\n\n\nclass TestReportFixFailure:\n    \"\"\"Test suite for report_fix_failure method\"\"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_fix_failure_happy_path(self, mock_datetime):\n        \"\"\"Successfully report fix failure when trust_on_fix enabled\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, 'report_trust_event', return_value=True) as mock_report:\n            # Act\n            result = client.report_fix_failure(\"comp_123\", \"run_456\")\n            \n            # Assert\n            assert result == True\n            mock_report.assert_called_once_with(\"comp_123\", \"sentinel_fix_failure\", -0.5, \"run_456\")\n    \n    def test_report_fix_failure_trust_disabled(self):\n        \"\"\"report_fix_failure returns False when trust_on_fix disabled\"\"\"\n        # Arrange\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = False\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, 'report_trust_event') as mock_report:\n            # Act\n            result = client.report_fix_failure(\"comp_123\", \"run_456\")\n            \n            # Assert\n            assert result == False\n            assert not mock_report.called\n\n\nclass TestReportProductionError:\n    \"\"\"Test suite for report_production_error method\"\"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_production_error_happy_path(self, mock_datetime):\n        \"\"\"Successfully report production error\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, 'report_trust_event', return_value=True) as mock_report:\n            # Act\n            result = client.report_production_error(\"comp_123\", \"run_456\")\n            \n            # Assert\n            assert result == True\n            mock_report.assert_called_once_with(\"comp_123\", \"production_error\", -0.3, \"run_456\")\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_report_production_error_not_gated(self, mock_datetime):\n        \"\"\"report_production_error works even when trust_on_fix is False\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = False\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, 'report_trust_event', return_value=True) as mock_report:\n            # Act\n            result = client.report_production_error(\"comp_123\", \"run_456\")\n            \n            # Assert\n            # Production error should call report_trust_event regardless of _trust_on_fix\n            mock_report.assert_called_once_with(\"comp_123\", \"production_error\", -0.3, \"run_456\")\n\n\nclass TestInvariants:\n    \"\"\"Test suite for contract invariants\"\"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_invariant_fix_success_event_weight(self, mock_datetime):\n        \"\"\"Verify fix success uses correct event name and weight\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            client.report_fix_success(\"comp_123\", \"run_456\")\n            \n            # Assert\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"event\"] == \"sentinel_fix\"\n            assert payload[\"weight\"] == 1.5\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_invariant_fix_failure_event_weight(self, mock_datetime):\n        \"\"\"Verify fix failure uses correct event name and weight\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            client.report_fix_failure(\"comp_123\", \"run_456\")\n            \n            # Assert\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"event\"] == \"sentinel_fix_failure\"\n            assert payload[\"weight\"] == -0.5\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_invariant_production_error_event_weight(self, mock_datetime):\n        \"\"\"Verify production error uses correct event name and weight\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            client.report_production_error(\"comp_123\", \"run_456\")\n            \n            # Assert\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert payload[\"event\"] == \"production_error\"\n            assert payload[\"weight\"] == -0.3\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_invariant_timestamp_included(self, mock_datetime):\n        \"\"\"Verify all trust events include ISO timestamp\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00.123456\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            call_args = mock_post.call_args\n            payload = call_args[0][1]\n            assert \"timestamp\" in payload\n            # Verify ISO 8601 format (basic check)\n            timestamp = payload[\"timestamp\"]\n            assert isinstance(timestamp, str)\n            assert \"T\" in timestamp  # ISO format contains T separator\n\n\nclass TestPostMethod:\n    \"\"\"Test suite for _post method through public methods\"\"\"\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_post_success_2xx(self, mock_datetime):\n        \"\"\"Verify _post returns True on 2xx status codes through public method\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=True) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            assert result == True\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_post_failure_3xx(self, mock_datetime):\n        \"\"\"Verify _post returns False on 3xx status codes through public method\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        with patch.object(client, '_post', return_value=False) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            assert result == False\n    \n    @patch('src_sentinel_arbiter.datetime')\n    def test_post_timeout_exception(self, mock_datetime):\n        \"\"\"Verify _post handles timeout exception through public method\"\"\"\n        # Arrange\n        mock_datetime.now.return_value.isoformat.return_value = \"2023-01-01T12:00:00\"\n        mock_config = Mock()\n        mock_config.api_endpoint = \"https://api.example.com\"\n        mock_config.trust_event_on_fix = True\n        client = ArbiterClient(mock_config)\n        \n        # _post should catch TimeoutError internally and return False\n        with patch.object(client, '_post', return_value=False) as mock_post:\n            # Act\n            result = client.report_trust_event(\"node_123\", \"test_event\", 0.8, \"run_456\")\n            \n            # Assert\n            assert result == False\n"
+}

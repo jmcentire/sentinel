@@ -1,37 +1,29 @@
-version: "1"
-project: sentinel
-classification_tiers:
-  - name: PUBLIC
-    soak_duration_hours: 0
-    human_gate: false
-  - name: FINANCIAL
-    soak_duration_hours: 24
-    human_gate: true
-  - name: COMPLIANCE
-    soak_duration_hours: 48
-    human_gate: true
-
-authority_map:
-  watcher:
-    domain: signal_ingestion
-    trust_score: 0.9
-  attribution:
-    domain: pact_key_extraction
-    trust_score: 0.85
-  fixer:
-    domain: auto_remediation
-    trust_score: 0.6
-  contracts:
-    domain: contract_tightening
-    trust_score: 0.7
-  arbiter_client:
-    domain: trust_events
-    trust_score: 0.7
-  stigmergy_client:
-    domain: signal_emission
-    trust_score: 0.7
-  ledger_client:
-    domain: severity_mappings
-    trust_score: 0.7
-
-canary_eligible: [fixer]
+chronicler_integration:
+  trust_level: "external_system"
+  failure_tolerance: "high"
+  error_propagation: false
+  
+endpoint_reliability:
+  timeout_seconds: 5.0
+  retry_attempts: 0
+  circuit_breaker: false
+  
+data_sensitivity:
+  incident_data: "operational"
+  error_context: "technical"
+  pii_exposure: "none"
+  
+availability_requirements:
+  chronicler_dependency: "optional"
+  sentinel_blocking: false
+  graceful_degradation: true
+  
+security_considerations:
+  endpoint_validation: "required"
+  tls_verification: true
+  authentication: "none_required"
+  
+monitoring:
+  emit_success: "log_debug"
+  emit_failure: "log_warning" 
+  connectivity_issues: "log_info"

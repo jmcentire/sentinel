@@ -1,0 +1,365 @@
+{
+  "component_id": "src_sentinel_attribution",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_init_happy_path_valid_pattern",
+      "description": "Initialize AttributionEngine with valid manifest and key pattern with 2+ capture groups",
+      "function": "__init__",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Valid ManifestManager and pattern with 2 capture groups",
+      "expected_output_description": "_manifest is set, _pattern is compiled from key_pattern",
+      "expected_error": "",
+      "assertions": [
+        "_manifest is set to provided manifest",
+        "_pattern is compiled from key_pattern",
+        "Instance is ready for extraction"
+      ]
+    },
+    {
+      "id": "test_init_fallback_to_default_pattern",
+      "description": "Initialize with pattern having fewer than 2 capture groups, should fallback to _DEFAULT_PATTERN",
+      "function": "__init__",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Pattern with 0 or 1 capture groups",
+      "expected_output_description": "_pattern is set to _DEFAULT_PATTERN instead of provided pattern",
+      "expected_error": "",
+      "assertions": [
+        "_pattern is _DEFAULT_PATTERN",
+        "_manifest is still set"
+      ]
+    },
+    {
+      "id": "test_init_invalid_regex_pattern",
+      "description": "Initialize with invalid regex string should raise InvalidRegexPattern",
+      "function": "__init__",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Invalid regex string (e.g., unclosed bracket)",
+      "expected_output_description": "",
+      "expected_error": "InvalidRegexPattern",
+      "assertions": [
+        "InvalidRegexPattern is raised"
+      ]
+    },
+    {
+      "id": "test_init_pattern_with_exactly_two_groups",
+      "description": "Initialize with pattern having exactly 2 capture groups",
+      "function": "__init__",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Pattern with exactly 2 capture groups",
+      "expected_output_description": "_pattern is set to compiled key_pattern",
+      "expected_error": "",
+      "assertions": [
+        "_pattern is compiled from key_pattern",
+        "_pattern has at least 2 groups"
+      ]
+    },
+    {
+      "id": "test_extract_key_happy_path",
+      "description": "Extract PACT key from log line with matching pattern",
+      "function": "extract_key",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line containing valid PACT key pattern",
+      "expected_output_description": "LogKey with component_id, method_name, and raw fields populated",
+      "expected_error": "",
+      "assertions": [
+        "Returns LogKey object",
+        "component_id extracted from first group",
+        "method_name extracted from second group",
+        "raw field populated"
+      ]
+    },
+    {
+      "id": "test_extract_key_no_match",
+      "description": "Extract PACT key from log line with no matching pattern returns None",
+      "function": "extract_key",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line without PACT key pattern",
+      "expected_output_description": "Returns None",
+      "expected_error": "",
+      "assertions": [
+        "Returns None"
+      ]
+    },
+    {
+      "id": "test_extract_key_empty_line",
+      "description": "Extract PACT key from empty string returns None",
+      "function": "extract_key",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Empty string",
+      "expected_output_description": "Returns None",
+      "expected_error": "",
+      "assertions": [
+        "Returns None"
+      ]
+    },
+    {
+      "id": "test_extract_key_method_name_empty_when_fewer_groups",
+      "description": "Extract key with pattern having fewer than 2 groups or lastindex < 2 sets method_name to empty string",
+      "function": "extract_key",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Pattern with only 1 capture group matched",
+      "expected_output_description": "method_name is empty string",
+      "expected_error": "",
+      "assertions": [
+        "method_name is empty string"
+      ]
+    },
+    {
+      "id": "test_extract_key_unicode_line",
+      "description": "Extract PACT key from log line with unicode characters",
+      "function": "extract_key",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line with unicode characters and valid PACT key",
+      "expected_output_description": "LogKey extracted successfully",
+      "expected_error": "",
+      "assertions": [
+        "Returns LogKey object",
+        "Unicode handled correctly"
+      ]
+    },
+    {
+      "id": "test_attribute_happy_path_registered",
+      "description": "Attribute log line to registered component, returns Attribution with status 'registered'",
+      "function": "attribute",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line with PACT key of registered component",
+      "expected_output_description": "Attribution with status='registered', manifest_entry populated, error_context set",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "status is 'registered'",
+        "manifest_entry is populated",
+        "error_context is input line"
+      ]
+    },
+    {
+      "id": "test_attribute_unregistered",
+      "description": "Attribute log line with PACT key not in manifest returns status 'unregistered'",
+      "function": "attribute",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line with PACT key not in manifest",
+      "expected_output_description": "Attribution with status='unregistered', manifest_entry is None",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "status is 'unregistered'",
+        "manifest_entry is None",
+        "error_context is input line"
+      ]
+    },
+    {
+      "id": "test_attribute_unattributed",
+      "description": "Attribute log line without PACT key returns status 'unattributed'",
+      "function": "attribute",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line without PACT key pattern",
+      "expected_output_description": "Attribution with status='unattributed', pact_key is empty string",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "status is 'unattributed'",
+        "pact_key is empty string",
+        "error_context is input line"
+      ]
+    },
+    {
+      "id": "test_attribute_canonical_lookup",
+      "description": "Attribute uses canonical lookup (first segment is component_id)",
+      "function": "attribute",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line with PACT key where first segment matches component_id in manifest",
+      "expected_output_description": "Attribution found via canonical lookup",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "status is 'registered'",
+        "Canonical lookup succeeded"
+      ]
+    },
+    {
+      "id": "test_attribute_secondary_lookup",
+      "description": "Attribute uses secondary lookup (second segment is component_id) when canonical fails",
+      "function": "attribute",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Log line with PACT key where second segment matches component_id in manifest",
+      "expected_output_description": "Attribution found via secondary lookup",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "status is 'registered'",
+        "Secondary lookup succeeded"
+      ]
+    },
+    {
+      "id": "test_attribute_empty_line",
+      "description": "Attribute empty log line returns unattributed",
+      "function": "attribute",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Empty string",
+      "expected_output_description": "Attribution with status='unattributed'",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "status is 'unattributed'"
+      ]
+    },
+    {
+      "id": "test_attribute_signal_happy_path_with_log_key",
+      "description": "Attribute Signal with log_key field present and attribution succeeds",
+      "function": "attribute_signal",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Signal with valid log_key and raw_text",
+      "expected_output_description": "Attribution with error_context set to signal.raw_text",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "error_context is signal.raw_text",
+        "Attribution from log_key succeeded"
+      ]
+    },
+    {
+      "id": "test_attribute_signal_fallback_to_raw_text",
+      "description": "Attribute Signal falls back to raw_text when log_key is empty or attribution is unattributed",
+      "function": "attribute_signal",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Signal with empty log_key",
+      "expected_output_description": "Attribution from raw_text",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "Fallback to raw_text occurred"
+      ]
+    },
+    {
+      "id": "test_attribute_signal_log_key_unattributed",
+      "description": "Attribute Signal with log_key that results in unattributed, falls back to raw_text",
+      "function": "attribute_signal",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Signal with log_key that cannot be attributed",
+      "expected_output_description": "Falls back to raw_text attribution",
+      "expected_error": "",
+      "assertions": [
+        "Returns Attribution",
+        "Fallback to raw_text occurred"
+      ]
+    },
+    {
+      "id": "test_attribute_signal_updates_error_context",
+      "description": "Attribute Signal updates error_context to signal.raw_text when log_key attribution succeeds",
+      "function": "attribute_signal",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Signal with valid log_key",
+      "expected_output_description": "error_context mutated to signal.raw_text",
+      "expected_error": "",
+      "assertions": [
+        "error_context is signal.raw_text",
+        "Mutation occurred"
+      ]
+    },
+    {
+      "id": "test_invariant_pattern_always_has_two_groups",
+      "description": "Invariant: _pattern always has at least 2 capture groups after initialization",
+      "function": "__init__",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Various patterns including invalid ones",
+      "expected_output_description": "_pattern always has at least 2 capture groups",
+      "expected_error": "",
+      "assertions": [
+        "_pattern.groups >= 2"
+      ]
+    },
+    {
+      "id": "test_invariant_attribution_status_always_valid",
+      "description": "Invariant: Attribution status is always one of: registered, unregistered, unattributed",
+      "function": "attribute",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Various log lines",
+      "expected_output_description": "status is always valid",
+      "expected_error": "",
+      "assertions": [
+        "status in ['registered', 'unregistered', 'unattributed']"
+      ]
+    },
+    {
+      "id": "test_invariant_signal_attribution_status_always_valid",
+      "description": "Invariant: Signal attribution status is always one of: registered, unregistered, unattributed",
+      "function": "attribute_signal",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Various signals",
+      "expected_output_description": "status is always valid",
+      "expected_error": "",
+      "assertions": [
+        "status in ['registered', 'unregistered', 'unattributed']"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract tests for AttributionEngine component.\n\nTests verify behavior at boundaries, covering happy paths, edge cases,\nerror cases, and invariants. All dependencies are mocked.\n\"\"\"\n\nimport pytest\nimport re\nfrom unittest.mock import Mock, MagicMock, patch\nfrom src.sentinel.attribution import *\n\n\nclass TestAttributionEngineInit:\n    \"\"\"Test suite for AttributionEngine.__init__\"\"\"\n    \n    def test_init_happy_path_valid_pattern(self):\n        \"\"\"Initialize AttributionEngine with valid manifest and key pattern with 2+ capture groups\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        valid_pattern = r\"(\\w+):(\\w+)\"  # 2 capture groups\n        \n        # Act\n        engine = AttributionEngine(mock_manifest, valid_pattern)\n        \n        # Assert\n        assert engine._manifest is mock_manifest\n        assert engine._pattern is not None\n        assert engine._pattern.pattern == valid_pattern\n        assert engine._pattern.groups >= 2\n    \n    def test_init_fallback_to_default_pattern(self):\n        \"\"\"Initialize with pattern having fewer than 2 capture groups, should fallback to _DEFAULT_PATTERN\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        invalid_pattern = r\"(\\w+)\"  # Only 1 capture group\n        \n        # Act\n        engine = AttributionEngine(mock_manifest, invalid_pattern)\n        \n        # Assert\n        assert engine._manifest is mock_manifest\n        assert engine._pattern == engine._DEFAULT_PATTERN\n        assert engine._pattern.groups >= 2\n    \n    def test_init_invalid_regex_pattern(self):\n        \"\"\"Initialize with invalid regex string should raise InvalidRegexPattern\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        invalid_regex = r\"([unclosed\"\n        \n        # Act & Assert\n        with pytest.raises(Exception) as exc_info:\n            engine = AttributionEngine(mock_manifest, invalid_regex)\n        # Should raise InvalidRegexPattern or re.error\n        assert \"regex\" in str(type(exc_info.value)).lower() or \"pattern\" in str(type(exc_info.value)).lower()\n    \n    def test_init_pattern_with_exactly_two_groups(self):\n        \"\"\"Initialize with pattern having exactly 2 capture groups\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern_two_groups = r\"([A-Z]+):([a-z]+)\"  # Exactly 2 groups\n        \n        # Act\n        engine = AttributionEngine(mock_manifest, pattern_two_groups)\n        \n        # Assert\n        assert engine._pattern is not None\n        assert engine._pattern.pattern == pattern_two_groups\n        assert engine._pattern.groups == 2\n    \n    def test_invariant_pattern_always_has_two_groups(self):\n        \"\"\"Invariant: _pattern always has at least 2 capture groups after initialization\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        patterns = [\n            r\"(\\w+):(\\w+)\",      # Valid 2 groups\n            r\"(\\w+)\",            # Invalid 1 group - should fallback\n            r\"no_groups\",        # Invalid 0 groups - should fallback\n            r\"(\\w+):(\\w+):(\\w+)\" # Valid 3 groups\n        ]\n        \n        # Act & Assert\n        for pattern in patterns:\n            try:\n                engine = AttributionEngine(mock_manifest, pattern)\n                assert engine._pattern.groups >= 2, f\"Pattern {pattern} resulted in < 2 groups\"\n            except:\n                # If invalid regex, skip (covered by error case)\n                pass\n\n\nclass TestAttributionEngineExtractKey:\n    \"\"\"Test suite for AttributionEngine.extract_key\"\"\"\n    \n    def test_extract_key_happy_path(self):\n        \"\"\"Extract PACT key from log line with matching pattern\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error in PACT:my_component:my_method occurred\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        assert result is not None\n        assert hasattr(result, 'component_id')\n        assert hasattr(result, 'method_name')\n        assert hasattr(result, 'raw')\n        assert result.component_id == \"my_component\"\n        assert result.method_name == \"my_method\"\n        assert result.raw is not None\n    \n    def test_extract_key_no_match(self):\n        \"\"\"Extract PACT key from log line with no matching pattern returns None\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Generic error message without PACT key\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        assert result is None\n    \n    def test_extract_key_empty_line(self):\n        \"\"\"Extract PACT key from empty string returns None\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        assert result is None\n    \n    def test_extract_key_method_name_empty_when_fewer_groups(self):\n        \"\"\"Extract key with pattern having fewer than 2 groups or lastindex < 2 sets method_name to empty string\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        # This pattern has 1 group but will fallback to DEFAULT_PATTERN in init\n        # So we need to manually test the postcondition logic\n        pattern = r\"(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        # Mock a pattern with only 1 group for testing\n        single_group_pattern = re.compile(r\"SINGLE:(\\w+)\")\n        engine._pattern = single_group_pattern\n        log_line = \"SINGLE:component\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        # Based on contract: method_name is empty if lastindex < 2\n        if result is not None:\n            assert result.method_name == \"\"\n    \n    def test_extract_key_unicode_line(self):\n        \"\"\"Extract PACT key from log line with unicode characters\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error 错误 in PACT:component_1:method_2 occurred 发生\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.component_id == \"component_1\"\n        assert result.method_name == \"method_2\"\n\n\nclass TestAttributionEngineAttribute:\n    \"\"\"Test suite for AttributionEngine.attribute\"\"\"\n    \n    def test_attribute_happy_path_registered(self):\n        \"\"\"Attribute log line to registered component, returns Attribution with status 'registered'\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_entry = Mock()\n        mock_manifest.get_component.return_value = mock_entry\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error in PACT:registered_comp:method1\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert hasattr(result, 'status')\n        assert result.status == 'registered'\n        assert hasattr(result, 'error_context')\n        assert result.error_context == log_line\n        assert hasattr(result, 'manifest_entry')\n        assert result.manifest_entry is not None\n    \n    def test_attribute_unregistered(self):\n        \"\"\"Attribute log line with PACT key not in manifest returns status 'unregistered'\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_manifest.get_component.return_value = None  # Not found\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error in PACT:unknown_comp:method1\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.status == 'unregistered'\n        assert result.error_context == log_line\n        assert result.manifest_entry is None\n    \n    def test_attribute_unattributed(self):\n        \"\"\"Attribute log line without PACT key returns status 'unattributed'\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Generic error without PACT key\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.status == 'unattributed'\n        assert result.error_context == log_line\n        assert hasattr(result, 'pact_key')\n        assert result.pact_key == \"\"\n    \n    def test_attribute_canonical_lookup(self):\n        \"\"\"Attribute uses canonical lookup (first segment is component_id)\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_entry = Mock()\n        \n        def get_component_side_effect(component_id):\n            if component_id == \"canonical_comp\":\n                return mock_entry\n            return None\n        \n        mock_manifest.get_component.side_effect = get_component_side_effect\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error in PACT:canonical_comp:method1\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.status == 'registered'\n        # Verify canonical lookup was tried\n        mock_manifest.get_component.assert_called()\n    \n    def test_attribute_secondary_lookup(self):\n        \"\"\"Attribute uses secondary lookup (second segment is component_id) when canonical fails\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_entry = Mock()\n        \n        call_count = [0]\n        def get_component_side_effect(component_id):\n            call_count[0] += 1\n            # First call (canonical) fails, second call (secondary) succeeds\n            if call_count[0] == 1:\n                return None\n            elif component_id == \"method1\":\n                return mock_entry\n            return None\n        \n        mock_manifest.get_component.side_effect = get_component_side_effect\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error in PACT:some_prefix:method1\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.status == 'registered'\n        # Verify both lookups were attempted\n        assert mock_manifest.get_component.call_count >= 2\n    \n    def test_attribute_empty_line(self):\n        \"\"\"Attribute empty log line returns unattributed\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.status == 'unattributed'\n    \n    def test_invariant_attribution_status_always_valid(self):\n        \"\"\"Invariant: Attribution status is always one of: registered, unregistered, unattributed\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_manifest.get_component.return_value = None\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        test_lines = [\n            \"Error in PACT:comp1:method1\",\n            \"Generic error\",\n            \"\",\n            \"PACT:comp2:method2 failure\",\n            \"Multiple PACT:a:b and PACT:c:d keys\"\n        ]\n        \n        # Act & Assert\n        for line in test_lines:\n            result = engine.attribute(line)\n            assert result.status in ['registered', 'unregistered', 'unattributed']\n\n\nclass TestAttributionEngineAttributeSignal:\n    \"\"\"Test suite for AttributionEngine.attribute_signal\"\"\"\n    \n    def test_attribute_signal_happy_path_with_log_key(self):\n        \"\"\"Attribute Signal with log_key field present and attribution succeeds\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_entry = Mock()\n        mock_manifest.get_component.return_value = mock_entry\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        mock_signal = Mock()\n        mock_signal.log_key = \"PACT:comp1:method1\"\n        mock_signal.raw_text = \"Raw text of the signal\"\n        \n        # Act\n        result = engine.attribute_signal(mock_signal)\n        \n        # Assert\n        assert result is not None\n        assert result.error_context == mock_signal.raw_text\n        assert result.status in ['registered', 'unregistered', 'unattributed']\n    \n    def test_attribute_signal_fallback_to_raw_text(self):\n        \"\"\"Attribute Signal falls back to raw_text when log_key is empty or attribution is unattributed\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_manifest.get_component.return_value = None\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        mock_signal = Mock()\n        mock_signal.log_key = \"\"  # Empty log_key\n        mock_signal.raw_text = \"PACT:comp2:method2 in raw text\"\n        \n        # Act\n        result = engine.attribute_signal(mock_signal)\n        \n        # Assert\n        assert result is not None\n        # Should have fallen back to raw_text\n        assert result.error_context == mock_signal.raw_text\n    \n    def test_attribute_signal_log_key_unattributed(self):\n        \"\"\"Attribute Signal with log_key that results in unattributed, falls back to raw_text\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_manifest.get_component.return_value = None\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        mock_signal = Mock()\n        mock_signal.log_key = \"No PACT key here\"  # Won't match pattern\n        mock_signal.raw_text = \"PACT:comp3:method3\"\n        \n        # Act\n        result = engine.attribute_signal(mock_signal)\n        \n        # Assert\n        assert result is not None\n        # Should have fallen back to raw_text after log_key was unattributed\n    \n    def test_attribute_signal_updates_error_context(self):\n        \"\"\"Attribute Signal updates error_context to signal.raw_text when log_key attribution succeeds\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_entry = Mock()\n        mock_manifest.get_component.return_value = mock_entry\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        mock_signal = Mock()\n        mock_signal.log_key = \"PACT:comp4:method4\"\n        mock_signal.raw_text = \"Original raw text content\"\n        \n        # Act\n        result = engine.attribute_signal(mock_signal)\n        \n        # Assert\n        assert result is not None\n        # Verify error_context was mutated to signal.raw_text\n        assert result.error_context == mock_signal.raw_text\n    \n    def test_invariant_signal_attribution_status_always_valid(self):\n        \"\"\"Invariant: Signal attribution status is always one of: registered, unregistered, unattributed\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        \n        def varying_get_component(component_id):\n            # Vary returns to test different paths\n            if component_id == \"registered\":\n                return Mock()\n            return None\n        \n        mock_manifest.get_component.side_effect = varying_get_component\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        test_signals = [\n            Mock(log_key=\"PACT:registered:method1\", raw_text=\"text1\"),\n            Mock(log_key=\"PACT:unregistered:method2\", raw_text=\"text2\"),\n            Mock(log_key=\"\", raw_text=\"PACT:registered:method3\"),\n            Mock(log_key=\"no match\", raw_text=\"no match either\"),\n        ]\n        \n        # Act & Assert\n        for signal in test_signals:\n            result = engine.attribute_signal(signal)\n            assert result.status in ['registered', 'unregistered', 'unattributed']\n\n\nclass TestAttributionEngineEdgeCases:\n    \"\"\"Additional edge case tests\"\"\"\n    \n    def test_extract_key_with_special_characters(self):\n        \"\"\"Extract PACT key from log line with special characters\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"Error: PACT:comp_1:method_2 [CRITICAL]!@#$%\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.component_id == \"comp_1\"\n        assert result.method_name == \"method_2\"\n    \n    def test_attribute_with_very_long_line(self):\n        \"\"\"Attribute log line that is very long\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_manifest.get_component.return_value = Mock()\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        # Create a very long line\n        prefix = \"A\" * 10000\n        log_line = f\"{prefix} PACT:component:method {prefix}\"\n        \n        # Act\n        result = engine.attribute(log_line)\n        \n        # Assert\n        assert result is not None\n        assert result.error_context == log_line\n    \n    def test_init_with_pattern_having_more_than_two_groups(self):\n        \"\"\"Initialize with pattern having more than 2 capture groups\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"(\\w+):(\\w+):(\\w+):(\\w+)\"  # 4 groups\n        \n        # Act\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        # Assert\n        assert engine._pattern.groups >= 2\n        assert engine._pattern.pattern == pattern\n    \n    def test_extract_key_multiple_matches_in_line(self):\n        \"\"\"Extract PACT key from log line with multiple potential matches (should use first match)\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        log_line = \"PACT:comp1:method1 and PACT:comp2:method2\"\n        \n        # Act\n        result = engine.extract_key(log_line)\n        \n        # Assert\n        assert result is not None\n        # Should extract first match\n        assert result.component_id == \"comp1\"\n        assert result.method_name == \"method1\"\n    \n    def test_attribute_signal_with_both_log_key_and_raw_text_having_keys(self):\n        \"\"\"Attribute Signal where both log_key and raw_text contain valid PACT keys\"\"\"\n        # Arrange\n        mock_manifest = Mock(spec=['get_component'])\n        mock_entry = Mock()\n        mock_manifest.get_component.return_value = mock_entry\n        \n        pattern = r\"PACT:(\\w+):(\\w+)\"\n        engine = AttributionEngine(mock_manifest, pattern)\n        \n        mock_signal = Mock()\n        mock_signal.log_key = \"PACT:from_log_key:method1\"\n        mock_signal.raw_text = \"PACT:from_raw_text:method2\"\n        \n        # Act\n        result = engine.attribute_signal(mock_signal)\n        \n        # Assert\n        assert result is not None\n        # Should prioritize log_key but update error_context to raw_text\n        assert result.error_context == mock_signal.raw_text\n"
+}

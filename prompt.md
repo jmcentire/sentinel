@@ -1,31 +1,49 @@
-# Sentinel — System Context
+# Sentinel Chronicler Integration
 
-## What It Is
-Production attribution and contract tightening. Watches logs for PACT-keyed errors, attributes them to components, and spawns LLM fixer agents that push tightened contracts back to Pact.
+## Overview
+Integrate Sentinel's incident lifecycle management with the Chronicler system for event sequence tracking. This integration enables external systems to observe and analyze incident patterns across the production environment.
 
-## How It Works
-Signal pipeline: Ingest -> Attribute (PACT keys) -> Severity -> Dedup (fingerprint) -> Incident -> Triage -> Remediate -> Tighten -> Integrate
+## Problem Statement
+Sentinel currently manages incident lifecycles internally but doesn't expose these state transitions to external observability systems. The Chronicler system needs visibility into incident progression to support broader system analysis and correlation.
 
-## Key Constraints
-- Budget enforcement across multiple time windows (C001)
-- No concurrent duplicate fixers (C002)
-- Reproduce before fix (C003)
-- Fire-and-forget for Arbiter/Stigmergy (C004)
-- Non-blocking Ledger startup (C005)
-- Local fallback for Pact contract push (C006)
+## Requirements
 
-## Architecture
-21 source modules. Core: sentinel.py (orchestrator), watcher.py (ingestion), fixer.py (LLM remediation), incidents.py (lifecycle + budget).
+### Functional Requirements
+- **Event Emission**: Convert incident lifecycle transitions to Chronicler event sequences
+- **Fire-and-Forget**: Chronicler unavailability must not impact Sentinel's core functionality
+- **Lifecycle Coverage**: Emit events for all incident state transitions (detected → triaging → remediating → resolved/escalated)
+- **Backward Compatibility**: Feature disabled by default, no impact on existing functionality
 
-## Integrations
-- Pact: component registration, contract tightening (CLI or API, local fallback)
-- Arbiter: trust events (fire-and-forget)
-- Stigmergy: signals (fire-and-forget)
-- Ledger: severity mappings at startup (non-blocking)
+### Technical Requirements
+- Follow existing integration pattern (arbiter.py, stigmergy.py)
+- Implement ChroniclerEmitter in src/sentinel/chronicler.py
+- Add chronicler configuration section to sentinel.yaml
+- Wire into orchestrator after incident resolution/escalation
+- Maintain all existing test coverage
 
-## Done Checklist
-- [ ] Budget enforcement tested across all time windows
-- [ ] Fixer dedup prevents concurrent spawns
-- [ ] Integration failures don't crash Sentinel
-- [ ] Proposed contracts written locally when Pact unavailable
-- [ ] Error fingerprinting deduplicates correctly
+### Configuration Schema
+```yaml
+chronicler:
+  enabled: false
+  endpoint: "http://chronicler-service:8080/events"
+  timeout: 5.0
+```
+
+### Event Sequence Format
+Each incident lifecycle transition should generate an event with:
+- Incident ID
+- Timestamp
+- State transition (detected/triaging/remediating/resolved/escalated)
+- Component attribution
+- Error context (PACT key, error signature)
+
+## Integration Points
+- Wire into orchestrator after `_resolve_incident()` and `_escalate_incident()`
+- Consider additional wiring for earlier lifecycle transitions based on observability needs
+- Follow fire-and-forget pattern: log failures but don't propagate errors
+
+## Success Criteria
+- All existing tests pass
+- Chronicler integration follows established patterns
+- Configuration maintains backward compatibility
+- Event emission is reliable but non-blocking

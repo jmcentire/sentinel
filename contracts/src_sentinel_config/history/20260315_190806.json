@@ -1,0 +1,582 @@
+{
+  "component_id": "src_sentinel_config",
+  "name": "Sentinel Configuration Loader",
+  "description": "Loads and validates sentinel.yaml configuration files into typed Pydantic models. Provides configuration schema for log sources, error thresholds, LLM settings, integrations (Pact, Arbiter, Stigmergy), notifications, budgets, and auto-remediation settings.",
+  "version": 1,
+  "types": [
+    {
+      "name": "SourceConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "type",
+          "type_ref": "Literal['file', 'cloudwatch', 'webhook', 'stdout']",
+          "required": false,
+          "default": "file",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "path",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "format",
+          "type_ref": "str",
+          "required": false,
+          "default": "text",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "log_group",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "filter_pattern",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "region",
+          "type_ref": "str",
+          "required": false,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "poll_interval",
+          "type_ref": "int",
+          "required": false,
+          "default": "30",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "port",
+          "type_ref": "int",
+          "required": false,
+          "default": "0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "error_patterns",
+          "type_ref": "list[str]",
+          "required": false,
+          "default": "['ERROR', 'CRITICAL', 'Traceback']",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "A log source to watch."
+    },
+    {
+      "name": "ErrorThresholdConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "count",
+          "type_ref": "int",
+          "required": false,
+          "default": "1",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "window_seconds",
+          "type_ref": "int",
+          "required": false,
+          "default": "300",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "When to spawn a fixer."
+    },
+    {
+      "name": "LLMConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "provider",
+          "type_ref": "str",
+          "required": false,
+          "default": "anthropic",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "model",
+          "type_ref": "str",
+          "required": false,
+          "default": "claude-sonnet-4-20250514",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "max_tokens",
+          "type_ref": "int",
+          "required": false,
+          "default": "8192",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "budget_per_fix",
+          "type_ref": "float",
+          "required": false,
+          "default": "2.00",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "LLM provider settings."
+    },
+    {
+      "name": "PactIntegrationConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "project_dir",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "api_endpoint",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "How to reach Pact for contract push."
+    },
+    {
+      "name": "ArbiterConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "api_endpoint",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "trust_event_on_fix",
+          "type_ref": "bool",
+          "required": false,
+          "default": "True",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Arbiter trust ledger connection."
+    },
+    {
+      "name": "StigmergyConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "endpoint",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Stigmergy signal emission."
+    },
+    {
+      "name": "NotifyConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "webhook_url",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "on_error",
+          "type_ref": "bool",
+          "required": false,
+          "default": "True",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "on_fix",
+          "type_ref": "bool",
+          "required": false,
+          "default": "True",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "on_contract_push",
+          "type_ref": "bool",
+          "required": false,
+          "default": "True",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Webhook notifications."
+    },
+    {
+      "name": "LedgerConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "ledger_api",
+          "type_ref": "str | None",
+          "required": false,
+          "default": "None",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Ledger severity mapping integration."
+    },
+    {
+      "name": "BudgetConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "per_incident_cap",
+          "type_ref": "float",
+          "required": false,
+          "default": "5.00",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "hourly_cap",
+          "type_ref": "float",
+          "required": false,
+          "default": "10.00",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "daily_cap",
+          "type_ref": "float",
+          "required": false,
+          "default": "25.00",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "weekly_cap",
+          "type_ref": "float",
+          "required": false,
+          "default": "100.00",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "monthly_cap",
+          "type_ref": "float",
+          "required": false,
+          "default": "300.00",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Multi-window spending budget."
+    },
+    {
+      "name": "SentinelConfig",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "version",
+          "type_ref": "str",
+          "required": false,
+          "default": "1.0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "sources",
+          "type_ref": "list[SourceConfig]",
+          "required": false,
+          "default": "[]",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "pact_key_pattern",
+          "type_ref": "str",
+          "required": false,
+          "default": "r\"PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+\"",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "error_threshold",
+          "type_ref": "ErrorThresholdConfig",
+          "required": false,
+          "default": "ErrorThresholdConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "llm",
+          "type_ref": "LLMConfig",
+          "required": false,
+          "default": "LLMConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "pact",
+          "type_ref": "PactIntegrationConfig",
+          "required": false,
+          "default": "PactIntegrationConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "arbiter",
+          "type_ref": "ArbiterConfig",
+          "required": false,
+          "default": "ArbiterConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "stigmergy",
+          "type_ref": "StigmergyConfig",
+          "required": false,
+          "default": "StigmergyConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "notify",
+          "type_ref": "NotifyConfig",
+          "required": false,
+          "default": "NotifyConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "ledger",
+          "type_ref": "LedgerConfig",
+          "required": false,
+          "default": "LedgerConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "budget",
+          "type_ref": "BudgetConfig",
+          "required": false,
+          "default": "BudgetConfig()",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "auto_remediate",
+          "type_ref": "bool",
+          "required": false,
+          "default": "False",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "state_dir",
+          "type_ref": "str",
+          "required": false,
+          "default": ".sentinel",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Top-level configuration loaded from sentinel.yaml."
+    }
+  ],
+  "functions": [
+    {
+      "name": "load_config",
+      "description": "Load sentinel.yaml from the given path, cwd, or defaults. Search order: explicit path, ./sentinel.yaml, ~/.sentinel/sentinel.yaml. Returns default config if no file found.",
+      "inputs": [
+        {
+          "name": "path",
+          "type_ref": "Path | None",
+          "required": false,
+          "default": "None",
+          "description": "Optional explicit path to sentinel.yaml file",
+          "validators": []
+        }
+      ],
+      "output_type": "SentinelConfig",
+      "error_cases": [
+        {
+          "name": "file_read_error",
+          "condition": "File exists but cannot be read",
+          "error_type": "Exception",
+          "error_data": {
+            "handling": "Caught, logged as warning, continues to next candidate"
+          }
+        },
+        {
+          "name": "yaml_parse_error",
+          "condition": "YAML file is malformed",
+          "error_type": "yaml.YAMLError",
+          "error_data": {
+            "handling": "Caught, logged as warning, continues to next candidate"
+          }
+        },
+        {
+          "name": "validation_error",
+          "condition": "YAML data fails Pydantic validation",
+          "error_type": "pydantic.ValidationError",
+          "error_data": {
+            "handling": "Caught, logged as warning, continues to next candidate"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns a valid SentinelConfig instance",
+        "If no config file is found or all loads fail, returns default SentinelConfig()",
+        "If a valid config file is found, returns validated config from that file"
+      ],
+      "idempotent": true,
+      "side_effects": [
+        "Reads files from filesystem",
+        "Logs warnings when config file loading fails"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "reads_file",
+          "target": "sentinel.yaml (from path, cwd, or ~/.sentinel/)",
+          "description": "Attempts to read YAML configuration from filesystem in search order"
+        },
+        {
+          "kind": "logging",
+          "target": "logger.warning",
+          "description": "Logs warning when a config file exists but fails to load or validate"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "pathlib",
+    "logging",
+    "typing",
+    "yaml",
+    "pydantic"
+  ],
+  "dependency_contracts": {
+    "pathlib": [
+      "Path"
+    ],
+    "logging": [
+      "getLogger"
+    ],
+    "typing": [
+      "Literal"
+    ],
+    "yaml": [
+      "safe_load"
+    ],
+    "pydantic": [
+      "BaseModel",
+      "Field"
+    ]
+  },
+  "invariants": [
+    "Default configuration is always valid and can be instantiated without parameters",
+    "All Pydantic models have default values for all fields",
+    "Config search order is deterministic: explicit path -> ./sentinel.yaml -> ~/.sentinel/sentinel.yaml",
+    "First successfully loaded config file wins; subsequent candidates are not checked",
+    "If all candidates fail or no files exist, default SentinelConfig is returned"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "filesystem"
+    ],
+    "writes": [],
+    "rationale": "Reads YAML configuration files from filesystem. No write operations performed.",
+    "side_effects": [
+      {
+        "type": "file_read",
+        "classification": "configuration",
+        "fields": [
+          "sentinel.yaml"
+        ],
+        "rationale": "Reads configuration file to load application settings"
+      },
+      {
+        "type": "logging",
+        "classification": "observability",
+        "fields": [
+          "warning"
+        ],
+        "rationale": "Logs warnings when configuration loading fails"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

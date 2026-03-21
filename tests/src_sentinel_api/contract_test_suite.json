@@ -1,0 +1,540 @@
+{
+  "component_id": "src_sentinel_api",
+  "contract_version": 1,
+  "test_cases": [
+    {
+      "id": "test_init_happy_path",
+      "description": "Test __init__ sets all fields correctly with valid sentinel instance",
+      "function": "__init__",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "sentinel": "mock_sentinel"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_sentinel is set to provided sentinel instance",
+        "_app is initialized as web.Application",
+        "_runner is None",
+        "_start_time is set to current datetime in ISO format",
+        "Routes are configured via _setup_routes()"
+      ]
+    },
+    {
+      "id": "test_init_start_time_format",
+      "description": "Test __init__ sets _start_time in ISO format",
+      "function": "__init__",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_start_time matches ISO 8601 format"
+      ]
+    },
+    {
+      "id": "test_setup_routes_all_registered",
+      "description": "Test _setup_routes registers all required routes",
+      "function": "_setup_routes",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "GET /status route is registered",
+        "GET /manifest route is registered",
+        "GET /fixes route is registered",
+        "GET /fixes/{fix_id} route is registered",
+        "POST /fix route is registered",
+        "POST /register route is registered",
+        "GET /metrics route is registered"
+      ]
+    },
+    {
+      "id": "test_start_happy_path",
+      "description": "Test start() initializes runner and starts TCP server",
+      "function": "start",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "host": "127.0.0.1",
+        "port": "8080"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_runner is initialized with AppRunner",
+        "TCP site is started on specified host and port"
+      ]
+    },
+    {
+      "id": "test_stop_with_runner",
+      "description": "Test stop() cleans up runner when it exists",
+      "function": "stop",
+      "category": "happy_path",
+      "setup_description": "Initialize and start API server",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_runner is cleaned up"
+      ]
+    },
+    {
+      "id": "test_stop_without_runner",
+      "description": "Test stop() handles case when _runner is None",
+      "function": "stop",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "No error when _runner is None"
+      ]
+    },
+    {
+      "id": "test_handle_status_happy_path",
+      "description": "Test _handle_status returns correct status information",
+      "function": "_handle_status",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns JSON response with version",
+        "Returns started_at timestamp",
+        "Returns sources count",
+        "Returns components count",
+        "Returns active_incidents count",
+        "Returns total_fixes count",
+        "Returns configuration flags"
+      ]
+    },
+    {
+      "id": "test_handle_manifest_happy_path",
+      "description": "Test _handle_manifest returns all registered components",
+      "function": "_handle_manifest",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns JSON response with components dictionary",
+        "Components are serialized via model_dump()"
+      ]
+    },
+    {
+      "id": "test_handle_fixes_happy_path",
+      "description": "Test _handle_fixes returns up to 50 most recent fixes",
+      "function": "_handle_fixes",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns JSON array of fixes",
+        "Returns at most 50 fixes",
+        "Fixes are in reverse chronological order (newest first)",
+        "Each fix is serialized via model_dump()"
+      ]
+    },
+    {
+      "id": "test_handle_fixes_empty",
+      "description": "Test _handle_fixes returns empty array when no fixes exist",
+      "function": "_handle_fixes",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns empty JSON array"
+      ]
+    },
+    {
+      "id": "test_handle_fixes_more_than_50",
+      "description": "Test _handle_fixes limits to 50 when more fixes exist",
+      "function": "_handle_fixes",
+      "category": "edge_case",
+      "setup_description": "Create 100 fixes in sentinel",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns exactly 50 fixes",
+        "Returns newest 50 fixes"
+      ]
+    },
+    {
+      "id": "test_handle_fix_detail_found",
+      "description": "Test _handle_fix_detail returns fix details for valid fix_id",
+      "function": "_handle_fix_detail",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "fix_id": "valid_fix_id"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns JSON response with fix details"
+      ]
+    },
+    {
+      "id": "test_handle_fix_detail_not_found",
+      "description": "Test _handle_fix_detail returns 404 for non-existent fix_id",
+      "function": "_handle_fix_detail",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "fix_id": "nonexistent_id"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "fix_not_found",
+      "assertions": [
+        "Returns 404 status",
+        "Returns JSON error message"
+      ]
+    },
+    {
+      "id": "test_handle_fix_detail_special_chars",
+      "description": "Test _handle_fix_detail handles fix_id with special characters",
+      "function": "_handle_fix_detail",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "fix_id": "fix-id_123.test"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Handles special characters in fix_id"
+      ]
+    },
+    {
+      "id": "test_handle_manual_fix_happy_path",
+      "description": "Test _handle_manual_fix succeeds with valid JSON body",
+      "function": "_handle_manual_fix",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "pact_key": "test_pact",
+        "error": "test_error"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns JSON response with result.model_dump()"
+      ]
+    },
+    {
+      "id": "test_handle_manual_fix_invalid_json",
+      "description": "Test _handle_manual_fix returns 400 for invalid JSON",
+      "function": "_handle_manual_fix",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Malformed JSON body",
+      "expected_output_description": "",
+      "expected_error": "invalid_json",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error message about invalid JSON"
+      ]
+    },
+    {
+      "id": "test_handle_manual_fix_missing_pact_key",
+      "description": "Test _handle_manual_fix returns 400 when pact_key is missing",
+      "function": "_handle_manual_fix",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "error": "test_error"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "missing_required_fields",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error about missing pact_key"
+      ]
+    },
+    {
+      "id": "test_handle_manual_fix_missing_error",
+      "description": "Test _handle_manual_fix returns 400 when error is missing",
+      "function": "_handle_manual_fix",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "pact_key": "test_pact"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "missing_required_fields",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error about missing error field"
+      ]
+    },
+    {
+      "id": "test_handle_manual_fix_empty_pact_key",
+      "description": "Test _handle_manual_fix returns 400 when pact_key is empty",
+      "function": "_handle_manual_fix",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "pact_key": "",
+        "error": "test_error"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "missing_required_fields",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error about empty pact_key"
+      ]
+    },
+    {
+      "id": "test_handle_manual_fix_empty_error",
+      "description": "Test _handle_manual_fix returns 400 when error is empty",
+      "function": "_handle_manual_fix",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "pact_key": "test_pact",
+        "error": ""
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "missing_required_fields",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error about empty error field"
+      ]
+    },
+    {
+      "id": "test_handle_register_happy_path",
+      "description": "Test _handle_register succeeds with valid component_id",
+      "function": "_handle_register",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "component_id": "test_component"
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "ManifestEntry is created and registered",
+        "Returns JSON with status and component_id"
+      ]
+    },
+    {
+      "id": "test_handle_register_invalid_json",
+      "description": "Test _handle_register returns 400 for invalid JSON",
+      "function": "_handle_register",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "Malformed JSON body",
+      "expected_output_description": "",
+      "expected_error": "invalid_json",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error message about invalid JSON"
+      ]
+    },
+    {
+      "id": "test_handle_register_missing_component_id",
+      "description": "Test _handle_register returns 400 when component_id is missing",
+      "function": "_handle_register",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "missing_component_id",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error about missing component_id"
+      ]
+    },
+    {
+      "id": "test_handle_register_empty_component_id",
+      "description": "Test _handle_register returns 400 when component_id is empty",
+      "function": "_handle_register",
+      "category": "error_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {
+        "component_id": ""
+      },
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "missing_component_id",
+      "assertions": [
+        "Returns 400 status",
+        "Returns error about empty component_id"
+      ]
+    },
+    {
+      "id": "test_handle_metrics_happy_path",
+      "description": "Test _handle_metrics returns aggregate metrics",
+      "function": "_handle_metrics",
+      "category": "happy_path",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "Returns total_incidents",
+        "Returns active_incidents",
+        "Returns total_fixes_attempted",
+        "Returns fixes_succeeded",
+        "Returns fixes_failed",
+        "Returns total_spend_usd rounded to 2 decimals",
+        "Returns components_registered"
+      ]
+    },
+    {
+      "id": "test_handle_metrics_spend_rounding",
+      "description": "Test _handle_metrics rounds spend to 2 decimal places",
+      "function": "_handle_metrics",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "total_spend_usd has at most 2 decimal places"
+      ]
+    },
+    {
+      "id": "test_invariant_start_time_constant",
+      "description": "Test _start_time remains constant after initialization",
+      "function": "__init__",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_start_time does not change after __init__"
+      ]
+    },
+    {
+      "id": "test_invariant_app_persists",
+      "description": "Test _app persists for lifetime of instance",
+      "function": "__init__",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_app is same instance throughout lifecycle"
+      ]
+    },
+    {
+      "id": "test_invariant_runner_none_before_start",
+      "description": "Test _runner is None until start() is called",
+      "function": "start",
+      "category": "invariant",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "_runner is None before start()",
+        "_runner is not None after start()"
+      ]
+    },
+    {
+      "id": "test_route_404_for_undefined",
+      "description": "Test undefined routes return 404",
+      "function": "_setup_routes",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "GET /undefined returns 404"
+      ]
+    },
+    {
+      "id": "test_route_405_for_wrong_method",
+      "description": "Test wrong HTTP method returns 405",
+      "function": "_setup_routes",
+      "category": "edge_case",
+      "setup_description": "",
+      "mock_dependencies": {},
+      "input_values": {},
+      "input_description": "",
+      "expected_output_description": "",
+      "expected_error": "",
+      "assertions": [
+        "POST /status returns 405"
+      ]
+    }
+  ],
+  "test_language": "python",
+  "generated_code": "\"\"\"\nContract Test Suite for SentinelAPI\nGenerated from contract version 1\n\nTests verify SentinelAPI behavior at boundaries using pytest and pytest-aiohttp.\nAll dependencies are mocked except aiohttp.web infrastructure.\n\"\"\"\n\nimport pytest\nimport json\nimport asyncio\nfrom datetime import datetime\nfrom unittest.mock import Mock, MagicMock, AsyncMock, patch\nfrom aiohttp import web\nfrom aiohttp.test_utils import TestClient, TestServer\nimport re\n\n# Import the component under test\nfrom src.sentinel.api import SentinelAPI\n\n\n# ============================================================================\n# Fixtures\n# ============================================================================\n\n@pytest.fixture\ndef mock_sentinel():\n    \"\"\"Create a mock Sentinel instance with all required attributes.\"\"\"\n    sentinel = Mock()\n    sentinel.version = \"1.0.0\"\n    sentinel.sources = []\n    sentinel.manifest = {}\n    sentinel.incidents = []\n    sentinel.fixes = []\n    sentinel.config = Mock(auto_fix_enabled=True, manual_review_required=False)\n    \n    # Mock methods\n    sentinel.apply_fix = AsyncMock(return_value=Mock(model_dump=lambda: {\"status\": \"success\"}))\n    sentinel.register_component = Mock()\n    \n    return sentinel\n\n\n@pytest.fixture\ndef api_instance(mock_sentinel):\n    \"\"\"Create a SentinelAPI instance with mocked sentinel.\"\"\"\n    return SentinelAPI(mock_sentinel)\n\n\n@pytest.fixture\nasync def client(api_instance):\n    \"\"\"Create an aiohttp test client.\"\"\"\n    async with TestClient(TestServer(api_instance._app)) as test_client:\n        yield test_client\n\n\n# ============================================================================\n# __init__ Tests\n# ============================================================================\n\ndef test_init_happy_path(mock_sentinel):\n    \"\"\"Test __init__ sets all fields correctly with valid sentinel instance.\"\"\"\n    api = SentinelAPI(mock_sentinel)\n    \n    # Verify _sentinel is set\n    assert api._sentinel is mock_sentinel\n    \n    # Verify _app is initialized as web.Application\n    assert isinstance(api._app, web.Application)\n    \n    # Verify _runner is None\n    assert api._runner is None\n    \n    # Verify _start_time is set\n    assert api._start_time is not None\n    assert isinstance(api._start_time, str)\n    \n    # Verify routes are configured (check that router has routes)\n    assert len(api._app.router.resources()) > 0\n\n\ndef test_init_start_time_format(mock_sentinel):\n    \"\"\"Test __init__ sets _start_time in ISO format.\"\"\"\n    api = SentinelAPI(mock_sentinel)\n    \n    # Verify ISO 8601 format\n    iso_pattern = r'^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+'\n    assert re.match(iso_pattern, api._start_time), f\"_start_time '{api._start_time}' does not match ISO format\"\n    \n    # Verify it can be parsed as datetime\n    parsed = datetime.fromisoformat(api._start_time)\n    assert isinstance(parsed, datetime)\n\n\n# ============================================================================\n# _setup_routes Tests\n# ============================================================================\n\ndef test_setup_routes_all_registered(api_instance):\n    \"\"\"Test _setup_routes registers all required routes.\"\"\"\n    routes = {}\n    for resource in api_instance._app.router.resources():\n        route_info = resource.get_info()\n        if 'path' in route_info:\n            path = route_info['path']\n        elif 'formatter' in route_info:\n            path = route_info['formatter']\n        else:\n            continue\n        \n        for route in resource:\n            method = route.method\n            if path not in routes:\n                routes[path] = []\n            routes[path].append(method)\n    \n    # Verify all required routes\n    assert '/status' in routes\n    assert 'GET' in routes['/status']\n    \n    assert '/manifest' in routes\n    assert 'GET' in routes['/manifest']\n    \n    assert '/fixes' in routes\n    assert 'GET' in routes['/fixes']\n    \n    # Check for dynamic route /fixes/{fix_id}\n    dynamic_route_found = False\n    for path in routes:\n        if 'fix_id' in path or path.startswith('/fixes/'):\n            dynamic_route_found = True\n            break\n    assert dynamic_route_found or any('{fix_id}' in str(r.get_info()) for r in api_instance._app.router.resources())\n    \n    assert '/fix' in routes\n    assert 'POST' in routes['/fix']\n    \n    assert '/register' in routes\n    assert 'POST' in routes['/register']\n    \n    assert '/metrics' in routes\n    assert 'GET' in routes['/metrics']\n\n\n@pytest.mark.asyncio\nasync def test_route_404_for_undefined(client):\n    \"\"\"Test undefined routes return 404.\"\"\"\n    resp = await client.get('/undefined')\n    assert resp.status == 404\n\n\n@pytest.mark.asyncio\nasync def test_route_405_for_wrong_method(client):\n    \"\"\"Test wrong HTTP method returns 405.\"\"\"\n    resp = await client.post('/status')\n    assert resp.status == 405\n\n\n# ============================================================================\n# start/stop Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_start_happy_path(api_instance):\n    \"\"\"Test start() initializes runner and starts TCP server.\"\"\"\n    await api_instance.start('127.0.0.1', 8080)\n    \n    # Verify _runner is initialized\n    assert api_instance._runner is not None\n    assert isinstance(api_instance._runner, web.AppRunner)\n    \n    # Cleanup\n    await api_instance.stop()\n\n\n@pytest.mark.asyncio\nasync def test_stop_with_runner(api_instance):\n    \"\"\"Test stop() cleans up runner when it exists.\"\"\"\n    # Start the server first\n    await api_instance.start('127.0.0.1', 8081)\n    \n    # Verify runner exists\n    assert api_instance._runner is not None\n    \n    # Stop the server\n    await api_instance.stop()\n    \n    # Runner should still exist but be cleaned up (implementation detail)\n    # The important thing is no errors occurred\n\n\n@pytest.mark.asyncio\nasync def test_stop_without_runner(api_instance):\n    \"\"\"Test stop() handles case when _runner is None.\"\"\"\n    # Verify runner is None\n    assert api_instance._runner is None\n    \n    # Stop should not raise an error\n    await api_instance.stop()\n    \n    # No assertions needed - just verify no exception\n\n\n# ============================================================================\n# _handle_status Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_status_happy_path(client, mock_sentinel):\n    \"\"\"Test _handle_status returns correct status information.\"\"\"\n    # Setup mock sentinel state\n    mock_sentinel.version = \"2.0.0\"\n    mock_sentinel.sources = [Mock(), Mock()]\n    mock_sentinel.manifest = {\"comp1\": Mock(), \"comp2\": Mock(), \"comp3\": Mock()}\n    mock_sentinel.incidents = [Mock(status=\"active\"), Mock(status=\"resolved\")]\n    mock_sentinel.fixes = [Mock(), Mock(), Mock(), Mock()]\n    mock_sentinel.config.auto_fix_enabled = True\n    mock_sentinel.config.manual_review_required = False\n    \n    resp = await client.get('/status')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify all required fields\n    assert 'version' in data\n    assert data['version'] == \"2.0.0\"\n    \n    assert 'started_at' in data\n    assert isinstance(data['started_at'], str)\n    \n    assert 'sources' in data\n    assert data['sources'] == 2\n    \n    assert 'components' in data\n    assert data['components'] == 3\n    \n    assert 'active_incidents' in data\n    \n    assert 'total_fixes' in data\n    assert data['total_fixes'] == 4\n    \n    # Configuration flags\n    assert 'auto_fix_enabled' in data\n    assert 'manual_review_required' in data\n\n\n# ============================================================================\n# _handle_manifest Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_manifest_happy_path(client, mock_sentinel):\n    \"\"\"Test _handle_manifest returns all registered components.\"\"\"\n    # Setup manifest with mock entries\n    mock_entry1 = Mock()\n    mock_entry1.model_dump.return_value = {\"component_id\": \"comp1\", \"version\": 1}\n    \n    mock_entry2 = Mock()\n    mock_entry2.model_dump.return_value = {\"component_id\": \"comp2\", \"version\": 2}\n    \n    mock_sentinel.manifest = {\n        \"comp1\": mock_entry1,\n        \"comp2\": mock_entry2\n    }\n    \n    resp = await client.get('/manifest')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify components dictionary\n    assert 'components' in data\n    assert isinstance(data['components'], dict)\n    assert len(data['components']) == 2\n    assert 'comp1' in data['components']\n    assert 'comp2' in data['components']\n    \n    # Verify model_dump was called\n    assert mock_entry1.model_dump.called\n    assert mock_entry2.model_dump.called\n\n\n# ============================================================================\n# _handle_fixes Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_fixes_happy_path(client, mock_sentinel):\n    \"\"\"Test _handle_fixes returns up to 50 most recent fixes.\"\"\"\n    # Create 30 mock fixes\n    fixes = []\n    for i in range(30):\n        fix = Mock()\n        fix.model_dump.return_value = {\"fix_id\": f\"fix_{i}\", \"timestamp\": i}\n        fixes.append(fix)\n    \n    mock_sentinel.fixes = fixes\n    \n    resp = await client.get('/fixes')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify it's a list\n    assert isinstance(data, list)\n    \n    # Verify at most 50 fixes\n    assert len(data) <= 50\n    \n    # Verify we got all 30 fixes\n    assert len(data) == 30\n    \n    # Verify each fix was serialized\n    for fix in fixes:\n        assert fix.model_dump.called\n\n\n@pytest.mark.asyncio\nasync def test_handle_fixes_empty(client, mock_sentinel):\n    \"\"\"Test _handle_fixes returns empty array when no fixes exist.\"\"\"\n    mock_sentinel.fixes = []\n    \n    resp = await client.get('/fixes')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    assert isinstance(data, list)\n    assert len(data) == 0\n\n\n@pytest.mark.asyncio\nasync def test_handle_fixes_more_than_50(client, mock_sentinel):\n    \"\"\"Test _handle_fixes limits to 50 when more fixes exist.\"\"\"\n    # Create 100 mock fixes with timestamps\n    fixes = []\n    for i in range(100):\n        fix = Mock()\n        fix.timestamp = datetime.now().isoformat()\n        fix.model_dump.return_value = {\"fix_id\": f\"fix_{i}\", \"index\": i}\n        fixes.append(fix)\n    \n    mock_sentinel.fixes = fixes\n    \n    resp = await client.get('/fixes')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify exactly 50 fixes returned\n    assert len(data) == 50\n    \n    # Verify they are the newest 50 (reverse chronological order)\n    # The last 50 in the list should be returned first\n    returned_indices = [item['index'] for item in data]\n    assert returned_indices == list(range(99, 49, -1))\n\n\n# ============================================================================\n# _handle_fix_detail Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_fix_detail_found(client, mock_sentinel):\n    \"\"\"Test _handle_fix_detail returns fix details for valid fix_id.\"\"\"\n    # Create mock fix\n    mock_fix = Mock()\n    mock_fix.fix_id = \"valid_fix_id\"\n    mock_fix.model_dump.return_value = {\"fix_id\": \"valid_fix_id\", \"status\": \"success\"}\n    \n    mock_sentinel.fixes = [mock_fix]\n    \n    resp = await client.get('/fixes/valid_fix_id')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    assert data['fix_id'] == \"valid_fix_id\"\n    assert mock_fix.model_dump.called\n\n\n@pytest.mark.asyncio\nasync def test_handle_fix_detail_not_found(client, mock_sentinel):\n    \"\"\"Test _handle_fix_detail returns 404 for non-existent fix_id.\"\"\"\n    mock_sentinel.fixes = []\n    \n    resp = await client.get('/fixes/nonexistent_id')\n    assert resp.status == 404\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_fix_detail_special_chars(client, mock_sentinel):\n    \"\"\"Test _handle_fix_detail handles fix_id with special characters.\"\"\"\n    # Create mock fix with special characters\n    fix_id = \"fix-id_123.test\"\n    mock_fix = Mock()\n    mock_fix.fix_id = fix_id\n    mock_fix.model_dump.return_value = {\"fix_id\": fix_id}\n    \n    mock_sentinel.fixes = [mock_fix]\n    \n    # URL encode the fix_id\n    import urllib.parse\n    encoded_id = urllib.parse.quote(fix_id, safe='')\n    \n    resp = await client.get(f'/fixes/{encoded_id}')\n    # Should handle it correctly (either 200 or 404, but not 500)\n    assert resp.status in [200, 404]\n\n\n# ============================================================================\n# _handle_manual_fix Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_manual_fix_happy_path(client, mock_sentinel):\n    \"\"\"Test _handle_manual_fix succeeds with valid JSON body.\"\"\"\n    payload = {\"pact_key\": \"test_pact\", \"error\": \"test_error\"}\n    \n    resp = await client.post('/fix', json=payload)\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify apply_fix was called\n    assert mock_sentinel.apply_fix.called\n    \n    # Verify response contains result\n    assert data is not None\n\n\n@pytest.mark.asyncio\nasync def test_handle_manual_fix_invalid_json(client):\n    \"\"\"Test _handle_manual_fix returns 400 for invalid JSON.\"\"\"\n    # Send malformed JSON\n    resp = await client.post('/fix', data=\"not valid json{\", headers={'Content-Type': 'application/json'})\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_manual_fix_missing_pact_key(client):\n    \"\"\"Test _handle_manual_fix returns 400 when pact_key is missing.\"\"\"\n    payload = {\"error\": \"test_error\"}\n    \n    resp = await client.post('/fix', json=payload)\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_manual_fix_missing_error(client):\n    \"\"\"Test _handle_manual_fix returns 400 when error is missing.\"\"\"\n    payload = {\"pact_key\": \"test_pact\"}\n    \n    resp = await client.post('/fix', json=payload)\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_manual_fix_empty_pact_key(client):\n    \"\"\"Test _handle_manual_fix returns 400 when pact_key is empty.\"\"\"\n    payload = {\"pact_key\": \"\", \"error\": \"test_error\"}\n    \n    resp = await client.post('/fix', json=payload)\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_manual_fix_empty_error(client):\n    \"\"\"Test _handle_manual_fix returns 400 when error is empty.\"\"\"\n    payload = {\"pact_key\": \"test_pact\", \"error\": \"\"}\n    \n    resp = await client.post('/fix', json=payload)\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n# ============================================================================\n# _handle_register Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_register_happy_path(client, mock_sentinel):\n    \"\"\"Test _handle_register succeeds with valid component_id.\"\"\"\n    payload = {\"component_id\": \"test_component\"}\n    \n    resp = await client.post('/register', json=payload)\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify status and component_id in response\n    assert 'status' in data or 'component_id' in data\n    \n    # Verify register_component was called\n    assert mock_sentinel.register_component.called\n\n\n@pytest.mark.asyncio\nasync def test_handle_register_invalid_json(client):\n    \"\"\"Test _handle_register returns 400 for invalid JSON.\"\"\"\n    resp = await client.post('/register', data=\"invalid{json\", headers={'Content-Type': 'application/json'})\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_register_missing_component_id(client):\n    \"\"\"Test _handle_register returns 400 when component_id is missing.\"\"\"\n    payload = {\"other_field\": \"value\"}\n    \n    resp = await client.post('/register', json=payload)\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_register_empty_component_id(client):\n    \"\"\"Test _handle_register returns 400 when component_id is empty.\"\"\"\n    payload = {\"component_id\": \"\"}\n    \n    resp = await client.post('/register', json=payload)\n    assert resp.status == 400\n    \n    data = await resp.json()\n    assert 'error' in data\n\n\n# ============================================================================\n# _handle_metrics Tests\n# ============================================================================\n\n@pytest.mark.asyncio\nasync def test_handle_metrics_happy_path(client, mock_sentinel):\n    \"\"\"Test _handle_metrics returns aggregate metrics.\"\"\"\n    # Setup mock metrics data\n    mock_sentinel.incidents = [\n        Mock(status=\"active\"),\n        Mock(status=\"active\"),\n        Mock(status=\"resolved\")\n    ]\n    \n    # Create fixes with success/failure status\n    fix1 = Mock()\n    fix1.status = \"success\"\n    fix1.spend_usd = 1.234\n    \n    fix2 = Mock()\n    fix2.status = \"failed\"\n    fix2.spend_usd = 2.567\n    \n    fix3 = Mock()\n    fix3.status = \"success\"\n    fix3.spend_usd = 3.891\n    \n    mock_sentinel.fixes = [fix1, fix2, fix3]\n    mock_sentinel.manifest = {\"comp1\": Mock(), \"comp2\": Mock()}\n    \n    resp = await client.get('/metrics')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify all required fields\n    assert 'total_incidents' in data\n    assert 'active_incidents' in data\n    assert 'total_fixes_attempted' in data\n    assert 'fixes_succeeded' in data\n    assert 'fixes_failed' in data\n    assert 'total_spend_usd' in data\n    assert 'components_registered' in data\n\n\n@pytest.mark.asyncio\nasync def test_handle_metrics_spend_rounding(client, mock_sentinel):\n    \"\"\"Test _handle_metrics rounds spend to 2 decimal places.\"\"\"\n    # Create fixes with various spend amounts\n    fix1 = Mock()\n    fix1.status = \"success\"\n    fix1.spend_usd = 1.23456789\n    \n    fix2 = Mock()\n    fix2.status = \"success\"\n    fix2.spend_usd = 2.98765432\n    \n    mock_sentinel.fixes = [fix1, fix2]\n    mock_sentinel.incidents = []\n    mock_sentinel.manifest = {}\n    \n    resp = await client.get('/metrics')\n    assert resp.status == 200\n    \n    data = await resp.json()\n    \n    # Verify spend is rounded to 2 decimal places\n    spend = data['total_spend_usd']\n    assert isinstance(spend, (int, float))\n    \n    # Check that it has at most 2 decimal places\n    spend_str = f\"{spend:.10f}\"\n    decimal_part = spend_str.split('.')[1]\n    # Remove trailing zeros\n    decimal_part = decimal_part.rstrip('0')\n    assert len(decimal_part) <= 2\n\n\n# ============================================================================\n# Invariant Tests\n# ============================================================================\n\ndef test_invariant_start_time_constant(mock_sentinel):\n    \"\"\"Test _start_time remains constant after initialization.\"\"\"\n    api = SentinelAPI(mock_sentinel)\n    \n    initial_start_time = api._start_time\n    \n    # Perform various operations\n    import time\n    time.sleep(0.01)\n    \n    # Verify _start_time hasn't changed\n    assert api._start_time == initial_start_time\n\n\ndef test_invariant_app_persists(mock_sentinel):\n    \"\"\"Test _app persists for lifetime of instance.\"\"\"\n    api = SentinelAPI(mock_sentinel)\n    \n    initial_app = api._app\n    \n    # Perform operations\n    api._setup_routes()\n    \n    # Verify _app is same instance\n    assert api._app is initial_app\n\n\n@pytest.mark.asyncio\nasync def test_invariant_runner_none_before_start(mock_sentinel):\n    \"\"\"Test _runner is None until start() is called.\"\"\"\n    api = SentinelAPI(mock_sentinel)\n    \n    # Verify _runner is None before start\n    assert api._runner is None\n    \n    # Start the server\n    await api.start('127.0.0.1', 8082)\n    \n    # Verify _runner is not None after start\n    assert api._runner is not None\n    \n    # Cleanup\n    await api.stop()\n"
+}

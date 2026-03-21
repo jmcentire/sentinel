@@ -1,0 +1,454 @@
+{
+  "component_id": "src_sentinel_arbiter",
+  "name": "Arbiter Trust Ledger HTTP Client",
+  "description": "HTTP client for reporting trust events to the Arbiter API after fixes. Provides fire-and-forget posting of trust events including fix successes, fix failures, and production errors with configurable weights.",
+  "version": 1,
+  "types": [
+    {
+      "name": "ArbiterClient",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "_endpoint",
+          "type_ref": "str | None",
+          "required": true,
+          "default": "",
+          "description": "API endpoint URL from config",
+          "validators": []
+        },
+        {
+          "name": "_trust_on_fix",
+          "type_ref": "bool",
+          "required": true,
+          "default": "",
+          "description": "Whether to report trust events on fix operations from config",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "Posts trust events to the Arbiter API. Fire-and-forget. Maintains endpoint configuration and trust reporting settings."
+    }
+  ],
+  "functions": [
+    {
+      "name": "__init__",
+      "description": "Initialize ArbiterClient with configuration. Extracts api_endpoint and trust_event_on_fix from config object.",
+      "inputs": [
+        {
+          "name": "config",
+          "type_ref": "ArbiterConfig",
+          "required": true,
+          "default": "",
+          "description": "Configuration object containing api_endpoint and trust_event_on_fix",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [
+        "config must be an instance of ArbiterConfig with api_endpoint and trust_event_on_fix attributes"
+      ],
+      "postconditions": [
+        "_endpoint is set to config.api_endpoint",
+        "_trust_on_fix is set to config.trust_event_on_fix"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "mutates_state"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "self._endpoint and self._trust_on_fix",
+          "description": "Initializes instance state from config"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "is_configured",
+      "description": "Check if the client is configured with a valid endpoint. Returns True if _endpoint is not None.",
+      "inputs": [],
+      "output_type": "bool",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns True if _endpoint is not None",
+        "Returns False if _endpoint is None"
+      ],
+      "idempotent": false,
+      "side_effects": [],
+      "structured_side_effects": [],
+      "performance_budget": null
+    },
+    {
+      "name": "report_trust_event",
+      "description": "POST trust event to /trust/event endpoint. Returns True on success (2xx response), False on failure or if not configured. Adds timestamp automatically.",
+      "inputs": [
+        {
+          "name": "node_id",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Identifier of the node/component",
+          "validators": []
+        },
+        {
+          "name": "event",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Event type identifier",
+          "validators": []
+        },
+        {
+          "name": "weight",
+          "type_ref": "float",
+          "required": true,
+          "default": "",
+          "description": "Trust weight delta (positive or negative)",
+          "validators": []
+        },
+        {
+          "name": "run_id",
+          "type_ref": "str",
+          "required": false,
+          "default": "\"\"",
+          "description": "Optional run identifier",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [
+        {
+          "name": "not_configured",
+          "condition": "_endpoint is None",
+          "error_type": "bool",
+          "error_data": {
+            "returns": "False"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns False if not configured",
+        "Returns True on successful POST (status < 300)",
+        "Returns False on POST failure or exception",
+        "Payload includes timestamp in ISO format"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "network_call",
+        "logging"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "{_endpoint}/trust/event",
+          "description": "POSTs JSON payload with trust event data"
+        },
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "Logs debug messages on non-2xx responses or exceptions (via _post)"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_post",
+      "description": "POST JSON payload to a URL. Returns True on 2xx status codes, False otherwise. Uses 5-second timeout. Catches all exceptions and returns False.",
+      "inputs": [
+        {
+          "name": "url",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Full URL to POST to",
+          "validators": []
+        },
+        {
+          "name": "payload",
+          "type_ref": "dict",
+          "required": true,
+          "default": "",
+          "description": "JSON-serializable dictionary to send as request body",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [
+        {
+          "name": "http_error",
+          "condition": "HTTP status >= 300",
+          "error_type": "bool",
+          "error_data": {
+            "returns": "False"
+          }
+        },
+        {
+          "name": "network_exception",
+          "condition": "Any exception during HTTP request (timeout, connection error, etc.)",
+          "error_type": "bool",
+          "error_data": {
+            "returns": "False"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns True if response status < 300",
+        "Returns False if response status >= 300",
+        "Returns False if any exception occurs",
+        "Logs debug message on non-2xx response or exception"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "network_call",
+        "logging"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "url parameter",
+          "description": "Makes HTTP POST with JSON payload, 5-second timeout"
+        },
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "Logs status code on non-2xx or exception message on failure"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "report_fix_success",
+      "description": "Report a successful fix with trust boost. Returns False if trust_on_fix is disabled, otherwise calls report_trust_event with event='sentinel_fix' and weight=1.5.",
+      "inputs": [
+        {
+          "name": "component_id",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Component identifier (used as node_id)",
+          "validators": []
+        },
+        {
+          "name": "run_id",
+          "type_ref": "str",
+          "required": false,
+          "default": "\"\"",
+          "description": "Optional run identifier",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [
+        {
+          "name": "trust_on_fix_disabled",
+          "condition": "_trust_on_fix is False",
+          "error_type": "bool",
+          "error_data": {
+            "returns": "False"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns False if _trust_on_fix is False",
+        "Otherwise returns result of report_trust_event with event='sentinel_fix', weight=1.5"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "network_call",
+        "logging"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "{_endpoint}/trust/event",
+          "description": "POSTs trust event if _trust_on_fix is enabled"
+        },
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "May log via report_trust_event"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "report_fix_failure",
+      "description": "Report a failed fix with trust penalty. Returns False if trust_on_fix is disabled, otherwise calls report_trust_event with event='sentinel_fix_failure' and weight=-0.5.",
+      "inputs": [
+        {
+          "name": "component_id",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Component identifier (used as node_id)",
+          "validators": []
+        },
+        {
+          "name": "run_id",
+          "type_ref": "str",
+          "required": false,
+          "default": "\"\"",
+          "description": "Optional run identifier",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [
+        {
+          "name": "trust_on_fix_disabled",
+          "condition": "_trust_on_fix is False",
+          "error_type": "bool",
+          "error_data": {
+            "returns": "False"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "Returns False if _trust_on_fix is False",
+        "Otherwise returns result of report_trust_event with event='sentinel_fix_failure', weight=-0.5"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "network_call",
+        "logging"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "{_endpoint}/trust/event",
+          "description": "POSTs trust event if _trust_on_fix is enabled"
+        },
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "May log via report_trust_event"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "report_production_error",
+      "description": "Report production error detection with trust reduction. Calls report_trust_event with event='production_error' and weight=-0.3. Not gated by _trust_on_fix.",
+      "inputs": [
+        {
+          "name": "component_id",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "Component identifier (used as node_id)",
+          "validators": []
+        },
+        {
+          "name": "run_id",
+          "type_ref": "str",
+          "required": false,
+          "default": "\"\"",
+          "description": "Optional run identifier",
+          "validators": []
+        }
+      ],
+      "output_type": "bool",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns result of report_trust_event with event='production_error', weight=-0.3"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "network_call",
+        "logging"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "network_call",
+          "target": "{_endpoint}/trust/event",
+          "description": "POSTs trust event"
+        },
+        {
+          "kind": "logging",
+          "target": "logger.debug",
+          "description": "May log via report_trust_event"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "logging",
+    "datetime",
+    "aiohttp",
+    "sentinel.config"
+  ],
+  "dependency_contracts": {
+    "sentinel.config": [
+      "ArbiterConfig"
+    ],
+    "aiohttp": [
+      "ClientSession",
+      "ClientTimeout"
+    ],
+    "datetime": [
+      "datetime.now"
+    ],
+    "logging": [
+      "getLogger"
+    ]
+  },
+  "invariants": [
+    "HTTP timeout is always 5 seconds for all requests",
+    "report_fix_success uses event='sentinel_fix' with weight=1.5",
+    "report_fix_failure uses event='sentinel_fix_failure' with weight=-0.5",
+    "report_production_error uses event='production_error' with weight=-0.3",
+    "All trust events include automatically-generated ISO timestamp",
+    "All methods return bool indicating success/failure rather than raising exceptions",
+    "Fix-related reports (_fix_success, _fix_failure) are gated by _trust_on_fix config flag",
+    "Production error reports are NOT gated by _trust_on_fix flag"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "external_api"
+    ],
+    "writes": [
+      "external_api"
+    ],
+    "rationale": "Makes HTTP POST requests to external Arbiter API; reads configuration at initialization",
+    "side_effects": [
+      {
+        "type": "network_call",
+        "classification": "external_api",
+        "fields": [
+          "node_id",
+          "event",
+          "weight",
+          "run_id",
+          "timestamp"
+        ],
+        "rationale": "POSTs trust event data to Arbiter trust ledger API"
+      },
+      {
+        "type": "logging",
+        "classification": "observability",
+        "fields": [
+          "status_code",
+          "exception_message"
+        ],
+        "rationale": "Logs debug messages for non-2xx responses and exceptions"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [],
+    "rationale": null
+  }
+}

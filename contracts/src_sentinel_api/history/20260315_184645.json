@@ -1,0 +1,635 @@
+{
+  "component_id": "src_sentinel_api",
+  "name": "Sentinel API",
+  "description": "HTTP API server for Sentinel providing endpoints for status monitoring, manifest inspection, fix history, manual fix triggering, component registration, and metrics reporting.",
+  "version": 1,
+  "types": [
+    {
+      "name": "SentinelAPI",
+      "kind": "struct",
+      "fields": [
+        {
+          "name": "_sentinel",
+          "type_ref": "Any",
+          "required": true,
+          "default": "",
+          "description": "Reference to Sentinel instance",
+          "validators": []
+        },
+        {
+          "name": "_app",
+          "type_ref": "web.Application",
+          "required": true,
+          "default": "",
+          "description": "aiohttp web application",
+          "validators": []
+        },
+        {
+          "name": "_runner",
+          "type_ref": "Optional[web.AppRunner]",
+          "required": true,
+          "default": "",
+          "description": "Application runner for lifecycle management",
+          "validators": []
+        },
+        {
+          "name": "_start_time",
+          "type_ref": "str",
+          "required": true,
+          "default": "",
+          "description": "ISO format timestamp of initialization",
+          "validators": []
+        }
+      ],
+      "item_type": "",
+      "variants": [],
+      "inner_types": [],
+      "description": "HTTP API server for Sentinel with route handlers and lifecycle management"
+    }
+  ],
+  "functions": [
+    {
+      "name": "__init__",
+      "description": "Initialize SentinelAPI with a Sentinel instance, create aiohttp application, capture start time, and setup routes",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "sentinel",
+          "type_ref": "Any",
+          "required": true,
+          "default": "",
+          "description": "Sentinel instance (type avoided to prevent circular import)",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [
+        "sentinel instance must be provided"
+      ],
+      "postconditions": [
+        "_sentinel is set to provided sentinel instance",
+        "_app is initialized as web.Application",
+        "_runner is None",
+        "_start_time is set to current datetime in ISO format",
+        "Routes are configured via _setup_routes()"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Creates web.Application instance",
+        "Calls datetime.now()",
+        "Logs via logger"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "self._sentinel, self._app, self._runner, self._start_time",
+          "description": "Initializes instance attributes"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_setup_routes",
+      "description": "Configure HTTP routes for the API endpoints",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "GET /status route is registered",
+        "GET /manifest route is registered",
+        "GET /fixes route is registered",
+        "GET /fixes/{fix_id} route is registered",
+        "POST /fix route is registered",
+        "POST /register route is registered",
+        "GET /metrics route is registered"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Mutates _app.router by adding routes"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "self._app.router",
+          "description": "Adds 7 route handlers to the application router"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "start",
+      "description": "Start the HTTP API server on specified host and port",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "host",
+          "type_ref": "str",
+          "required": true,
+          "default": "0.0.0.0",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "port",
+          "type_ref": "int",
+          "required": true,
+          "default": "8484",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "_runner is initialized with AppRunner",
+        "TCP site is started on specified host and port",
+        "Log message confirms API is listening"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Creates AppRunner",
+        "Starts TCP server",
+        "Logs info message"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "self._runner",
+          "description": "Creates and configures AppRunner"
+        },
+        {
+          "kind": "network_call",
+          "target": "TCP server",
+          "description": "Starts listening on specified host:port"
+        },
+        {
+          "kind": "logging",
+          "target": "logger",
+          "description": "Logs startup message with host and port"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "stop",
+      "description": "Stop the HTTP API server and cleanup resources",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "None",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "If _runner exists, it is cleaned up"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Calls cleanup on runner if present"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "self._runner",
+          "description": "Cleans up runner resources if runner exists"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_status",
+      "description": "Handle GET /status endpoint, returning system status information including version, start time, and configuration status",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns JSON response with version, started_at, sources count, components count, active_incidents count, total_fixes count, and configuration flags"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads from sentinel instance attributes"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": "Only reads state, no mutations"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_manifest",
+      "description": "Handle GET /manifest endpoint, returning all registered component manifest entries",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns JSON response with components dictionary containing serialized manifest entries"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads manifest from sentinel",
+        "Calls model_dump() on manifest entries"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": "Only reads state and serializes"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_fixes",
+      "description": "Handle GET /fixes endpoint, returning last 50 fixes in reverse chronological order",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns JSON array of up to 50 most recent fixes, newest first",
+        "Each fix is serialized via model_dump()"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads fixes list from sentinel",
+        "Slices list to last 50 items"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": "Only reads and serializes state"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_fix_detail",
+      "description": "Handle GET /fixes/{fix_id} endpoint, returning details for a specific fix by ID",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "Request with fix_id in match_info",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [
+        {
+          "name": "fix_not_found",
+          "condition": "fix_id does not match any fix in sentinel.fixes",
+          "error_type": "HTTP 404",
+          "error_data": {
+            "error": "Fix not found"
+          }
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "If fix_id found: returns JSON response with fix details",
+        "If fix_id not found: returns JSON error with 404 status"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Iterates through sentinel.fixes list",
+        "Reads fix_id from request.match_info"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": "Only reads state"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_manual_fix",
+      "description": "Handle POST /fix endpoint, triggering a manual fix for a given pact_key and error",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "Request with JSON body containing pact_key and error",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [
+        {
+          "name": "invalid_json",
+          "condition": "Request body is not valid JSON",
+          "error_type": "HTTP 400",
+          "error_data": {
+            "error": "Invalid JSON"
+          }
+        },
+        {
+          "name": "missing_required_fields",
+          "condition": "pact_key or error fields are empty or missing",
+          "error_type": "HTTP 400",
+          "error_data": {
+            "error": "pact_key and error required"
+          }
+        }
+      ],
+      "preconditions": [
+        "Request body must be valid JSON",
+        "Request body must contain pact_key (non-empty)",
+        "Request body must contain error (non-empty)"
+      ],
+      "postconditions": [
+        "On success: returns JSON response with result.model_dump()",
+        "On invalid JSON: returns 400 error",
+        "On missing fields: returns 400 error"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Parses JSON from request",
+        "Calls sentinel.handle_manual_fix()"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "sentinel state",
+          "description": "Triggers manual fix which may mutate sentinel state"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_register",
+      "description": "Handle POST /register endpoint, registering a new component in the manifest",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "Request with JSON body containing component registration data",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [
+        {
+          "name": "invalid_json",
+          "condition": "Request body is not valid JSON",
+          "error_type": "HTTP 400",
+          "error_data": {
+            "error": "Invalid JSON"
+          }
+        },
+        {
+          "name": "missing_component_id",
+          "condition": "component_id field is empty or missing",
+          "error_type": "HTTP 400",
+          "error_data": {
+            "error": "component_id required"
+          }
+        }
+      ],
+      "preconditions": [
+        "Request body must be valid JSON",
+        "Request body must contain component_id (non-empty)"
+      ],
+      "postconditions": [
+        "On success: ManifestEntry is created and registered in sentinel.manifest",
+        "Returns JSON with status and component_id",
+        "On invalid JSON: returns 400 error",
+        "On missing component_id: returns 400 error"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Parses JSON from request",
+        "Creates ManifestEntry",
+        "Registers entry in sentinel.manifest"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "mutates_state",
+          "target": "sentinel.manifest",
+          "description": "Registers new component in manifest"
+        }
+      ],
+      "performance_budget": null
+    },
+    {
+      "name": "_handle_metrics",
+      "description": "Handle GET /metrics endpoint, returning aggregate metrics about incidents, fixes, and spend",
+      "inputs": [
+        {
+          "name": "self",
+          "type_ref": "SentinelAPI",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        },
+        {
+          "name": "request",
+          "type_ref": "web.Request",
+          "required": true,
+          "default": "",
+          "description": "",
+          "validators": []
+        }
+      ],
+      "output_type": "web.Response",
+      "error_cases": [],
+      "preconditions": [],
+      "postconditions": [
+        "Returns JSON with total_incidents, active_incidents, total_fixes_attempted, fixes_succeeded, fixes_failed, total_spend_usd (rounded to 2 decimals), and components_registered"
+      ],
+      "idempotent": false,
+      "side_effects": [
+        "Reads fixes from sentinel",
+        "Calls get_recent_incidents(1000) on incident_mgr",
+        "Calls get_active_incidents() on incident_mgr",
+        "Iterates through fixes to compute success/failure counts and total spend"
+      ],
+      "structured_side_effects": [
+        {
+          "kind": "none",
+          "target": "",
+          "description": "Only reads and aggregates state"
+        }
+      ],
+      "performance_budget": null
+    }
+  ],
+  "dependencies": [
+    "json",
+    "logging",
+    "datetime",
+    "aiohttp.web",
+    "sentinel.schemas"
+  ],
+  "dependency_contracts": {},
+  "invariants": [
+    "_start_time is set once during __init__ and remains constant",
+    "_app is created during __init__ and persists for the lifetime of the instance",
+    "Routes are configured once during __init__ via _setup_routes()",
+    "_runner is None until start() is called"
+  ],
+  "requires": [],
+  "processing_register": "",
+  "data_access": {
+    "reads": [
+      "sentinel._config.sources",
+      "sentinel.manifest",
+      "sentinel.incident_mgr",
+      "sentinel.fixes",
+      "sentinel._arbiter",
+      "sentinel._stigmergy",
+      "sentinel._ledger",
+      "sentinel._contracts"
+    ],
+    "writes": [
+      "sentinel.manifest (via register)"
+    ],
+    "rationale": "API reads various sentinel subsystem state for status/metrics endpoints and writes to manifest during registration",
+    "side_effects": [
+      {
+        "type": "network",
+        "classification": "HTTP server",
+        "fields": [
+          "host",
+          "port"
+        ],
+        "rationale": "Starts TCP server listening on configured host:port"
+      },
+      {
+        "type": "logging",
+        "classification": "info",
+        "fields": [
+          "logger"
+        ],
+        "rationale": "Logs API startup and potentially errors"
+      }
+    ]
+  },
+  "authority": {
+    "domains": [
+      "HTTP API endpoints for Sentinel"
+    ],
+    "rationale": "This component owns the HTTP API surface for Sentinel, including all REST endpoints for status, manifest, fixes, registration, and metrics"
+  }
+}

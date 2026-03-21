@@ -16,6 +16,7 @@ from pathlib import Path
 
 from sentinel.arbiter import ArbiterClient
 from sentinel.attribution import AttributionEngine
+from sentinel.chronicler import ChroniclerEmitter
 from sentinel.config import SentinelConfig
 from sentinel.contracts import ContractManager
 from sentinel.events import EventBus, SentinelEvent
@@ -64,6 +65,7 @@ class Sentinel:
         # Integration clients
         self._arbiter = ArbiterClient(config.arbiter)
         self._stigmergy = StigmergyClient(config.stigmergy)
+        self._chronicler = ChroniclerEmitter(config.chronicler)
         self._notifier = Notifier(config.notify)
         self._contracts = ContractManager(config.pact, self._state_dir)
         self._ledger = LedgerClient(config.ledger)
@@ -380,6 +382,9 @@ class Sentinel:
             detail=f"Fixed {incident.id} (${fix_result.spend_usd:.2f})",
         ))
 
+        # Chronicler lifecycle event
+        await self._chronicler.emit(incident)
+
     async def _post_fix_failure(
         self, incident: Incident, fix_result: FixResult, attribution: Attribution,
     ) -> None:
@@ -432,6 +437,9 @@ class Sentinel:
             component_id=incident.component_id,
             detail=f"Incident {incident.id} escalated",
         ))
+
+        # Chronicler lifecycle event
+        await self._chronicler.emit(incident)
 
     def _find_incident_by_fingerprint(self, fp_hash: str) -> Incident | None:
         for incident in self._incident_mgr.get_recent_incidents(100):

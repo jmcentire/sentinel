@@ -1,0 +1,271 @@
+{
+  "root_id": "root",
+  "nodes": {
+    "root": {
+      "component_id": "root",
+      "name": "Project Root",
+      "description": "Adopted codebase at /Users/jmcentire/Code/sentinel",
+      "depth": 0,
+      "parent_id": "",
+      "children": [
+        "src"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src": {
+      "component_id": "src",
+      "name": "Src",
+      "description": "Package: src",
+      "depth": 1,
+      "parent_id": "root",
+      "children": [
+        "src_sentinel"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel": {
+      "component_id": "src_sentinel",
+      "name": "Sentinel",
+      "description": "Package: src/sentinel",
+      "depth": 2,
+      "parent_id": "src",
+      "children": [
+        "src_sentinel_api",
+        "src_sentinel_arbiter",
+        "src_sentinel_attribution",
+        "src_sentinel_cli",
+        "src_sentinel_config",
+        "src_sentinel_contracts",
+        "src_sentinel_events",
+        "src_sentinel_fixer",
+        "src_sentinel_git_ops",
+        "src_sentinel_incidents",
+        "src_sentinel_ledger",
+        "src_sentinel_llm",
+        "src_sentinel_manifest",
+        "src_sentinel_notify",
+        "src_sentinel_sentinel",
+        "src_sentinel_severity",
+        "src_sentinel_stigmergy",
+        "src_sentinel_triage",
+        "src_sentinel_watcher"
+      ],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_api": {
+      "component_id": "src_sentinel_api",
+      "name": "Api",
+      "description": "Module src/sentinel/api.py: __init__, _setup_routes, start, stop, _handle_status (+6 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_arbiter": {
+      "component_id": "src_sentinel_arbiter",
+      "name": "Arbiter",
+      "description": "Module src/sentinel/arbiter.py: __init__, is_configured, report_trust_event, _post, report_fix_success (+2 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_attribution": {
+      "component_id": "src_sentinel_attribution",
+      "name": "Attribution",
+      "description": "Module src/sentinel/attribution.py: __init__, extract_key, attribute, attribute_signal",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_cli": {
+      "component_id": "src_sentinel_cli",
+      "name": "Cli",
+      "description": "Module src/sentinel/cli.py: main, init, watch, register, manifest (+10 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_config": {
+      "component_id": "src_sentinel_config",
+      "name": "Config",
+      "description": "Module src/sentinel/config.py: load_config",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_contracts": {
+      "component_id": "src_sentinel_contracts",
+      "name": "Contracts",
+      "description": "Module src/sentinel/contracts.py: __init__, pact_configured, push_contract, _push_via_cli, _push_via_api (+2 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_events": {
+      "component_id": "src_sentinel_events",
+      "name": "Events",
+      "description": "Module src/sentinel/events.py: __init__, on, emit",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_fixer": {
+      "component_id": "src_sentinel_fixer",
+      "name": "Fixer",
+      "description": "Module src/sentinel/fixer.py: build_narrative_debrief, _build_fixer_prompt, _extract_section, _read_file, __init__ (+3 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_git_ops": {
+      "component_id": "src_sentinel_git_ops",
+      "name": "Git Ops",
+      "description": "Module src/sentinel/git_ops.py: __init__, is_git_repo, _run, current_hash, snapshot (+2 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_incidents": {
+      "component_id": "src_sentinel_incidents",
+      "name": "Incidents",
+      "description": "Module src/sentinel/incidents.py: __init__, create_incident, get_incident, get_active_incidents, update_status (+9 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_ledger": {
+      "component_id": "src_sentinel_ledger",
+      "name": "Ledger",
+      "description": "Module src/sentinel/ledger.py: __init__, __init__, is_configured, load_severity_mappings",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_llm": {
+      "component_id": "src_sentinel_llm",
+      "name": "Llm",
+      "description": "Module src/sentinel/llm.py: _pydantic_to_tool_schema, __init__, _get_client, spend, is_budget_exceeded (+3 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_manifest": {
+      "component_id": "src_sentinel_manifest",
+      "name": "Manifest",
+      "description": "Module src/sentinel/manifest.py: __init__, register, unregister, lookup, lookup_by_key (+4 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_notify": {
+      "component_id": "src_sentinel_notify",
+      "name": "Notify",
+      "description": "Module src/sentinel/notify.py: __init__, is_configured, notify, _post",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_sentinel": {
+      "component_id": "src_sentinel_sentinel",
+      "name": "Sentinel",
+      "description": "Module src/sentinel/sentinel.py: __init__, manifest, incident_mgr, event_bus, fixes (+12 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_severity": {
+      "component_id": "src_sentinel_severity",
+      "name": "Severity",
+      "description": "Module src/sentinel/severity.py: _max_severity, _mentions_gdpr_erasable, _mentions_audit_field_deletion, __init__, compute",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_stigmergy": {
+      "component_id": "src_sentinel_stigmergy",
+      "name": "Stigmergy",
+      "description": "Module src/sentinel/stigmergy.py: __init__, is_configured, emit_signal, _post, emit_fix_applied (+3 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_triage": {
+      "component_id": "src_sentinel_triage",
+      "name": "Triage",
+      "description": "Module src/sentinel/triage.py: triage_signal, generate_diagnostic_report",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    },
+    "src_sentinel_watcher": {
+      "component_id": "src_sentinel_watcher",
+      "name": "Watcher",
+      "description": "Module src/sentinel/watcher.py: fingerprint_signal, _extract_key_str, __init__, start, _start_process (+23 more)",
+      "depth": 3,
+      "parent_id": "src_sentinel",
+      "children": [],
+      "contract": null,
+      "implementation_status": "pending",
+      "test_results": null
+    }
+  }
+}

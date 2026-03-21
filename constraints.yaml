@@ -1,72 +1,37 @@
-version: "1"
-project: sentinel
-constraints:
-  - id: C001
-    name: budget_enforcement
-    description: All LLM spending must be tracked per-incident and per-time-window (hourly, daily, weekly, monthly)
-    severity: must
-    classification: FINANCIAL
-    rationale: Uncontrolled LLM spending can be catastrophic
-
-  - id: C002
-    name: fixer_dedup
-    description: No concurrent duplicate fixer spawns for the same PACT key
-    severity: must
-    classification: null
-    rationale: Duplicate fixers waste budget and can produce conflicting changes
-
-  - id: C003
-    name: reproduce_before_fix
-    description: Fixer must generate a reproducer test before attempting a fix
-    severity: must
-    classification: null
-    rationale: Fixing without reproduction risks incorrect changes
-
-  - id: C004
-    name: integration_fire_and_forget
-    description: Arbiter and Stigmergy calls must be fire-and-forget (never block, never raise)
-    severity: must
-    classification: null
-    rationale: Integration failures must never crash Sentinel
-
-  - id: C005
-    name: ledger_nonblocking
-    description: Ledger unavailability at startup must not prevent Sentinel from starting
-    severity: must
-    classification: null
-    rationale: Sentinel must function independently of Ledger availability
-
-  - id: C006
-    name: pact_fallback
-    description: If Pact CLI/API unavailable, write proposed contracts to .sentinel/proposed_contracts/
-    severity: must
-    classification: null
-    rationale: Contract tightening must not be lost due to Pact unavailability
-
-  - id: C007
-    name: error_fingerprinting
-    description: Errors must be fingerprinted (normalize + SHA256[:16]) for deduplication
-    severity: must
-    classification: null
-    rationale: Duplicate errors should create one incident, not many
-
-  - id: C008
-    name: log_source_backoff
-    description: Unavailable log sources must use exponential backoff (max 60s)
-    severity: should
-    classification: null
-    rationale: Prevent tight retry loops on unavailable sources
-
-  - id: C009
-    name: pact_key_format
-    description: PACT keys must match regex PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+
-    severity: must
-    classification: null
-    rationale: Consistent key format enables reliable extraction from error logs
-
-  - id: C010
-    name: audit_sidecar_local
-    description: API server must expose only operational endpoints — no raw log access
-    severity: should
-    classification: COMPLIANCE
-    rationale: Logs may contain PII or sensitive error context
+backwards_compatibility:
+  required: true
+  default_state: disabled
+  
+integration_pattern:
+  follow_existing: true
+  reference_files:
+    - "arbiter.py"
+    - "stigmergy.py"
+  
+error_handling:
+  pattern: "fire_and_forget"
+  failure_behavior: "log_and_swallow"
+  
+dependencies:
+  external_new: false
+  python_version: "3.12+"
+  pydantic_version: "v2"
+  
+testing:
+  existing_tests: "must_pass"
+  new_coverage: "required"
+  
+lifecycle_events:
+  trigger_points:
+    - "detected"
+    - "triaging" 
+    - "remediating"
+    - "resolved"
+    - "escalated"
+  
+wiring_points:
+  primary:
+    - "_resolve_incident()"
+    - "_escalate_incident()"
+  secondary:
+    - "early lifecycle transitions (TBD)"
