@@ -315,7 +315,7 @@ def status(ctx: click.Context) -> None:
 @click.option("--port", default=8484, type=int, help="Bind port")
 @click.pass_context
 def serve(ctx: click.Context, host: str, port: int) -> None:
-    """Start the HTTP API server."""
+    """Start the HTTP API server and log watcher together."""
     config = ctx.obj["config"]
 
     from sentinel.api import SentinelAPI
@@ -325,21 +325,28 @@ def serve(ctx: click.Context, host: str, port: int) -> None:
     api = SentinelAPI(sentinel)
 
     async def _run():
-        await sentinel.startup()
         await api.start(host, port)
-        # Keep running
         try:
-            while True:
-                await asyncio.sleep(3600)
+            if config.sources:
+                await asyncio.gather(
+                    sentinel.run(),
+                    _keep_alive(),
+                )
+            else:
+                await _keep_alive()
         except asyncio.CancelledError:
             pass
         finally:
             await api.stop()
 
+    async def _keep_alive():
+        while True:
+            await asyncio.sleep(3600)
+
     try:
         asyncio.run(_run())
     except KeyboardInterrupt:
-        click.echo("\nAPI server stopped.")
+        click.echo("\nSentinel stopped.")
 
 
 if __name__ == "__main__":
