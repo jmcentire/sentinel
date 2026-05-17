@@ -325,6 +325,8 @@ def serve(ctx: click.Context, host: str, port: int) -> None:
     api = SentinelAPI(sentinel)
 
     async def _run():
+        if not config.sources:
+            await sentinel.startup()
         await api.start(host, port)
         try:
             if config.sources:
