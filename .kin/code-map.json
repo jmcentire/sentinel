@@ -1,2065 +1,1126 @@
 {
-  "version": "1.0.0",
-  "project": {
-    "name": "sentinel",
-    "description": "Code map exported from Kindex for sentinel.",
-    "languages": [
-      "Python"
-    ],
-    "frameworks": [],
-    "analyzedAt": "2026-05-24T15:03:22",
-    "gitCommitHash": "d6ac8bf1387c271389379465c5f131b76da47daf"
-  },
-  "nodes": [
-    {
-      "id": "code-sym-sentinel-91c6eceaad97",
-      "type": "class",
-      "name": "ErrorThresholdConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class ErrorThresholdConfig (contracts/src_sentinel_config/interface.py:24)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-21cd68c03ace",
-      "type": "class",
-      "name": "ErrorThresholdConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class ErrorThresholdConfig(BaseModel) (src/sentinel/config.py:30)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-ec9a4222b36d",
-      "type": "class",
-      "name": "SourceConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class SourceConfig (contracts/src_sentinel_config/interface.py:12)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-503022e1a575",
-      "type": "class",
-      "name": "SourceConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class SourceConfig(BaseModel) (src/sentinel/config.py:15)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-d5a154100ee2",
-      "type": "class",
-      "name": "SeverityMapping",
-      "filePath": "src/sentinel/ledger.py",
-      "summary": "class SeverityMapping (src/sentinel/ledger.py:14)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-591d1de15d6c",
-      "type": "class",
-      "name": "BudgetConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class BudgetConfig(BaseModel) (src/sentinel/config.py:80) [Merged from: BudgetConfig] class BudgetConfig(BaseModel) (src/kindex/config.py:45)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-be477729a561",
-      "type": "class",
-      "name": "BudgetConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class BudgetConfig (contracts/src_sentinel_config/interface.py:61)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-b08907fb2dfe",
-      "type": "class",
-      "name": "NotifyConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class NotifyConfig (contracts/src_sentinel_config/interface.py:50)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-efa12440164f",
-      "type": "class",
-      "name": "NotifyConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class NotifyConfig(BaseModel) (src/sentinel/config.py:67)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-63f0bb097a85",
-      "type": "class",
-      "name": "SeverityMapping",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class SeverityMapping(BaseModel) (src/sentinel/schemas.py:138)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-4814402d49f7",
-      "type": "file",
-      "name": "src/sentinel/severity.py",
-      "filePath": "src/sentinel/severity.py",
-      "summary": "Language: Python | Path: src/sentinel/severity.py | ~70 lines ## Classes - SeverityEngine",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 4,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-mod-sentinel-e87259e12962",
-      "type": "file",
-      "name": "src/sentinel/events.py",
-      "filePath": "src/sentinel/events.py",
-      "summary": "Language: Python | Path: src/sentinel/events.py | ~32 lines ## Classes - EventBus",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-1a2f04b675ac",
-      "type": "class",
-      "name": "StigmergyConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class StigmergyConfig (contracts/src_sentinel_config/interface.py:46)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-8e38ed87e9e0",
-      "type": "class",
-      "name": "StigmergyConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class StigmergyConfig(BaseModel) (src/sentinel/config.py:56)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-7f72543dfd5c",
-      "type": "class",
-      "name": "ChroniclerConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class ChroniclerConfig(BaseModel) (src/sentinel/config.py:61)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-e18943936195",
-      "type": "class",
-      "name": "ChroniclerEmitter",
-      "filePath": "src/sentinel/chronicler.py",
-      "summary": "class ChroniclerEmitter (src/sentinel/chronicler.py:16) ## Methods - emit(self, incident: Incident) -> bool",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-5cc996d1c59f",
-      "type": "file",
-      "name": "src/sentinel/cli.py",
-      "filePath": "src/sentinel/cli.py",
-      "summary": "Language: Python | Path: src/sentinel/cli.py | ~344 lines ## Functions - fix(ctx: click.Context, pact_key: str, error: str) -> None",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 12,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-e4109c76edd9",
-      "type": "class",
-      "name": "LedgerConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class LedgerConfig(BaseModel) (src/sentinel/config.py:75) [Merged from: LedgerConfig] class LedgerConfig(BaseModel) (src/config/config.py:157)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-cd05826b3614",
-      "type": "file",
-      "name": "src/sentinel/contracts.py",
-      "filePath": "src/sentinel/contracts.py",
-      "summary": "Language: Python | Path: src/sentinel/contracts.py | ~112 lines ## Classes - ContractManager",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-03d1084e4f08",
-      "type": "class",
-      "name": "ContractManager",
-      "filePath": "src/sentinel/contracts.py",
-      "summary": "class ContractManager (src/sentinel/contracts.py:16) ## Methods - list_proposals(self) -> list[ContractProposal]",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 3,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-37a15f40937d",
-      "type": "class",
-      "name": "SeverityEngine",
-      "filePath": "src/sentinel/severity.py",
-      "summary": "class SeverityEngine (src/sentinel/severity.py:25) ## Methods - compute(self, signal: Signal, attribution: Attribution) -> str",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-287b91d9c7dd",
-      "type": "file",
-      "name": "src/sentinel/triage.py",
-      "filePath": "src/sentinel/triage.py",
-      "summary": "Language: Python | Path: src/sentinel/triage.py | ~93 lines ## Classes - DiagnosticResult(BaseModel)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 4,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-a2153f98ed32",
-      "type": "class",
-      "name": "DiagnosticResult",
-      "filePath": "src/sentinel/triage.py",
-      "summary": "class DiagnosticResult(BaseModel) (src/sentinel/triage.py:29)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-09aa425b5303",
-      "type": "class",
-      "name": "TriageResult",
-      "filePath": "src/sentinel/triage.py",
-      "summary": "class TriageResult(BaseModel) (src/sentinel/triage.py:22)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-970153c33934",
-      "type": "class",
-      "name": "EventBus",
-      "filePath": "src/sentinel/events.py",
-      "summary": "class EventBus (src/sentinel/events.py:22) ## Methods - emit(self, event: SentinelEvent) -> None",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-b20b576968ec",
-      "type": "class",
-      "name": "SentinelEvent",
-      "filePath": "src/sentinel/events.py",
-      "summary": "class SentinelEvent (src/sentinel/events.py:14)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-4e71325d1f1c",
-      "type": "file",
-      "name": "src/sentinel/fixer.py",
-      "filePath": "src/sentinel/fixer.py",
-      "summary": "Language: Python | Path: src/sentinel/fixer.py | ~394 lines ## Classes - FixerAgent",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 5,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-5fcda54b0c8d",
-      "type": "class",
-      "name": "FixerAgent",
-      "filePath": "src/sentinel/fixer.py",
-      "summary": "class FixerAgent (src/sentinel/fixer.py:45) ## Methods - fix( self, incident: Incident, manifest_entry: ManifestEntry, max_attempts: int = 2, ) -> FixResult",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-2b046a462ebd",
-      "type": "file",
-      "name": "src/sentinel/git_ops.py",
-      "filePath": "src/sentinel/git_ops.py",
-      "summary": "Language: Python | Path: src/sentinel/git_ops.py | ~81 lines ## Classes - GitOps",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-21a7de90d3e5",
-      "type": "class",
-      "name": "GitOps",
-      "filePath": "src/sentinel/git_ops.py",
-      "summary": "class GitOps (src/sentinel/git_ops.py:12) ## Methods - commit_fix(self, message: str, files: list[Path]) -> str|None",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 5,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-fc293f363ea6",
-      "type": "file",
-      "name": "src/sentinel/incidents.py",
-      "filePath": "src/sentinel/incidents.py",
-      "summary": "Language: Python | Path: src/sentinel/incidents.py | ~221 lines ## Classes - IncidentManager",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-fdf9c26781d3",
-      "type": "class",
-      "name": "IncidentManager",
-      "filePath": "src/sentinel/incidents.py",
-      "summary": "class IncidentManager (src/sentinel/incidents.py:26) ## Methods - add_signal(self, incident_id: str, signal: Signal) -> None",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 12,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-1d0a125c6c90",
-      "type": "file",
-      "name": "src/sentinel/ledger.py",
-      "filePath": "src/sentinel/ledger.py",
-      "summary": "Language: Python | Path: src/sentinel/ledger.py | ~37 lines ## Classes - LedgerClient",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-587e40e57571",
-      "type": "class",
-      "name": "LedgerClient",
-      "filePath": "src/sentinel/ledger.py",
-      "summary": "class LedgerClient (src/sentinel/ledger.py:28) ## Methods - is_configured(self) -> bool",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-2c25f3c4d535",
-      "type": "file",
-      "name": "src/sentinel/manifest.py",
-      "filePath": "src/sentinel/manifest.py",
-      "summary": "Language: Python | Path: src/sentinel/manifest.py | ~85 lines ## Classes - ManifestManager",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-ab2673022c0f",
-      "type": "class",
-      "name": "ManifestManager",
-      "filePath": "src/sentinel/manifest.py",
-      "summary": "class ManifestManager (src/sentinel/manifest.py:18) ## Methods - all_entries(self) -> dict[str,ManifestEntry]",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 8,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-2d70468ff304",
-      "type": "file",
-      "name": "src/sentinel/notify.py",
-      "filePath": "src/sentinel/notify.py",
-      "summary": "Language: Python | Path: src/sentinel/notify.py | ~48 lines ## Classes - Notifier",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-abe08eceeb3d",
-      "type": "class",
-      "name": "Notifier",
-      "filePath": "src/sentinel/notify.py",
-      "summary": "class Notifier (src/sentinel/notify.py:15) ## Methods - is_configured(self) -> bool",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-3a88fb67b0ea",
-      "type": "file",
-      "name": "src/sentinel/sentinel.py",
-      "filePath": "src/sentinel/sentinel.py",
-      "summary": "Language: Python | Path: src/sentinel/sentinel.py | ~450 lines ## Classes - Sentinel",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-ae6786562fd3",
-      "type": "class",
-      "name": "Sentinel",
-      "filePath": "src/sentinel/sentinel.py",
-      "summary": "class Sentinel (src/sentinel/sentinel.py:47) ## Methods - event_bus(self) -> EventBus",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 9,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-673668548161",
-      "type": "file",
-      "name": "contracts/src_sentinel_api/interface.py",
-      "filePath": "contracts/src_sentinel_api/interface.py",
-      "summary": "Language: Python | Path: contracts/src_sentinel_api/interface.py | ~214 lines ## Classes - SentinelAPI",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 12,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-4ca4649c51a4",
-      "type": "class",
-      "name": "SentinelAPI",
-      "filePath": "contracts/src_sentinel_api/interface.py",
-      "summary": "class SentinelAPI (contracts/src_sentinel_api/interface.py:11)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-de279167a267",
-      "type": "file",
-      "name": "src/sentinel/api.py",
-      "filePath": "src/sentinel/api.py",
-      "summary": "Language: Python | Path: src/sentinel/api.py | ~119 lines ## Classes - SentinelAPI",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-273182bae7ef",
-      "type": "class",
-      "name": "SentinelAPI",
-      "filePath": "src/sentinel/api.py",
-      "summary": "class SentinelAPI (src/sentinel/api.py:16) ## Methods - start(self, host: str = \"0.0.0.0\", port: int = 8484) -> None",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 2,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-0e25be57cbaf",
-      "type": "file",
-      "name": "src/sentinel/stigmergy.py",
-      "filePath": "src/sentinel/stigmergy.py",
-      "summary": "Language: Python | Path: src/sentinel/stigmergy.py | ~98 lines ## Classes - StigmergyClient",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-9703bfc8d138",
-      "type": "class",
-      "name": "StigmergyClient",
-      "filePath": "src/sentinel/stigmergy.py",
-      "summary": "class StigmergyClient (src/sentinel/stigmergy.py:15) ## Methods - emit_contract_tightened( self, component_id: str, pact_key: str, ) -> bool",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 6,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-4317f578e280",
-      "type": "file",
-      "name": "src/sentinel/test_runner.py",
-      "filePath": "src/sentinel/test_runner.py",
-      "summary": "Language: Python | Path: src/sentinel/test_runner.py | ~167 lines ## Classes - TestFailureDetail",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 8,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-ab8d7805844a",
-      "type": "class",
-      "name": "TestFailureDetail",
-      "filePath": "src/sentinel/test_runner.py",
-      "summary": "class TestFailureDetail (src/sentinel/test_runner.py:17)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-626aa79741d7",
-      "type": "class",
-      "name": "TestResults",
-      "filePath": "src/sentinel/test_runner.py",
-      "summary": "class TestResults (src/sentinel/test_runner.py:26) ## Methods - all_passed(self) -> bool",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-7123c017718e",
-      "type": "file",
-      "name": "src/sentinel/__init__.py",
-      "filePath": "src/sentinel/__init__.py",
-      "summary": "Language: Python | Path: src/sentinel/__init__.py | ~7 lines",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-mod-sentinel-dffb7d633560",
-      "type": "file",
-      "name": "contracts/src_sentinel_cli/interface.py",
-      "filePath": "contracts/src_sentinel_cli/interface.py",
-      "summary": "Language: Python | Path: contracts/src_sentinel_cli/interface.py | ~199 lines ## Functions - fix( ctx: click.Context, pact_key: str, error: str, ) -> None",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 12,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-881607935925",
-      "type": "class",
-      "name": "LLMConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class LLMConfig(BaseModel) (src/sentinel/config.py:36) [Merged from: LLMConfig] class LLMConfig(BaseModel) (src/kindex/config.py:35)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-1b5f526018b5",
-      "type": "file",
-      "name": "contracts/src_sentinel_arbiter/interface.py",
-      "filePath": "contracts/src_sentinel_arbiter/interface.py",
-      "summary": "Language: Python | Path: contracts/src_sentinel_arbiter/interface.py | ~139 lines ## Classes - ArbiterClient",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 8,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-240783ddca91",
-      "type": "class",
-      "name": "ArbiterClient",
-      "filePath": "contracts/src_sentinel_arbiter/interface.py",
-      "summary": "class ArbiterClient (contracts/src_sentinel_arbiter/interface.py:15)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-d78e13c33a32",
-      "type": "file",
-      "name": "src/sentinel/arbiter.py",
-      "filePath": "src/sentinel/arbiter.py",
-      "summary": "Language: Python | Path: src/sentinel/arbiter.py | ~83 lines ## Classes - ArbiterClient",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-a35ef808a2ff",
-      "type": "class",
-      "name": "ArbiterClient",
-      "filePath": "src/sentinel/arbiter.py",
-      "summary": "class ArbiterClient (src/sentinel/arbiter.py:15) ## Methods - is_configured(self) -> bool",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 5,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-3dfabe8e3ccf",
-      "type": "file",
-      "name": "contracts/src_sentinel_config/interface.py",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "Language: Python | Path: contracts/src_sentinel_config/interface.py | ~85 lines ## Classes - ArbiterConfig",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 11,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-f0721a71b623",
-      "type": "class",
-      "name": "ArbiterConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class ArbiterConfig (contracts/src_sentinel_config/interface.py:41)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-b926ff0d49f6",
-      "type": "class",
-      "name": "LLMConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class LLMConfig (contracts/src_sentinel_config/interface.py:29)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-ad096dfce1c9",
-      "type": "class",
-      "name": "LedgerConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class LedgerConfig (contracts/src_sentinel_config/interface.py:57)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-fc11da487c12",
-      "type": "class",
-      "name": "PactIntegrationConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class PactIntegrationConfig (contracts/src_sentinel_config/interface.py:36)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-c05da17c3394",
-      "type": "class",
-      "name": "SentinelConfig",
-      "filePath": "contracts/src_sentinel_config/interface.py",
-      "summary": "class SentinelConfig (contracts/src_sentinel_config/interface.py:69)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-2f6e5898380b",
-      "type": "file",
-      "name": "src/sentinel/config.py",
-      "filePath": "src/sentinel/config.py",
-      "summary": "Language: Python | Path: src/sentinel/config.py | ~107 lines ## Classes - ArbiterConfig(BaseModel)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 12,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-2534dc423a8f",
-      "type": "class",
-      "name": "ArbiterConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class ArbiterConfig(BaseModel) (src/sentinel/config.py:50)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-e14f32971329",
-      "type": "class",
-      "name": "PactIntegrationConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class PactIntegrationConfig(BaseModel) (src/sentinel/config.py:44)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-c9ad54231826",
-      "type": "class",
-      "name": "SentinelConfig",
-      "filePath": "src/sentinel/config.py",
-      "summary": "class SentinelConfig(BaseModel) (src/sentinel/config.py:89)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-caee009b247c",
-      "type": "file",
-      "name": "src/sentinel/schemas.py",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "Language: Python | Path: src/sentinel/schemas.py | ~158 lines ## Classes - Attribution(BaseModel)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 11,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-9487824b6e7a",
-      "type": "class",
-      "name": "Attribution",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class Attribution(BaseModel) (src/sentinel/schemas.py:61)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-a46c93e582ee",
-      "type": "class",
-      "name": "ContractProposal",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class ContractProposal(BaseModel) (src/sentinel/schemas.py:126)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-8e8ef685c944",
-      "type": "class",
-      "name": "DiagnosticReport",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class DiagnosticReport(BaseModel) (src/sentinel/schemas.py:149)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-d258e096d928",
-      "type": "class",
-      "name": "FixResult",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class FixResult(BaseModel) (src/sentinel/schemas.py:109)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-cd7709d5e041",
-      "type": "class",
-      "name": "Incident",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class Incident(BaseModel) (src/sentinel/schemas.py:75)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-d6683d3bb059",
-      "type": "class",
-      "name": "LogKey",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class LogKey(BaseModel) (src/sentinel/schemas.py:39)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-72ec52efe58e",
-      "type": "class",
-      "name": "ManifestEntry",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class ManifestEntry(BaseModel) (src/sentinel/schemas.py:50)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-4aab34c594c4",
-      "type": "class",
-      "name": "MonitoringBudget",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class MonitoringBudget(BaseModel) (src/sentinel/schemas.py:96)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-0389fd92ea9d",
-      "type": "class",
-      "name": "Signal",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class Signal(BaseModel) (src/sentinel/schemas.py:16)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-539c37c1068b",
-      "type": "class",
-      "name": "SignalFingerprint",
-      "filePath": "src/sentinel/schemas.py",
-      "summary": "class SignalFingerprint(BaseModel) (src/sentinel/schemas.py:26)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-569d2e5dba40",
-      "type": "file",
-      "name": "contracts/src_sentinel_attribution/interface.py",
-      "filePath": "contracts/src_sentinel_attribution/interface.py",
-      "summary": "Language: Python | Path: contracts/src_sentinel_attribution/interface.py | ~83 lines ## Classes - AttributionEngine",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 5,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-d3503ba6e09e",
-      "type": "class",
-      "name": "AttributionEngine",
-      "filePath": "contracts/src_sentinel_attribution/interface.py",
-      "summary": "class AttributionEngine (contracts/src_sentinel_attribution/interface.py:11)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-832b5250084c",
-      "type": "file",
-      "name": "src/sentinel/attribution.py",
-      "filePath": "src/sentinel/attribution.py",
-      "summary": "Language: Python | Path: src/sentinel/attribution.py | ~97 lines ## Classes - AttributionEngine",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-6d1f66c4f3d2",
-      "type": "class",
-      "name": "AttributionEngine",
-      "filePath": "src/sentinel/attribution.py",
-      "summary": "class AttributionEngine (src/sentinel/attribution.py:14) ## Methods - attribute(self, line: str) -> Attribution",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 3,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-06e03288ae37",
-      "type": "file",
-      "name": "src/sentinel/llm.py",
-      "filePath": "src/sentinel/llm.py",
-      "summary": "Language: Python | Path: src/sentinel/llm.py | ~148 lines ## Classes - BudgetExceededError(LLMError)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 4,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-sym-sentinel-877084d176c2",
-      "type": "class",
-      "name": "BudgetExceededError",
-      "filePath": "src/sentinel/llm.py",
-      "summary": "class BudgetExceededError(LLMError) (src/sentinel/llm.py:144)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-8967079bb934",
-      "type": "class",
-      "name": "LLMClient",
-      "filePath": "src/sentinel/llm.py",
-      "summary": "class LLMClient (src/sentinel/llm.py:22) ## Methods - assess( self, schema: type[T], prompt: str, system: str, max_tokens: int | None = None, ) -> tuple[T,int,int]",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 5,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-sym-sentinel-23fca59dc9f5",
-      "type": "class",
-      "name": "LLMError",
-      "filePath": "src/sentinel/llm.py",
-      "summary": "class LLMError(Exception) (src/sentinel/llm.py:140)",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "concept",
-        "toolTier": ""
-      }
-    },
-    {
-      "id": "code-mod-sentinel-59eb016a89c3",
-      "type": "file",
-      "name": "src/sentinel/chronicler.py",
-      "filePath": "src/sentinel/chronicler.py",
-      "summary": "Language: Python | Path: src/sentinel/chronicler.py | ~94 lines ## Classes - ChroniclerEmitter",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 1,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    },
-    {
-      "id": "code-mod-sentinel-bdb5e0746184",
-      "type": "file",
-      "name": "src/sentinel/watcher.py",
-      "filePath": "src/sentinel/watcher.py",
-      "summary": "Language: Python | Path: src/sentinel/watcher.py | ~456 lines ## Classes - CloudWatchSource",
-      "tags": [
-        "code",
-        "python"
-      ],
-      "complexity": 8,
-      "languageNotes": {
-        "language": "Python",
-        "kindexType": "artifact",
-        "toolTier": "C"
-      }
-    }
-  ],
   "edges": [
     {
-      "source": "code-sym-sentinel-91c6eceaad97",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "direction": "outbound",
+      "source": "code-mod-sentinel-06e03288ae37",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-91c6eceaad97",
-      "target": "code-sym-sentinel-21cd68c03ace",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-21cd68c03ace",
-      "target": "code-mod-sentinel-2f6e5898380b",
+      "source": "code-mod-sentinel-0e25be57cbaf",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-21cd68c03ace",
-      "target": "code-sym-sentinel-91c6eceaad97",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-ec9a4222b36d",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "source": "code-mod-sentinel-1b5f526018b5",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-ec9a4222b36d",
-      "target": "code-sym-sentinel-503022e1a575",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-503022e1a575",
-      "target": "code-mod-sentinel-2f6e5898380b",
+      "source": "code-mod-sentinel-1d0a125c6c90",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-503022e1a575",
-      "target": "code-sym-sentinel-ec9a4222b36d",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-d5a154100ee2",
-      "target": "code-mod-sentinel-1d0a125c6c90",
+      "source": "code-mod-sentinel-287b91d9c7dd",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-d5a154100ee2",
-      "target": "code-sym-sentinel-63f0bb097a85",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-591d1de15d6c",
-      "target": "code-mod-sentinel-2f6e5898380b",
+      "source": "code-mod-sentinel-2b046a462ebd",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-be477729a561",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "direction": "outbound",
+      "source": "code-mod-sentinel-2c25f3c4d535",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-b08907fb2dfe",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "direction": "outbound",
+      "source": "code-mod-sentinel-2d70468ff304",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-b08907fb2dfe",
-      "target": "code-sym-sentinel-efa12440164f",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-efa12440164f",
-      "target": "code-mod-sentinel-2f6e5898380b",
+      "source": "code-mod-sentinel-2f6e5898380b",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-efa12440164f",
-      "target": "code-sym-sentinel-b08907fb2dfe",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-63f0bb097a85",
-      "target": "code-mod-sentinel-caee009b247c",
+      "source": "code-mod-sentinel-3a88fb67b0ea",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-63f0bb097a85",
-      "target": "code-sym-sentinel-d5a154100ee2",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
+      "source": "code-mod-sentinel-3dfabe8e3ccf",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
     },
     {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-4317f578e280",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
       "source": "code-mod-sentinel-4814402d49f7",
-      "target": "code-mod-sentinel-e87259e12962",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
     },
     {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-4e71325d1f1c",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-569d2e5dba40",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-59eb016a89c3",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-5cc996d1c59f",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-673668548161",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-7123c017718e",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-832b5250084c",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-bdb5e0746184",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-caee009b247c",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-cd05826b3614",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-d78e13c33a32",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-de279167a267",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-mod-sentinel-dffb7d633560",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
       "source": "code-mod-sentinel-e87259e12962",
-      "target": "code-mod-sentinel-4814402d49f7",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-1a2f04b675ac",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-1a2f04b675ac",
-      "target": "code-sym-sentinel-8e38ed87e9e0",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-8e38ed87e9e0",
-      "target": "code-mod-sentinel-2f6e5898380b",
+      "source": "code-mod-sentinel-fc293f363ea6",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-8e38ed87e9e0",
-      "target": "code-sym-sentinel-1a2f04b675ac",
-      "type": "related",
       "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-7f72543dfd5c",
-      "target": "code-mod-sentinel-2f6e5898380b",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-e18943936195",
-      "target": "code-mod-sentinel-59eb016a89c3",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-e4109c76edd9",
-      "target": "code-mod-sentinel-2f6e5898380b",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-e4109c76edd9",
-      "target": "code-sym-sentinel-ad096dfce1c9",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-03d1084e4f08",
-      "target": "code-mod-sentinel-cd05826b3614",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-37a15f40937d",
-      "target": "code-mod-sentinel-4814402d49f7",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-a2153f98ed32",
-      "target": "code-mod-sentinel-287b91d9c7dd",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-09aa425b5303",
-      "target": "code-mod-sentinel-287b91d9c7dd",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-970153c33934",
-      "target": "code-mod-sentinel-e87259e12962",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-b20b576968ec",
-      "target": "code-mod-sentinel-e87259e12962",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-5fcda54b0c8d",
-      "target": "code-mod-sentinel-4e71325d1f1c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-21a7de90d3e5",
-      "target": "code-mod-sentinel-2b046a462ebd",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-fdf9c26781d3",
-      "target": "code-mod-sentinel-fc293f363ea6",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-587e40e57571",
-      "target": "code-mod-sentinel-1d0a125c6c90",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-ab2673022c0f",
-      "target": "code-mod-sentinel-2c25f3c4d535",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-abe08eceeb3d",
-      "target": "code-mod-sentinel-2d70468ff304",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-ae6786562fd3",
-      "target": "code-mod-sentinel-3a88fb67b0ea",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-4ca4649c51a4",
-      "target": "code-mod-sentinel-673668548161",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-273182bae7ef",
-      "target": "code-mod-sentinel-de279167a267",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-9703bfc8d138",
-      "target": "code-mod-sentinel-0e25be57cbaf",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-ab8d7805844a",
-      "target": "code-mod-sentinel-4317f578e280",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-626aa79741d7",
-      "target": "code-mod-sentinel-4317f578e280",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-881607935925",
-      "target": "code-mod-sentinel-2f6e5898380b",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-240783ddca91",
-      "target": "code-mod-sentinel-1b5f526018b5",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-a35ef808a2ff",
-      "target": "code-mod-sentinel-d78e13c33a32",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-f0721a71b623",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-f0721a71b623",
-      "target": "code-sym-sentinel-2534dc423a8f",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-b926ff0d49f6",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-ad096dfce1c9",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-ad096dfce1c9",
-      "target": "code-sym-sentinel-e4109c76edd9",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-fc11da487c12",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-fc11da487c12",
-      "target": "code-sym-sentinel-e14f32971329",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-c05da17c3394",
-      "target": "code-mod-sentinel-3dfabe8e3ccf",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-c05da17c3394",
-      "target": "code-sym-sentinel-c9ad54231826",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-2534dc423a8f",
-      "target": "code-mod-sentinel-2f6e5898380b",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-2534dc423a8f",
-      "target": "code-sym-sentinel-f0721a71b623",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-e14f32971329",
-      "target": "code-mod-sentinel-2f6e5898380b",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-e14f32971329",
-      "target": "code-sym-sentinel-fc11da487c12",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-c9ad54231826",
-      "target": "code-mod-sentinel-2f6e5898380b",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-c9ad54231826",
-      "target": "code-sym-sentinel-c05da17c3394",
-      "type": "related",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-9487824b6e7a",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-a46c93e582ee",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-8e8ef685c944",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-d258e096d928",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-cd7709d5e041",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-d6683d3bb059",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-72ec52efe58e",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
-      "source": "code-sym-sentinel-4aab34c594c4",
-      "target": "code-mod-sentinel-caee009b247c",
-      "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
-    },
-    {
       "source": "code-sym-sentinel-0389fd92ea9d",
       "target": "code-mod-sentinel-caee009b247c",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.6
     },
     {
-      "source": "code-sym-sentinel-539c37c1068b",
-      "target": "code-mod-sentinel-caee009b247c",
+      "direction": "outbound",
+      "source": "code-sym-sentinel-0389fd92ea9d",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-d3503ba6e09e",
-      "target": "code-mod-sentinel-569d2e5dba40",
+      "direction": "outbound",
+      "source": "code-sym-sentinel-03d1084e4f08",
+      "target": "code-mod-sentinel-cd05826b3614",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.6
     },
     {
-      "source": "code-sym-sentinel-6d1f66c4f3d2",
-      "target": "code-mod-sentinel-832b5250084c",
+      "direction": "outbound",
+      "source": "code-sym-sentinel-03d1084e4f08",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
-      "source": "code-sym-sentinel-877084d176c2",
-      "target": "code-mod-sentinel-06e03288ae37",
+      "direction": "outbound",
+      "source": "code-sym-sentinel-09aa425b5303",
+      "target": "code-mod-sentinel-287b91d9c7dd",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.6
     },
     {
-      "source": "code-sym-sentinel-8967079bb934",
-      "target": "code-mod-sentinel-06e03288ae37",
+      "direction": "outbound",
+      "source": "code-sym-sentinel-09aa425b5303",
+      "target": "code-sym-sentinel-ae6786562fd3",
       "type": "contains",
-      "direction": "outbound",
-      "weight": 0.0108
+      "weight": 0.5
     },
     {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-140950a201ca",
+      "target": "code-mod-sentinel-bdb5e0746184",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-140950a201ca",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-1a2f04b675ac",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-1a2f04b675ac",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-21a7de90d3e5",
+      "target": "code-mod-sentinel-2b046a462ebd",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-21a7de90d3e5",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-21cd68c03ace",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-21cd68c03ace",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-223ca5a0ade2",
+      "target": "code-mod-sentinel-bdb5e0746184",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-223ca5a0ade2",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
       "source": "code-sym-sentinel-23fca59dc9f5",
       "target": "code-mod-sentinel-06e03288ae37",
       "type": "contains",
+      "weight": 0.6
+    },
+    {
       "direction": "outbound",
-      "weight": 0.0108
+      "source": "code-sym-sentinel-23fca59dc9f5",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-240783ddca91",
+      "target": "code-mod-sentinel-1b5f526018b5",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-240783ddca91",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-2534dc423a8f",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-2534dc423a8f",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-273182bae7ef",
+      "target": "code-mod-sentinel-de279167a267",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-273182bae7ef",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-37a15f40937d",
+      "target": "code-mod-sentinel-4814402d49f7",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-37a15f40937d",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-48dce1c1873a",
+      "target": "code-mod-sentinel-bdb5e0746184",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-48dce1c1873a",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-4aab34c594c4",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-4aab34c594c4",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-4ca4649c51a4",
+      "target": "code-mod-sentinel-673668548161",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-4ca4649c51a4",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-503022e1a575",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-503022e1a575",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-539c37c1068b",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-539c37c1068b",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-551157dab8f7",
+      "target": "code-mod-sentinel-bdb5e0746184",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-551157dab8f7",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-587e40e57571",
+      "target": "code-mod-sentinel-1d0a125c6c90",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-587e40e57571",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-591d1de15d6c",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-591d1de15d6c",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-5fcda54b0c8d",
+      "target": "code-mod-sentinel-4e71325d1f1c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-5fcda54b0c8d",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-626aa79741d7",
+      "target": "code-mod-sentinel-4317f578e280",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-626aa79741d7",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-63f0bb097a85",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-63f0bb097a85",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-6d1f66c4f3d2",
+      "target": "code-mod-sentinel-832b5250084c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-6d1f66c4f3d2",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-72ec52efe58e",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-72ec52efe58e",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-7f72543dfd5c",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-7f72543dfd5c",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-877084d176c2",
+      "target": "code-mod-sentinel-06e03288ae37",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-877084d176c2",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-881607935925",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-881607935925",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-8967079bb934",
+      "target": "code-mod-sentinel-06e03288ae37",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-8967079bb934",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-8e38ed87e9e0",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-8e38ed87e9e0",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-8e8ef685c944",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-8e8ef685c944",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-913667faee67",
+      "target": "code-mod-sentinel-bdb5e0746184",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-913667faee67",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-91c6eceaad97",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-91c6eceaad97",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-9487824b6e7a",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-9487824b6e7a",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-970153c33934",
+      "target": "code-mod-sentinel-e87259e12962",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-970153c33934",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-9703bfc8d138",
+      "target": "code-mod-sentinel-0e25be57cbaf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-9703bfc8d138",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-a2153f98ed32",
+      "target": "code-mod-sentinel-287b91d9c7dd",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-a2153f98ed32",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-a35ef808a2ff",
+      "target": "code-mod-sentinel-d78e13c33a32",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-a35ef808a2ff",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-a46c93e582ee",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-a46c93e582ee",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ab2673022c0f",
+      "target": "code-mod-sentinel-2c25f3c4d535",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ab2673022c0f",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ab8d7805844a",
+      "target": "code-mod-sentinel-4317f578e280",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ab8d7805844a",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-abe08eceeb3d",
+      "target": "code-mod-sentinel-2d70468ff304",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-abe08eceeb3d",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ad096dfce1c9",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ad096dfce1c9",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ae6786562fd3",
+      "target": "code-mod-sentinel-3a88fb67b0ea",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ae6786562fd3",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-b08907fb2dfe",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-b08907fb2dfe",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-b20b576968ec",
+      "target": "code-mod-sentinel-e87259e12962",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-b20b576968ec",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-b926ff0d49f6",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-b926ff0d49f6",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-be477729a561",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-be477729a561",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-c05da17c3394",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-c05da17c3394",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-c9ad54231826",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-c9ad54231826",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-cd7709d5e041",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-cd7709d5e041",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d258e096d928",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d258e096d928",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d3503ba6e09e",
+      "target": "code-mod-sentinel-569d2e5dba40",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d3503ba6e09e",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d5a154100ee2",
+      "target": "code-mod-sentinel-1d0a125c6c90",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d5a154100ee2",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d6683d3bb059",
+      "target": "code-mod-sentinel-caee009b247c",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d6683d3bb059",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d6d0e882f7e0",
+      "target": "code-mod-sentinel-bdb5e0746184",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-d6d0e882f7e0",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-e14f32971329",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-e14f32971329",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-e18943936195",
+      "target": "code-mod-sentinel-59eb016a89c3",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-e18943936195",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-e4109c76edd9",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-e4109c76edd9",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ec9a4222b36d",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-ec9a4222b36d",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-efa12440164f",
+      "target": "code-mod-sentinel-2f6e5898380b",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-efa12440164f",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-f0721a71b623",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-f0721a71b623",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-fc11da487c12",
+      "target": "code-mod-sentinel-3dfabe8e3ccf",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-fc11da487c12",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-fdf9c26781d3",
+      "target": "code-mod-sentinel-fc293f363ea6",
+      "type": "contains",
+      "weight": 0.6
+    },
+    {
+      "direction": "outbound",
+      "source": "code-sym-sentinel-fdf9c26781d3",
+      "target": "code-sym-sentinel-ae6786562fd3",
+      "type": "contains",
+      "weight": 0.5
     }
   ],
   "layers": [
     {
+      "description": "Kindex-inferred api layer.",
       "id": "api",
       "name": "Api",
-      "description": "Kindex-inferred api layer.",
       "nodeIds": [
         "code-mod-sentinel-673668548161",
         "code-mod-sentinel-de279167a267"
       ]
     },
     {
+      "description": "Kindex-inferred core layer.",
       "id": "core",
       "name": "Core",
-      "description": "Kindex-inferred core layer.",
       "nodeIds": [
         "code-mod-sentinel-06e03288ae37",
         "code-mod-sentinel-0e25be57cbaf",
@@ -2088,33 +1149,37 @@
       ]
     },
     {
+      "description": "Kindex-inferred data layer.",
       "id": "data",
       "name": "Data",
-      "description": "Kindex-inferred data layer.",
       "nodeIds": [
         "code-mod-sentinel-caee009b247c"
       ]
     },
     {
+      "description": "Kindex-inferred domain layer.",
       "id": "domain",
       "name": "Domain",
-      "description": "Kindex-inferred domain layer.",
       "nodeIds": [
         "code-sym-sentinel-0389fd92ea9d",
         "code-sym-sentinel-03d1084e4f08",
         "code-sym-sentinel-09aa425b5303",
+        "code-sym-sentinel-140950a201ca",
         "code-sym-sentinel-1a2f04b675ac",
         "code-sym-sentinel-21a7de90d3e5",
         "code-sym-sentinel-21cd68c03ace",
+        "code-sym-sentinel-223ca5a0ade2",
         "code-sym-sentinel-23fca59dc9f5",
         "code-sym-sentinel-240783ddca91",
         "code-sym-sentinel-2534dc423a8f",
         "code-sym-sentinel-273182bae7ef",
         "code-sym-sentinel-37a15f40937d",
+        "code-sym-sentinel-48dce1c1873a",
         "code-sym-sentinel-4aab34c594c4",
         "code-sym-sentinel-4ca4649c51a4",
         "code-sym-sentinel-503022e1a575",
         "code-sym-sentinel-539c37c1068b",
+        "code-sym-sentinel-551157dab8f7",
         "code-sym-sentinel-587e40e57571",
         "code-sym-sentinel-591d1de15d6c",
         "code-sym-sentinel-5fcda54b0c8d",
@@ -2128,6 +1193,7 @@
         "code-sym-sentinel-8967079bb934",
         "code-sym-sentinel-8e38ed87e9e0",
         "code-sym-sentinel-8e8ef685c944",
+        "code-sym-sentinel-913667faee67",
         "code-sym-sentinel-91c6eceaad97",
         "code-sym-sentinel-9487824b6e7a",
         "code-sym-sentinel-970153c33934",
@@ -2151,6 +1217,7 @@
         "code-sym-sentinel-d3503ba6e09e",
         "code-sym-sentinel-d5a154100ee2",
         "code-sym-sentinel-d6683d3bb059",
+        "code-sym-sentinel-d6d0e882f7e0",
         "code-sym-sentinel-e14f32971329",
         "code-sym-sentinel-e18943936195",
         "code-sym-sentinel-e4109c76edd9",
@@ -2162,27 +1229,1618 @@
       ]
     },
     {
+      "description": "Kindex-inferred test layer.",
       "id": "test",
       "name": "Test",
-      "description": "Kindex-inferred test layer.",
       "nodeIds": [
         "code-mod-sentinel-4317f578e280"
       ]
     }
   ],
+  "nodes": [
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_api/interface.py",
+      "id": "code-sym-sentinel-4ca4649c51a4",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SentinelAPI",
+      "summary": "class SentinelAPI (contracts/src_sentinel_api/interface.py:11)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 12,
+      "filePath": "contracts/src_sentinel_api/interface.py",
+      "id": "code-mod-sentinel-673668548161",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "contracts/src_sentinel_api/interface.py",
+      "summary": "Language: Python | Path: contracts/src_sentinel_api/interface.py | ~214 lines ## Classes - SentinelAPI",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_arbiter/interface.py",
+      "id": "code-sym-sentinel-240783ddca91",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ArbiterClient",
+      "summary": "class ArbiterClient (contracts/src_sentinel_arbiter/interface.py:15)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 8,
+      "filePath": "contracts/src_sentinel_arbiter/interface.py",
+      "id": "code-mod-sentinel-1b5f526018b5",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "contracts/src_sentinel_arbiter/interface.py",
+      "summary": "Language: Python | Path: contracts/src_sentinel_arbiter/interface.py | ~139 lines ## Classes - ArbiterClient",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_attribution/interface.py",
+      "id": "code-sym-sentinel-d3503ba6e09e",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "AttributionEngine",
+      "summary": "class AttributionEngine (contracts/src_sentinel_attribution/interface.py:11)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 5,
+      "filePath": "contracts/src_sentinel_attribution/interface.py",
+      "id": "code-mod-sentinel-569d2e5dba40",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "contracts/src_sentinel_attribution/interface.py",
+      "summary": "Language: Python | Path: contracts/src_sentinel_attribution/interface.py | ~83 lines ## Classes - AttributionEngine",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 12,
+      "filePath": "contracts/src_sentinel_cli/interface.py",
+      "id": "code-mod-sentinel-dffb7d633560",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "contracts/src_sentinel_cli/interface.py",
+      "summary": "Language: Python | Path: contracts/src_sentinel_cli/interface.py | ~199 lines ## Functions - fix( ctx: click.Context, pact_key: str, error: str, ) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-1a2f04b675ac",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "StigmergyConfig",
+      "summary": "class StigmergyConfig (contracts/src_sentinel_config/interface.py:46)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-91c6eceaad97",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ErrorThresholdConfig",
+      "summary": "class ErrorThresholdConfig (contracts/src_sentinel_config/interface.py:24)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-ad096dfce1c9",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LedgerConfig",
+      "summary": "class LedgerConfig (contracts/src_sentinel_config/interface.py:57)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-b08907fb2dfe",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "NotifyConfig",
+      "summary": "class NotifyConfig (contracts/src_sentinel_config/interface.py:50)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-b926ff0d49f6",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LLMConfig",
+      "summary": "class LLMConfig (contracts/src_sentinel_config/interface.py:29)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-be477729a561",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "BudgetConfig",
+      "summary": "class BudgetConfig (contracts/src_sentinel_config/interface.py:61)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-c05da17c3394",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SentinelConfig",
+      "summary": "class SentinelConfig (contracts/src_sentinel_config/interface.py:69)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-ec9a4222b36d",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SourceConfig",
+      "summary": "class SourceConfig (contracts/src_sentinel_config/interface.py:12)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-f0721a71b623",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ArbiterConfig",
+      "summary": "class ArbiterConfig (contracts/src_sentinel_config/interface.py:41)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-sym-sentinel-fc11da487c12",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "PactIntegrationConfig",
+      "summary": "class PactIntegrationConfig (contracts/src_sentinel_config/interface.py:36)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 11,
+      "filePath": "contracts/src_sentinel_config/interface.py",
+      "id": "code-mod-sentinel-3dfabe8e3ccf",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "contracts/src_sentinel_config/interface.py",
+      "summary": "Language: Python | Path: contracts/src_sentinel_config/interface.py | ~85 lines ## Classes - ArbiterConfig",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/__init__.py",
+      "id": "code-mod-sentinel-7123c017718e",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/__init__.py",
+      "summary": "Language: Python | Path: src/sentinel/__init__.py | ~7 lines",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/api.py",
+      "id": "code-sym-sentinel-273182bae7ef",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SentinelAPI",
+      "summary": "class SentinelAPI (src/sentinel/api.py:16) ## Methods - start(self, host: str = \"0.0.0.0\", port: int = 8484) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/api.py",
+      "id": "code-mod-sentinel-de279167a267",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/api.py",
+      "summary": "Language: Python | Path: src/sentinel/api.py | ~119 lines ## Classes - SentinelAPI",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 5,
+      "filePath": "src/sentinel/arbiter.py",
+      "id": "code-sym-sentinel-a35ef808a2ff",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ArbiterClient",
+      "summary": "class ArbiterClient (src/sentinel/arbiter.py:15) ## Methods - is_configured(self) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/arbiter.py",
+      "id": "code-mod-sentinel-d78e13c33a32",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/arbiter.py",
+      "summary": "Language: Python | Path: src/sentinel/arbiter.py | ~83 lines ## Classes - ArbiterClient",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 3,
+      "filePath": "src/sentinel/attribution.py",
+      "id": "code-sym-sentinel-6d1f66c4f3d2",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "AttributionEngine",
+      "summary": "class AttributionEngine (src/sentinel/attribution.py:14) ## Methods - attribute(self, line: str) -> Attribution",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/attribution.py",
+      "id": "code-mod-sentinel-832b5250084c",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/attribution.py",
+      "summary": "Language: Python | Path: src/sentinel/attribution.py | ~97 lines ## Classes - AttributionEngine",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/chronicler.py",
+      "id": "code-sym-sentinel-e18943936195",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ChroniclerEmitter",
+      "summary": "class ChroniclerEmitter (src/sentinel/chronicler.py:16) ## Methods - emit(self, incident: Incident) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/chronicler.py",
+      "id": "code-mod-sentinel-59eb016a89c3",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/chronicler.py",
+      "summary": "Language: Python | Path: src/sentinel/chronicler.py | ~94 lines ## Classes - ChroniclerEmitter",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 12,
+      "filePath": "src/sentinel/cli.py",
+      "id": "code-mod-sentinel-5cc996d1c59f",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/cli.py",
+      "summary": "Language: Python | Path: src/sentinel/cli.py | ~344 lines ## Functions - fix(ctx: click.Context, pact_key: str, error: str) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-21cd68c03ace",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ErrorThresholdConfig",
+      "summary": "class ErrorThresholdConfig(BaseModel) (src/sentinel/config.py:30)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-2534dc423a8f",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ArbiterConfig",
+      "summary": "class ArbiterConfig(BaseModel) (src/sentinel/config.py:50)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-503022e1a575",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SourceConfig",
+      "summary": "class SourceConfig(BaseModel) (src/sentinel/config.py:15)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-591d1de15d6c",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "BudgetConfig",
+      "summary": "class BudgetConfig(BaseModel) (src/sentinel/config.py:80)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-7f72543dfd5c",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ChroniclerConfig",
+      "summary": "class ChroniclerConfig(BaseModel) (src/sentinel/config.py:61)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-881607935925",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LLMConfig",
+      "summary": "class LLMConfig(BaseModel) (src/sentinel/config.py:36)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-8e38ed87e9e0",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "StigmergyConfig",
+      "summary": "class StigmergyConfig(BaseModel) (src/sentinel/config.py:56)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-c9ad54231826",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SentinelConfig",
+      "summary": "class SentinelConfig(BaseModel) (src/sentinel/config.py:89)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-e14f32971329",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "PactIntegrationConfig",
+      "summary": "class PactIntegrationConfig(BaseModel) (src/sentinel/config.py:44)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-e4109c76edd9",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LedgerConfig",
+      "summary": "class LedgerConfig(BaseModel) (src/sentinel/config.py:75)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-sym-sentinel-efa12440164f",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "NotifyConfig",
+      "summary": "class NotifyConfig(BaseModel) (src/sentinel/config.py:67)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 12,
+      "filePath": "src/sentinel/config.py",
+      "id": "code-mod-sentinel-2f6e5898380b",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/config.py",
+      "summary": "Language: Python | Path: src/sentinel/config.py | ~107 lines ## Classes - ArbiterConfig(BaseModel)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 3,
+      "filePath": "src/sentinel/contracts.py",
+      "id": "code-sym-sentinel-03d1084e4f08",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ContractManager",
+      "summary": "class ContractManager (src/sentinel/contracts.py:16) ## Methods - list_proposals(self) -> list[ContractProposal]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/contracts.py",
+      "id": "code-mod-sentinel-cd05826b3614",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/contracts.py",
+      "summary": "Language: Python | Path: src/sentinel/contracts.py | ~112 lines ## Classes - ContractManager",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/events.py",
+      "id": "code-sym-sentinel-970153c33934",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "EventBus",
+      "summary": "class EventBus (src/sentinel/events.py:22) ## Methods - emit(self, event: SentinelEvent) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/events.py",
+      "id": "code-sym-sentinel-b20b576968ec",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SentinelEvent",
+      "summary": "class SentinelEvent (src/sentinel/events.py:14)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/events.py",
+      "id": "code-mod-sentinel-e87259e12962",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/events.py",
+      "summary": "Language: Python | Path: src/sentinel/events.py | ~32 lines ## Classes - EventBus",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/fixer.py",
+      "id": "code-sym-sentinel-5fcda54b0c8d",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "FixerAgent",
+      "summary": "class FixerAgent (src/sentinel/fixer.py:45) ## Methods - fix( self, incident: Incident, manifest_entry: ManifestEntry, max_attempts: int = 2, ) -> FixResult",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 5,
+      "filePath": "src/sentinel/fixer.py",
+      "id": "code-mod-sentinel-4e71325d1f1c",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/fixer.py",
+      "summary": "Language: Python | Path: src/sentinel/fixer.py | ~394 lines ## Classes - FixerAgent",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 5,
+      "filePath": "src/sentinel/git_ops.py",
+      "id": "code-sym-sentinel-21a7de90d3e5",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "GitOps",
+      "summary": "class GitOps (src/sentinel/git_ops.py:12) ## Methods - commit_fix(self, message: str, files: list[Path]) -> str|None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/git_ops.py",
+      "id": "code-mod-sentinel-2b046a462ebd",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/git_ops.py",
+      "summary": "Language: Python | Path: src/sentinel/git_ops.py | ~81 lines ## Classes - GitOps",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 12,
+      "filePath": "src/sentinel/incidents.py",
+      "id": "code-sym-sentinel-fdf9c26781d3",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "IncidentManager",
+      "summary": "class IncidentManager (src/sentinel/incidents.py:26) ## Methods - add_signal(self, incident_id: str, signal: Signal) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/incidents.py",
+      "id": "code-mod-sentinel-fc293f363ea6",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/incidents.py",
+      "summary": "Language: Python | Path: src/sentinel/incidents.py | ~221 lines ## Classes - IncidentManager",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/ledger.py",
+      "id": "code-sym-sentinel-587e40e57571",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LedgerClient",
+      "summary": "class LedgerClient (src/sentinel/ledger.py:28) ## Methods - is_configured(self) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/ledger.py",
+      "id": "code-sym-sentinel-d5a154100ee2",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SeverityMapping",
+      "summary": "class SeverityMapping (src/sentinel/ledger.py:14)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/ledger.py",
+      "id": "code-mod-sentinel-1d0a125c6c90",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/ledger.py",
+      "summary": "Language: Python | Path: src/sentinel/ledger.py | ~37 lines ## Classes - LedgerClient",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/llm.py",
+      "id": "code-sym-sentinel-23fca59dc9f5",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LLMError",
+      "summary": "class LLMError(Exception) (src/sentinel/llm.py:140)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/llm.py",
+      "id": "code-sym-sentinel-877084d176c2",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "BudgetExceededError",
+      "summary": "class BudgetExceededError(LLMError) (src/sentinel/llm.py:144)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 5,
+      "filePath": "src/sentinel/llm.py",
+      "id": "code-sym-sentinel-8967079bb934",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LLMClient",
+      "summary": "class LLMClient (src/sentinel/llm.py:22) ## Methods - assess( self, schema: type[T], prompt: str, system: str, max_tokens: int | None = None, ) -> tuple[T,int,int]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 4,
+      "filePath": "src/sentinel/llm.py",
+      "id": "code-mod-sentinel-06e03288ae37",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/llm.py",
+      "summary": "Language: Python | Path: src/sentinel/llm.py | ~148 lines ## Classes - BudgetExceededError(LLMError)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 8,
+      "filePath": "src/sentinel/manifest.py",
+      "id": "code-sym-sentinel-ab2673022c0f",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ManifestManager",
+      "summary": "class ManifestManager (src/sentinel/manifest.py:18) ## Methods - all_entries(self) -> dict[str,ManifestEntry]",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/manifest.py",
+      "id": "code-mod-sentinel-2c25f3c4d535",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/manifest.py",
+      "summary": "Language: Python | Path: src/sentinel/manifest.py | ~85 lines ## Classes - ManifestManager",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/notify.py",
+      "id": "code-sym-sentinel-abe08eceeb3d",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "Notifier",
+      "summary": "class Notifier (src/sentinel/notify.py:15) ## Methods - is_configured(self) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/notify.py",
+      "id": "code-mod-sentinel-2d70468ff304",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/notify.py",
+      "summary": "Language: Python | Path: src/sentinel/notify.py | ~48 lines ## Classes - Notifier",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-0389fd92ea9d",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "Signal",
+      "summary": "class Signal(BaseModel) (src/sentinel/schemas.py:16)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-4aab34c594c4",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "MonitoringBudget",
+      "summary": "class MonitoringBudget(BaseModel) (src/sentinel/schemas.py:96)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-539c37c1068b",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SignalFingerprint",
+      "summary": "class SignalFingerprint(BaseModel) (src/sentinel/schemas.py:26)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-63f0bb097a85",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SeverityMapping",
+      "summary": "class SeverityMapping(BaseModel) (src/sentinel/schemas.py:138)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-72ec52efe58e",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ManifestEntry",
+      "summary": "class ManifestEntry(BaseModel) (src/sentinel/schemas.py:50)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-8e8ef685c944",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "DiagnosticReport",
+      "summary": "class DiagnosticReport(BaseModel) (src/sentinel/schemas.py:149)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-9487824b6e7a",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "Attribution",
+      "summary": "class Attribution(BaseModel) (src/sentinel/schemas.py:61)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-a46c93e582ee",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ContractProposal",
+      "summary": "class ContractProposal(BaseModel) (src/sentinel/schemas.py:126)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-cd7709d5e041",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "Incident",
+      "summary": "class Incident(BaseModel) (src/sentinel/schemas.py:75)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-d258e096d928",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "FixResult",
+      "summary": "class FixResult(BaseModel) (src/sentinel/schemas.py:109)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-sym-sentinel-d6683d3bb059",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LogKey",
+      "summary": "class LogKey(BaseModel) (src/sentinel/schemas.py:39)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 11,
+      "filePath": "src/sentinel/schemas.py",
+      "id": "code-mod-sentinel-caee009b247c",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/schemas.py",
+      "summary": "Language: Python | Path: src/sentinel/schemas.py | ~158 lines ## Classes - Attribution(BaseModel)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 9,
+      "filePath": "src/sentinel/sentinel.py",
+      "id": "code-sym-sentinel-ae6786562fd3",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "Sentinel",
+      "summary": "class Sentinel (src/sentinel/sentinel.py:47) ## Methods - event_bus(self) -> EventBus",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/sentinel.py",
+      "id": "code-mod-sentinel-3a88fb67b0ea",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/sentinel.py",
+      "summary": "Language: Python | Path: src/sentinel/sentinel.py | ~450 lines ## Classes - Sentinel",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/severity.py",
+      "id": "code-sym-sentinel-37a15f40937d",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SeverityEngine",
+      "summary": "class SeverityEngine (src/sentinel/severity.py:25) ## Methods - compute(self, signal: Signal, attribution: Attribution) -> str",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 4,
+      "filePath": "src/sentinel/severity.py",
+      "id": "code-mod-sentinel-4814402d49f7",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/severity.py",
+      "summary": "Language: Python | Path: src/sentinel/severity.py | ~70 lines ## Classes - SeverityEngine",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 6,
+      "filePath": "src/sentinel/stigmergy.py",
+      "id": "code-sym-sentinel-9703bfc8d138",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "StigmergyClient",
+      "summary": "class StigmergyClient (src/sentinel/stigmergy.py:15) ## Methods - emit_contract_tightened( self, component_id: str, pact_key: str, ) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/stigmergy.py",
+      "id": "code-mod-sentinel-0e25be57cbaf",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/stigmergy.py",
+      "summary": "Language: Python | Path: src/sentinel/stigmergy.py | ~98 lines ## Classes - StigmergyClient",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/test_runner.py",
+      "id": "code-sym-sentinel-626aa79741d7",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "TestResults",
+      "summary": "class TestResults (src/sentinel/test_runner.py:26) ## Methods - all_passed(self) -> bool",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/test_runner.py",
+      "id": "code-sym-sentinel-ab8d7805844a",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "TestFailureDetail",
+      "summary": "class TestFailureDetail (src/sentinel/test_runner.py:17)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 8,
+      "filePath": "src/sentinel/test_runner.py",
+      "id": "code-mod-sentinel-4317f578e280",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/test_runner.py",
+      "summary": "Language: Python | Path: src/sentinel/test_runner.py | ~167 lines ## Classes - TestFailureDetail",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/triage.py",
+      "id": "code-sym-sentinel-09aa425b5303",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "TriageResult",
+      "summary": "class TriageResult(BaseModel) (src/sentinel/triage.py:22)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/triage.py",
+      "id": "code-sym-sentinel-a2153f98ed32",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "DiagnosticResult",
+      "summary": "class DiagnosticResult(BaseModel) (src/sentinel/triage.py:29)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 4,
+      "filePath": "src/sentinel/triage.py",
+      "id": "code-mod-sentinel-287b91d9c7dd",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/triage.py",
+      "summary": "Language: Python | Path: src/sentinel/triage.py | ~93 lines ## Classes - DiagnosticResult(BaseModel)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    },
+    {
+      "complexity": 2,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-sym-sentinel-140950a201ca",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "CloudWatchSource",
+      "summary": "class CloudWatchSource (src/sentinel/watcher.py:208) ## Methods - signals(self)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 3,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-sym-sentinel-223ca5a0ade2",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "SignalIngester",
+      "summary": "class SignalIngester (src/sentinel/watcher.py:332) ## Methods - start(self) -> None",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-sym-sentinel-48dce1c1873a",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "ProcessWatcher",
+      "summary": "class ProcessWatcher (src/sentinel/watcher.py:107) ## Methods - watch(self)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 1,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-sym-sentinel-551157dab8f7",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "StdoutWatcher",
+      "summary": "class StdoutWatcher (src/sentinel/watcher.py:306) ## Methods - watch_process(self, proc: asyncio.subprocess.Process)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 3,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-sym-sentinel-913667faee67",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "WebhookReceiver",
+      "summary": "class WebhookReceiver (src/sentinel/watcher.py:140) ## Methods - signals(self)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 3,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-sym-sentinel-d6d0e882f7e0",
+      "languageNotes": {
+        "kindexType": "concept",
+        "language": "Python",
+        "toolTier": ""
+      },
+      "name": "LogTailer",
+      "summary": "class LogTailer (src/sentinel/watcher.py:43) ## Methods - lines(self)",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "class"
+    },
+    {
+      "complexity": 8,
+      "filePath": "src/sentinel/watcher.py",
+      "id": "code-mod-sentinel-bdb5e0746184",
+      "languageNotes": {
+        "kindexType": "artifact",
+        "language": "Python",
+        "toolTier": "C"
+      },
+      "name": "src/sentinel/watcher.py",
+      "summary": "Language: Python | Path: src/sentinel/watcher.py | ~456 lines ## Classes - CloudWatchSource",
+      "tags": [
+        "code",
+        "python"
+      ],
+      "type": "file"
+    }
+  ],
+  "project": {
+    "analyzedAt": "2026-05-24T17:35:21-05:00",
+    "description": "Code map exported from Kindex for sentinel.",
+    "frameworks": [],
+    "gitCommitHash": "446938c39d04c4e99f94019e7934afe717a7411c",
+    "languages": [
+      "Python"
+    ],
+    "name": "sentinel"
+  },
   "tour": [
     {
-      "order": 1,
-      "title": "Api",
       "description": "Review 2 node(s) in the Api layer.",
       "nodeIds": [
         "code-mod-sentinel-673668548161",
         "code-mod-sentinel-de279167a267"
-      ]
+      ],
+      "order": 1,
+      "title": "Api"
     },
     {
-      "order": 2,
-      "title": "Core",
       "description": "Review 24 node(s) in the Core layer.",
       "nodeIds": [
         "code-mod-sentinel-06e03288ae37",
@@ -2209,55 +2867,58 @@
         "code-mod-sentinel-dffb7d633560",
         "code-mod-sentinel-e87259e12962",
         "code-mod-sentinel-fc293f363ea6"
-      ]
+      ],
+      "order": 2,
+      "title": "Core"
     },
     {
-      "order": 3,
-      "title": "Data",
       "description": "Review 1 node(s) in the Data layer.",
       "nodeIds": [
         "code-mod-sentinel-caee009b247c"
-      ]
+      ],
+      "order": 3,
+      "title": "Data"
     },
     {
-      "order": 4,
-      "title": "Domain",
-      "description": "Review 59 node(s) in the Domain layer.",
+      "description": "Review 65 node(s) in the Domain layer.",
       "nodeIds": [
         "code-sym-sentinel-0389fd92ea9d",
         "code-sym-sentinel-03d1084e4f08",
         "code-sym-sentinel-09aa425b5303",
+        "code-sym-sentinel-140950a201ca",
         "code-sym-sentinel-1a2f04b675ac",
         "code-sym-sentinel-21a7de90d3e5",
         "code-sym-sentinel-21cd68c03ace",
+        "code-sym-sentinel-223ca5a0ade2",
         "code-sym-sentinel-23fca59dc9f5",
         "code-sym-sentinel-240783ddca91",
         "code-sym-sentinel-2534dc423a8f",
         "code-sym-sentinel-273182bae7ef",
         "code-sym-sentinel-37a15f40937d",
+        "code-sym-sentinel-48dce1c1873a",
         "code-sym-sentinel-4aab34c594c4",
         "code-sym-sentinel-4ca4649c51a4",
         "code-sym-sentinel-503022e1a575",
         "code-sym-sentinel-539c37c1068b",
+        "code-sym-sentinel-551157dab8f7",
         "code-sym-sentinel-587e40e57571",
         "code-sym-sentinel-591d1de15d6c",
         "code-sym-sentinel-5fcda54b0c8d",
         "code-sym-sentinel-626aa79741d7",
         "code-sym-sentinel-63f0bb097a85",
-        "code-sym-sentinel-6d1f66c4f3d2",
-        "code-sym-sentinel-72ec52efe58e",
-        "code-sym-sentinel-7f72543dfd5c",
-        "code-sym-sentinel-877084d176c2",
-        "code-sym-sentinel-881607935925"
-      ]
+        "code-sym-sentinel-6d1f66c4f3d2"
+      ],
+      "order": 4,
+      "title": "Domain"
     },
     {
-      "order": 5,
-      "title": "Test",
       "description": "Review 1 node(s) in the Test layer.",
       "nodeIds": [
         "code-mod-sentinel-4317f578e280"
-      ]
+      ],
+      "order": 5,
+      "title": "Test"
     }
-  ]
+  ],
+  "version": "1.0.0"
 }
